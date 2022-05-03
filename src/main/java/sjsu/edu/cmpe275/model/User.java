@@ -1,6 +1,7 @@
 package sjsu.edu.cmpe275.model;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,13 +12,15 @@ import javax.persistence.Table;
 @Table(name = "user")
 public class User {
 	
-	//Columns
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
 	@Column(unique = true)
 	private String email;
+	
+	@Column(nullable = false)
+	private String password;
 	
 	private String accountType;
 	
@@ -29,16 +32,20 @@ public class User {
 	
 	private String gender;
 	private String description;
-	private String address;
+	
+	@Embedded
+	private Address address;
+	
 	private boolean isVerified;
 	
 	
 	//constructor
-	public User(long id, String email, String accountType, String fullName, String screenName, String gender,
-			String description, String address, boolean isVerified) {
+	public User(long id, String email, String password, String accountType, String fullName, String screenName, String gender,
+			String description, Address address, boolean isVerified) {
 		super();
 		this.id = id;
 		this.email = email;
+		this.password = password;
 		this.accountType = accountType;
 		this.fullName = fullName;
 		this.screenName = screenName;
@@ -67,6 +74,14 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getAccountType() {
@@ -109,14 +124,14 @@ public class User {
 		this.description = description;
 	}
 
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
 	public boolean isVerified() {
 		return isVerified;
 	}
