@@ -1,0 +1,42 @@
+
+  body{
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .signup-class{
+    background: black !important;
+    color: white;
+
+  }
+
+  .container-checkout{
+      color: white;
+     
+  }
+
+  .name-class{
+    font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    margin-left: 10vw;
+    font-size:larger;
+    font-weight: 50;
+  }
+
+  .dashboard-checkout{
+      color:white;
+      font-size: larger;
+      margin-top: 50vh;
+      /* margin-left: 10vw; */
+      font-family: Larsseit,Arial,sans-serif;
+      font-weight: 500;
+      font-size: 32px;
+      
+  }
+
+  .button-class{
+
+    background-color: gray;
+    left: 100vw;
+    float: right;
+  
+ }
