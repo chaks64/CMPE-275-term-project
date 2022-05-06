@@ -24,7 +24,7 @@ import sjsu.edu.cmpe275.service.LoginSignupService;
 
 @RestController
 @RequestMapping("/user")
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 public class LoginSignup {
 	
 	@Autowired
@@ -38,17 +38,21 @@ public class LoginSignup {
 	
 	
 	@PostMapping(value = "/login")
-//	@CrossOrigin(origins = "http://localhost:8080")
 	public ResponseEntity<?> logineUser(@RequestBody Map<String, Object> inputJson){
 		return loginSignupService.loginUser(inputJson);
 	}
 	
 	@PostMapping(value = "/signup")
-//	@CrossOrigin(origins = "http://localhost:8080")
 	public ResponseEntity<?> createUser(@RequestBody Map<String, Object> inputJson){
 		System.out.println("register here");
 		return loginSignupService.createUser(inputJson);
 	}
+	
+	
+	@RequestMapping(value="/googlesignon", method = RequestMethod.POST, produces = {"application/json"})
+    public ResponseEntity<?> googleSignon(@RequestBody Map<String, Object> inputJson){
+        return loginSignupService.googleSignon(inputJson);
+    }
 	
 	@RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
 	public ResponseEntity<?> confirmUserAccount(ModelAndView modelAndView, @RequestParam("token") String confirmationToken) {

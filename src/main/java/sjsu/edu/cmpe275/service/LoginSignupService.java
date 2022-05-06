@@ -10,4 +10,6 @@ public interface LoginSignupService {
 	ResponseEntity<?> createUser(Map<String, Object> reqBody);
 	
 	ResponseEntity<?> loginUser(Map<String, Object> reqBody);
+	
+	ResponseEntity<?> googleSignon(Map<String, Object> reqBody);
 }

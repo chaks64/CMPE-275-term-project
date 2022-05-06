@@ -4,10 +4,15 @@ import NavBar from "../NavBar/NavBar";
 import "./Login.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import GoogleLogin from "react-google-login";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
+
+  const responseGoogle = (response) => {
+    console.log(response);
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -65,13 +70,21 @@ export default function Login() {
                 {/* <button type="button" class="login-with-google-btn">
                   Sign in with Google
                 </button> */}
-                <a
+                {/* <a
                   class="btn btn-lg btn-google btn-block text-uppercase btn-outline"
                   href="#"
                 >
                   <img src="https://img.icons8.com/color/16/000000/google-logo.png" />{" "}
                   Login Using Google
-                </a>
+                </a> */}
+
+                <GoogleLogin
+                  clientId="155505368995-kkg9c40j38vb7c8lg05m2jke4rmtia4l.apps.googleusercontent.com"
+                  buttonText="Login with Google"
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                  cookiePolicy={"single_host_origin"}
+                />
               </div>
 
               <div className="input-group">
