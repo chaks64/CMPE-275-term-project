@@ -8,4 +8,6 @@ import sjsu.edu.cmpe275.model.User;
 
 public interface LoginSignupService {
 	ResponseEntity<?> createUser(Map<String, Object> reqBody);
+	
+	ResponseEntity<?> loginUser(Map<String, Object> reqBody);
 }

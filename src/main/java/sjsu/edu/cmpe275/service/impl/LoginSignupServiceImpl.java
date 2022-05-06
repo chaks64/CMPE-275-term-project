@@ -15,6 +15,7 @@ import sjsu.edu.cmpe275.model.User;
 import sjsu.edu.cmpe275.repository.ConfirmTokenRepository;
 import sjsu.edu.cmpe275.repository.UserRepository;
 import sjsu.edu.cmpe275.service.LoginSignupService;
+import static sjsu.edu.cmpe275.config.Config.*;
 
 @Service
 public class LoginSignupServiceImpl implements LoginSignupService{
@@ -30,10 +31,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 	
 	@Override
 	public ResponseEntity<?> createUser(Map<String, Object> reqBody) {
-//		return userRepo.save(user);
 		System.out.println("in signup "+ reqBody);
-		
-		
 		try {
 			String email = (String) reqBody.get("email");
 			User user = userRepo.findByEmail(email);
@@ -71,11 +69,11 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				System.out.println("here for verfication");
 				confirmTokenRepo.save(token);
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
-				mailMessage.setTo("c.shah12345@gmail.com");
+				mailMessage.setTo(createdUser.getEmail());
 				mailMessage.setSubject("Complete Verification!");
 				mailMessage.setFrom("shahchintan64@gmail.com");
 				mailMessage.setText("To verify your account, please click here : "
-						+ "http://localhost:8080/user/confirm-account?token="
+						+ "http://"+IP_ADDRESS+":8080/user/confirm-account?token="
 						+ token.getConfirmationToken());
 				emailSenderService.sendEmail(mailMessage);
 				return new ResponseEntity<>(newUser, HttpStatus.CREATED);
@@ -85,6 +83,35 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
 			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Override
+	public ResponseEntity<?> loginUser(Map<String, Object> reqBody) {
+		System.out.println("in login "+ reqBody);
+		try {
+			String email = (String) reqBody.get("email");
+			User user = userRepo.findByEmail(email);
+			if(user == null) {
+				ErrorResponse error = new ErrorResponse("404", "Email does not exists");
+				return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+			}
+			
+			String password = (String) reqBody.get("password");
+			if(!user.getPassword().equals(password)) {
+				ErrorResponse error = new ErrorResponse("403", "Wrong Password");
+				return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+			}
+//			if(!user.isVerified()) {
+//				ErrorResponse error = new ErrorResponse("403", "User Not vierfied");
+//				return new ResponseEntity<>(error, HttpStatus.OK);
+//			}
+			return new ResponseEntity<>(user, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+//		return null;
 	}
 
 }
