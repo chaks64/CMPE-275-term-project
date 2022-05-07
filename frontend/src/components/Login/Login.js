@@ -6,6 +6,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import GoogleLogin from "react-google-login";
 import { useNavigate } from 'react-router-dom';
+import Cookies from "js-cookie";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -24,13 +25,15 @@ export default function Login() {
     const token1 = await axios
       .post(`http://localhost:8080/user/googlesignon`, data)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
         if(response.status === 206){
             localStorage.setItem("token",resp.tokenId)
             localStorage.setItem("subId",resp.googleId)
             navigate('/googleSignup')
         } else {
           alert("login done");
+          Cookies.set("user",response.data.email);
+          localStorage.setItem("user",JSON.stringify(response.data));
         }
         
       })

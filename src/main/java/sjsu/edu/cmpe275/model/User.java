@@ -1,12 +1,21 @@
 package sjsu.edu.cmpe275.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 @Entity
 @Table(name = "user")
@@ -40,10 +49,14 @@ public class User {
 	
 	private String googleSubId;
 	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+//    @JsonIgnoreProperties({"team","address","opponents"})
+    private Set<Event> event = new HashSet<>();
+	
 	
 	//constructor
 	public User(long id, String email, String password, String accountType, String fullName, String screenName, String gender,
-			String description, Address address, boolean isVerified) {
+			String description, Address address, boolean isVerified , Set<Event> event) {
 		super();
 		this.id = id;
 		this.email = email;
@@ -55,6 +68,7 @@ public class User {
 		this.description = description;
 		this.address = address;
 		this.isVerified = isVerified;
+		this.event = event;
 	}
 
 	public User() {
@@ -148,6 +162,14 @@ public class User {
 
 	public void setGoogleSubId(String googleSubId) {
 		this.googleSubId = googleSubId;
+	}
+	
+	public Set<Event> getEvent() {
+		return event;
+	}
+
+	public void setEvent(Set<Event> event) {
+		this.event = event;
 	}
 
 	@Override
