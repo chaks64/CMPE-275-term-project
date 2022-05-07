@@ -5,14 +5,44 @@ import "./Login.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import GoogleLogin from "react-google-login";
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
 
-  const responseGoogle = (response) => {
-    console.log(response);
+  let navigate = useNavigate();
+  
+  const responseGoogle =  async (resp) => {
+    console.log(resp);
+    const data = {
+        token: resp.tokenId,
+        subId:resp.googleId
+    }; 
+      console.log(data)
+    // axios.defaults.withCredentials = true;
+    const token1 = await axios
+      .post(`http://localhost:8080/user/googlesignon`, data)
+      .then((response) => {
+        console.log(response);
+        if(response.status === 206){
+            localStorage.setItem("token",resp.tokenId)
+            localStorage.setItem("subId",resp.googleId)
+            navigate('/googleSignup')
+        } else {
+          alert("login done");
+        }
+        
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log("error");
+      });
   };
+
+
+
+
 
   const onSubmit = async (e) => {
     e.preventDefault();

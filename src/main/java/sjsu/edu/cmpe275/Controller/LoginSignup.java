@@ -51,7 +51,14 @@ public class LoginSignup {
 	
 	@RequestMapping(value="/googlesignon", method = RequestMethod.POST, produces = {"application/json"})
     public ResponseEntity<?> googleSignon(@RequestBody Map<String, Object> inputJson){
+		System.out.println("here");
         return loginSignupService.googleSignon(inputJson);
+    }
+	
+	@RequestMapping(value="/googlesignup", method = RequestMethod.POST, produces = {"application/json"})
+    public ResponseEntity<?> googleSignup(@RequestBody Map<String, Object> inputJson){
+		System.out.println("here");
+        return loginSignupService.googleSignup(inputJson);
     }
 	
 	@RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })

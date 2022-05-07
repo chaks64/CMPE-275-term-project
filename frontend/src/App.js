@@ -6,6 +6,7 @@ import Login from "./components/Login/Login";
 import NavBar from "./components/NavBar/NavBar";
 import Verify from "./components/Verify/Verify";
 import Error from "./components/Verify/Error";
+import GoogleSignup from "./components/GoogleSignUp/GoogleSignUp";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/verify" element={<Verify />} />
       <Route path="/error" element={<Error />} />
+      <Route path="/googleSignup" element={<GoogleSignup />} />
     </Routes>
   );
 }

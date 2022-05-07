@@ -38,6 +38,8 @@ public class User {
 	
 	private boolean isVerified;
 	
+	private String googleSubId;
+	
 	
 	//constructor
 	public User(long id, String email, String password, String accountType, String fullName, String screenName, String gender,
@@ -138,6 +140,14 @@ public class User {
 
 	public void setVerified(boolean isVerified) {
 		this.isVerified = isVerified;
+	}
+
+	public String getGoogleSubId() {
+		return googleSubId;
+	}
+
+	public void setGoogleSubId(String googleSubId) {
+		this.googleSubId = googleSubId;
 	}
 
 	@Override

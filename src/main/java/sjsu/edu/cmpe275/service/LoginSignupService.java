@@ -12,4 +12,6 @@ public interface LoginSignupService {
 	ResponseEntity<?> loginUser(Map<String, Object> reqBody);
 	
 	ResponseEntity<?> googleSignon(Map<String, Object> reqBody);
+	
+	ResponseEntity<?> googleSignup(Map<String, Object> reqBody);
 }
