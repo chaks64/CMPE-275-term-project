@@ -1,9 +1,10 @@
-import React from "react";
+import React,{ useState, useContext } from "react";
 import EventCard from "../EventCard/EventCard";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
-import { MDBCol, MDBInput } from "mdbreact";
 import "./home.css";
+import {ThemeContext} from '../../App';
+import {Row,Col,Button} from 'react-bootstrap'
 
 const Home = () => {
   return (

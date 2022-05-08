@@ -6,4 +6,6 @@ import org.springframework.http.ResponseEntity;
 
 public interface EventService {
 	ResponseEntity<?> listEvents();
+	
+	ResponseEntity<?> createEvent(Map<String, Object> reqBody);
 }

@@ -1,8 +1,8 @@
 package sjsu.edu.cmpe275.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
-import javax.annotation.Generated;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,9 +26,9 @@ public class Event {
 	
 	private String title;
 	private String description;
-	private Date startDate;
-	private Date endtDate;
-	private Date deadline;
+	private LocalDate startDate;
+	private LocalDate endtDate;
+	private LocalDate deadline;
 	
 	@Embedded
 	private Address address;
@@ -36,15 +36,15 @@ public class Event {
 	private int minParticpants;
 	private int maxParticpants;
 	private int fees;
-	private int policy;
+	private String policy;
 	
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)  
     @JoinColumn(name = "email")
 //    @JsonIgnoreProperties({"players","address","teamId"})
     private User user;
 
-	public Event(long id, String title, String description, Date startDate, Date endtDate, Date deadline,
-			Address address, int minParticpants, int maxParticpants, int fees, int policy, User user) {
+	public Event(long id, String title, String description, LocalDate startDate, LocalDate endtDate, LocalDate deadline,
+			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -88,27 +88,27 @@ public class Event {
 		this.description = description;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndtDate() {
+	public LocalDate getEndtDate() {
 		return endtDate;
 	}
 
-	public void setEndtDate(Date endtDate) {
+	public void setEndtDate(LocalDate endtDate) {
 		this.endtDate = endtDate;
 	}
 
-	public Date getDeadline() {
+	public LocalDate getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(Date deadline) {
+	public void setDeadline(LocalDate deadline) {
 		this.deadline = deadline;
 	}
 
@@ -144,11 +144,11 @@ public class Event {
 		this.fees = fees;
 	}
 
-	public int getPolicy() {
+	public String getPolicy() {
 		return policy;
 	}
 
-	public void setPolicy(int policy) {
+	public void setPolicy(String policy) {
 		this.policy = policy;
 	}
 
