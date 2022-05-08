@@ -1,4 +1,4 @@
-package sjsu.edu.cmpe275.service.impl;
+	package sjsu.edu.cmpe275.service.impl;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -52,14 +52,15 @@ public class EventServiceImpl implements EventService{
 			event.setDescription((String) reqBody.get("desc"));
 			LocalDateTime start = LocalDateTime.parse((CharSequence) reqBody.get("start"));
 			LocalDateTime end = LocalDateTime.parse((CharSequence) reqBody.get("end"));
+			LocalDateTime deadline = LocalDateTime.parse((CharSequence) reqBody.get("deadline"));
 			
 			event.setStartDate(start);
 			event.setEndtDate(end);
-			event.setDeadline(null);
+			event.setDeadline(deadline);
 			
 			Map<String, String> addressMap =(Map<String, String>) reqBody.get("address");
 			Address address = new Address();
-			address.setCity(addressMap.get("street"));
+			address.setStreet(addressMap.get("street"));
 			address.setCity(addressMap.get("city"));
 			address.setNumber(addressMap.get("number"));
 			address.setState(addressMap.get("state"));

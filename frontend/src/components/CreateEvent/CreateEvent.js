@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./CreateEvent.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateEvent = () => {
   const [eventInfo, setEventInfo] = useState({
@@ -15,12 +17,46 @@ const CreateEvent = () => {
     city: "",
     state: "",
     zip: "",
-    maxParticipants: "",
-    minParticipants: "",
+    maxParticipants: 0,
+    minParticipants: 0,
     fees: 0,
-    policy: "",
+    policy: "auto",
   });
 
+  const navigate = useNavigate();
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      title: eventInfo.title,
+      desc: eventInfo.desc,
+      start: eventInfo.start,
+      end: eventInfo.end,
+      deadline: eventInfo.deadline,
+      min: parseInt(eventInfo.minParticipants),
+      max: parseInt(eventInfo.maxParticipants),
+      policy: eventInfo.policy,
+      fees: parseInt(eventInfo.fees),
+      address: {
+        street: eventInfo.street,
+        number: eventInfo.number,
+        city: eventInfo.city,
+        state: eventInfo.state,
+        zipcode: eventInfo.zip,
+      },
+    };
+
+    const token1 = await axios
+      .post(`http://localhost:8080/event/create`, data)
+      .then((response) => {
+        console.log(response.data);
+        alert("event created");
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   const handleChange = (event) => {
     setEventInfo({ ...eventInfo, [event.target.name]: event.target.value });
   };
@@ -31,7 +67,7 @@ const CreateEvent = () => {
         <div className="Heading">
           <h2 className="title">Create New Event</h2>
         </div>
-        <form onSubmit="">
+        <form onSubmit={onSubmit}>
           <div className="main">
             <div className="left">
               <div className="input-group">
@@ -42,6 +78,7 @@ const CreateEvent = () => {
                   name="title"
                   className="form-input"
                   value={eventInfo.title}
+                  onChange={handleChange}
                 />
               </div>
 
@@ -63,7 +100,7 @@ const CreateEvent = () => {
                     <label className="label-name">Start Date</label>
                     <input
                       id="start"
-                      type="date"
+                      type="datetime-local"
                       name="start"
                       className="form-input"
                       onChange={handleChange}
@@ -90,9 +127,9 @@ const CreateEvent = () => {
                   <div className="parts1">
                     <label className="label-name">Min Participants</label>
                     <input
-                      id="min"
+                      id="minParticipants"
                       type="number"
-                      name="min"
+                      name="minParticipants"
                       className="form-input"
                       onChange={handleChange}
                       value={eventInfo.minParticipants}
@@ -102,9 +139,9 @@ const CreateEvent = () => {
                   <div className="parts1">
                     <label className="label-name">Max Participants</label>
                     <input
-                      id="max"
+                      id="maxParticipants"
                       type="number"
-                      name="max"
+                      name="maxParticipants"
                       className="form-input"
                       onChange={handleChange}
                       value={eventInfo.maxParticipants}

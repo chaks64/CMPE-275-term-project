@@ -8,13 +8,13 @@ const EventCard = ({ event }) => {
     <>
     {console.log(user.accountType)}
       <Card>
-        <Card.Header>Featured</Card.Header>
+        <Card.Header>{event.id}</Card.Header>
         <Card.Body>
-          <Card.Title>Special title treatment</Card.Title>
+          <Card.Title>{event.title}</Card.Title>
           <Card.Text>
-            With supporting text below as a natural lead-in to additional
-            content.
+            {event.description}
           </Card.Text>
+          
           <Button disabled={role==="person"? false : true} variant="primary" style={{backgroundColor:"black"}}>Go somewhere</Button>
         </Card.Body>
       </Card>
