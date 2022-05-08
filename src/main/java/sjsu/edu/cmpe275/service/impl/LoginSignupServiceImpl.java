@@ -63,6 +63,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			Map<String, String> addressMap =(Map<String, String>) reqBody.get("address");
 			
 			Address address = new Address();
+			address.setCity(addressMap.get("street"));
 			address.setCity(addressMap.get("city"));
 			address.setNumber(addressMap.get("number"));
 			address.setState(addressMap.get("state"));

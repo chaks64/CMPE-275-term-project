@@ -1,6 +1,8 @@
 package sjsu.edu.cmpe275.service.impl;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,17 +50,16 @@ public class EventServiceImpl implements EventService{
 			Event event = new Event();
 			event.setTitle((String) reqBody.get("title"));
 			event.setDescription((String) reqBody.get("desc"));
-//			event.setStartDate((Date) );
-//			event.setEndtDate((Date) reqBody.get("end"));
+			LocalDateTime start = LocalDateTime.parse((CharSequence) reqBody.get("start"));
+			LocalDateTime end = LocalDateTime.parse((CharSequence) reqBody.get("end"));
 			
-//			LocalDate start = LocalDate.parse( (String) reqBody.get("start"));
-//			LocalDate end = LocalDate.parse((String) reqBody.get("end"));
-			event.setStartDate(null);
-			event.setEndtDate(null);
+			event.setStartDate(start);
+			event.setEndtDate(end);
 			event.setDeadline(null);
 			
 			Map<String, String> addressMap =(Map<String, String>) reqBody.get("address");
 			Address address = new Address();
+			address.setCity(addressMap.get("street"));
 			address.setCity(addressMap.get("city"));
 			address.setNumber(addressMap.get("number"));
 			address.setState(addressMap.get("state"));

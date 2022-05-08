@@ -1,7 +1,7 @@
 package sjsu.edu.cmpe275.model;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -26,9 +26,9 @@ public class Event {
 	
 	private String title;
 	private String description;
-	private LocalDate startDate;
-	private LocalDate endtDate;
-	private LocalDate deadline;
+	private LocalDateTime startDate;
+	private LocalDateTime endtDate;
+	private LocalDateTime deadline;
 	
 	@Embedded
 	private Address address;
@@ -43,7 +43,7 @@ public class Event {
 //    @JsonIgnoreProperties({"players","address","teamId"})
     private User user;
 
-	public Event(long id, String title, String description, LocalDate startDate, LocalDate endtDate, LocalDate deadline,
+	public Event(long id, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
 			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
 		super();
 		this.id = id;
@@ -88,27 +88,27 @@ public class Event {
 		this.description = description;
 	}
 
-	public LocalDate getStartDate() {
+	public LocalDateTime getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(LocalDate startDate) {
+	public void setStartDate(LocalDateTime startDate) {
 		this.startDate = startDate;
 	}
 
-	public LocalDate getEndtDate() {
+	public LocalDateTime getEndtDate() {
 		return endtDate;
 	}
 
-	public void setEndtDate(LocalDate endtDate) {
+	public void setEndtDate(LocalDateTime endtDate) {
 		this.endtDate = endtDate;
 	}
 
-	public LocalDate getDeadline() {
+	public LocalDateTime getDeadline() {
 		return deadline;
 	}
 
-	public void setDeadline(LocalDate deadline) {
+	public void setDeadline(LocalDateTime deadline) {
 		this.deadline = deadline;
 	}
 
