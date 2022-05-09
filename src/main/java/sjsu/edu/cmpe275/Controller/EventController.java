@@ -1,6 +1,8 @@
 package sjsu.edu.cmpe275.Controller;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +36,15 @@ public class EventController {
 
 	@PostMapping(value = "/search")
 	public ResponseEntity<?> searchEvents(@RequestBody Map<String, Object> inputJson){
+		Map<String, Object> response = new HashMap<>();
 //		return eventService.createEvent(inputJson);
+		Set<String> inputKeys = inputJson.keySet();
+		if(!(inputKeys.contains("location") && inputKeys.contains("status") && inputKeys.contains("startTime") && inputKeys.contains("endTime") && inputKeys.contains("keyword") && inputKeys.contains("organizer")) ) {
+			response.put("status", 400);
+			response.put("success", false);
+			response.put("message", "All parameters are needed to perform search. Send default parameters if needed.");
+			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>("All  OK", HttpStatus.OK);
 	}
 

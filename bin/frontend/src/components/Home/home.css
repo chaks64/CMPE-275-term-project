@@ -1,0 +1,16 @@
+.main-one{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 130px;
+    /* max-width: 97%; */
+}
+
+.event-card{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.search-class{
+    width: 50%;
+    margin: auto;
+}

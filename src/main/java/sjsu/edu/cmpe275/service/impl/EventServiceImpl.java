@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.client.HttpClientErrorException;
+
+import com.nimbusds.oauth2.sdk.http.HTTPResponse;
+
 import sjsu.edu.cmpe275.ErrorHandler.ErrorExceptionHandler;
 import sjsu.edu.cmpe275.ErrorHandler.BadRequest;
 import sjsu.edu.cmpe275.model.Event;
@@ -93,6 +96,12 @@ public class EventServiceImpl implements EventService{
 			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+	}
+	
+	
+	public ResponseEntity<?> searchEvents(Map<String, Object> reqBody) {
+		
+		return new ResponseEntity<>("Default answer", HttpStatus.CONTINUE);
 	}
 
 }
