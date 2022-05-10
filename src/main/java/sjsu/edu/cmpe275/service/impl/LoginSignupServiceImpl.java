@@ -65,7 +65,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			Address address = new Address();
 			address.setStreet(addressMap.get("street"));
 			address.setCity(addressMap.get("city"));
-			address.setNumber(addressMap.get("number"));
+			address.setNumber(String.valueOf(addressMap.get("number")));
 			address.setState(addressMap.get("state"));
 			address.setZipCode(addressMap.get("zipcode"));
 			

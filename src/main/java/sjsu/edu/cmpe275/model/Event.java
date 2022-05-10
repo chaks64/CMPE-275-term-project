@@ -43,8 +43,13 @@ public class Event {
 //    @JsonIgnoreProperties({"players","address","teamId"})
     private User user;
 
+<<<<<<< Updated upstream
 	public Event(long id, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
 			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
+=======
+	public Event(long id, String title, String description, Date startDate, Date endtDate, Date deadline,
+			Address address, int minParticpants, int maxParticpants, int fees, int policy) {
+>>>>>>> Stashed changes
 		super();
 		this.id = id;
 		this.title = title;
@@ -57,7 +62,7 @@ public class Event {
 		this.maxParticpants = maxParticpants;
 		this.fees = fees;
 		this.policy = policy;
-		this.user = user;
+//		this.user = user;
 	}
 	
 	public Event() {
@@ -152,12 +157,12 @@ public class Event {
 		this.policy = policy;
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+//	public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
 	
 }
