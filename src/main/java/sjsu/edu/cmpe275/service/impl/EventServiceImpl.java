@@ -1,27 +1,22 @@
-	package sjsu.edu.cmpe275.service.impl;
+package sjsu.edu.cmpe275.service.impl;
 
-<<<<<<< Updated upstream
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-=======
-import java.util.Optional;
->>>>>>> Stashed changes
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-<<<<<<< Updated upstream
-=======
+
 import org.springframework.web.client.HttpClientErrorException;
 import sjsu.edu.cmpe275.ErrorHandler.ErrorExceptionHandler;
 import sjsu.edu.cmpe275.ErrorHandler.BadRequest;
 import sjsu.edu.cmpe275.model.Event;
->>>>>>> Stashed changes
 
 import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
 import sjsu.edu.cmpe275.model.Address;
@@ -33,17 +28,9 @@ import sjsu.edu.cmpe275.service.EventService;
 public class EventServiceImpl implements EventService{
 	
 	@Autowired
-	private EventRepository eventRepository;
-
-
-//	@Override
-//	public ResponseEntity<?> listEventDetails(Long id) {
-//		System.out.println("IN event details ");
-//		return null;
-//	}
+	private EventRepository eventRepo;
 
 	@Override
-<<<<<<< Updated upstream
 	public ResponseEntity<?> listEvents() {
 		
 		try {
@@ -107,26 +94,5 @@ public class EventServiceImpl implements EventService{
 		}
 		
 	}
-	
-	
 
-=======
-	public ResponseEntity<?> listEventDetails(Long id) {
-		System.out.println(id);
-		System.out.println("IN event details");
-		Optional<Event> event= eventRepository.findById(id);
-		try {
-			if(event.isPresent()) {
-				return new ResponseEntity<>(event.get(), HttpStatus.OK);
-			}
-			else {
-				BadRequest errorObject = new BadRequest("404"," Sorry, the requested event " + id + " does not exist");
-				ErrorExceptionHandler errorhandler = new ErrorExceptionHandler( errorObject);
-				return new ResponseEntity<>(errorhandler, HttpStatus.NOT_FOUND);
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
-		}
-	}
->>>>>>> Stashed changes
 }

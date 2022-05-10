@@ -3,6 +3,7 @@ package sjsu.edu.cmpe275.model;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -22,7 +23,7 @@ public class Event {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private long eventID;
 	
 	private String title;
 	private String description;
@@ -39,19 +40,14 @@ public class Event {
 	private String policy;
 	
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)  
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "userId")
 //    @JsonIgnoreProperties({"players","address","teamId"})
     private User user;
 
-<<<<<<< Updated upstream
-	public Event(long id, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
+	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
 			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
-=======
-	public Event(long id, String title, String description, Date startDate, Date endtDate, Date deadline,
-			Address address, int minParticpants, int maxParticpants, int fees, int policy) {
->>>>>>> Stashed changes
 		super();
-		this.id = id;
+		this.eventID = eventID;
 		this.title = title;
 		this.description = description;
 		this.startDate = startDate;
@@ -62,7 +58,7 @@ public class Event {
 		this.maxParticpants = maxParticpants;
 		this.fees = fees;
 		this.policy = policy;
-//		this.user = user;
+		this.user = user;
 	}
 	
 	public Event() {
@@ -70,11 +66,11 @@ public class Event {
 	}
 
 	public long getId() {
-		return id;
+		return eventID;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setId(long eventID) {
+		this.eventID = eventID;
 	}
 
 	public String getTitle() {
@@ -157,12 +153,12 @@ public class Event {
 		this.policy = policy;
 	}
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 }

@@ -22,12 +22,9 @@ public class EventDetails {
     @Autowired
     private EventService eventService;
 
-    @Autowired
-    private EventRepository eventRepo;
-
     @GetMapping("/details/{id}")
     private ResponseEntity<?> listEventDetails(@PathVariable("id") long eventId) {
-        return eventService.listEventDetails(eventId);
+        return eventService.listEvents();
     }
 
 }

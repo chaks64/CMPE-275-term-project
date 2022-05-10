@@ -23,7 +23,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private long userId;
 	
 	@Column(unique = true)
 	private String email;
@@ -55,10 +55,10 @@ public class User {
 	
 	
 	//constructor
-	public User(long id, String email, String password, String accountType, String fullName, String screenName, String gender,
+	public User(long userId, String email, String password, String accountType, String fullName, String screenName, String gender,
 			String description, Address address, boolean isVerified , Set<Event> event) {
 		super();
-		this.id = id;
+		this.userId = userId;
 		this.email = email;
 		this.password = password;
 		this.accountType = accountType;
@@ -76,12 +76,12 @@ public class User {
 	}
 
 	//getters and setters
-	public long getId() {
-		return id;
+	public long getUserId() {
+		return userId;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 
 	public String getEmail() {
@@ -174,7 +174,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", accountType=" + accountType + ", fullName=" + fullName
+		return "User [id=" + userId + ", email=" + email + ", accountType=" + accountType + ", fullName=" + fullName
 				+ ", screenName=" + screenName + ", gender=" + gender + ", description=" + description + ", address="
 				+ address + "]";
 	}
