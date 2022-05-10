@@ -8,6 +8,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../utils/utils";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Signup = () => {
 
     // axios.defaults.withCredentials = true;
     const token1 = await axios
-      .post(`http://localhost:8080/user/signup`, data)
+      .post(`${config.backendURL}/user/signup`, data)
       .then((response) => {
         console.log(response);
         toast.info("Signup successfull!! Now Verify", {

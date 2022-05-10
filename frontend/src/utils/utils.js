@@ -1,3 +1,8 @@
+export const config = {
+  backendURL: "http://localhost:8080",
+  frontendURL: "http://localhost:3000",
+};
+
 export const validate = (values) => {
     let errors = {};
   

@@ -8,17 +8,17 @@ import javax.persistence.IdClass;
 @IdClass(ParticipantsID.class)
 public class Participants {
 	@Id
-	private long userID;
+	private long userId;
 	
 	@Id
 	private long eventID;
 
 	public long getUserID() {
-		return userID;
+		return userId;
 	}
 
-	public void setUserID(long userID) {
-		this.userID = userID;
+	public void setUserID(long userId) {
+		this.userId = userId;
 	}
 
 	public long getEventID() {

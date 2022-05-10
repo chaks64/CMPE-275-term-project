@@ -2,7 +2,10 @@ package sjsu.edu.cmpe275.model;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -11,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -43,9 +48,16 @@ public class Event {
     @JoinColumn(name = "userId")
 //    @JsonIgnoreProperties({"players","address","teamId"})
     private User user;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @JoinTable(name = "participants", 
+    			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
+    			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
+//    @JsonIgnoreProperties({"address","team","opponents"})
+	private Set<Event> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
-			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
+			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<Event> participateUser) {
 		super();
 		this.eventID = eventID;
 		this.title = title;
@@ -59,17 +71,18 @@ public class Event {
 		this.fees = fees;
 		this.policy = policy;
 		this.user = user;
+		this.participateUser = participateUser;
 	}
 	
 	public Event() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public long getId() {
+	public long getEventID() {
 		return eventID;
 	}
 
-	public void setId(long eventID) {
+	public void setEventID(long eventID) {
 		this.eventID = eventID;
 	}
 
@@ -159,6 +172,14 @@ public class Event {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Set<Event> getParticipateUser() {
+		return participateUser;
+	}
+
+	public void setParticipateUser(Set<Event> participateUser) {
+		this.participateUser = participateUser;
 	}
 	
 }

@@ -4,6 +4,7 @@ import NavBar from "../NavBar/NavBar";
 import "./CreateEvent.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { config } from "../../utils/utils";
 
 const CreateEvent = () => {
   const [eventInfo, setEventInfo] = useState({
@@ -47,7 +48,7 @@ const CreateEvent = () => {
     };
 
     const token1 = await axios
-      .post(`http://localhost:8080/event/create`, data)
+      .post(`h${config.backendURL}/event/create`, data)
       .then((response) => {
         console.log(response.data);
         alert("event created");

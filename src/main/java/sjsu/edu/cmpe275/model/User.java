@@ -11,6 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -53,10 +56,17 @@ public class User {
 //    @JsonIgnoreProperties({"team","address","opponents"})
     private Set<Event> event = new HashSet<>();
 	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @JoinTable(name = "participants", 
+    			joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), 
+    			inverseJoinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"))
+//    @JsonIgnoreProperties({"address","team","opponents"})
+	private Set<Event> participateEvents = new HashSet<>();
+	
 	
 	//constructor
 	public User(long userId, String email, String password, String accountType, String fullName, String screenName, String gender,
-			String description, Address address, boolean isVerified , Set<Event> event) {
+			String description, Address address, boolean isVerified , Set<Event> event, Set<Event> participateEvents) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -69,6 +79,7 @@ public class User {
 		this.address = address;
 		this.isVerified = isVerified;
 		this.event = event;
+		this.participateEvents = participateEvents;
 	}
 
 	public User() {
@@ -170,6 +181,14 @@ public class User {
 
 	public void setEvent(Set<Event> event) {
 		this.event = event;
+	}
+	
+	public Set<Event> getParticipateEvents() {
+		return participateEvents;
+	}
+
+	public void setParticipateEvents(Set<Event> participateEvents) {
+		this.participateEvents = participateEvents;
 	}
 
 	@Override

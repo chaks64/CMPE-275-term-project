@@ -3,11 +3,12 @@ import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./GoogleSignUp.css";
 import { useFormik } from "formik";
-import { validate } from "../../utils/utils";
+import { validate, config } from "../../utils/utils";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+
 
 const GoogleSignup = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const GoogleSignup = () => {
 
     // axios.defaults.withCredentials = true;
     const token1 = await axios
-      .post(`http://localhost:8080/user/googlesignup`, data)
+      .post(`${config.backendURL}/user/googlesignup`, data)
       .then((response) => {
         console.log(response);
         toast.info("Signup successfull!! Now Verify", {

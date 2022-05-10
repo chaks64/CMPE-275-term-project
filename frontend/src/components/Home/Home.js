@@ -6,6 +6,7 @@ import "./home.css";
 import { ThemeContext } from "../../App";
 import { Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
+import { config } from "../../utils/utils";
 
 const Home = () => {
   const [list, setList] = useState([]);
@@ -17,15 +18,13 @@ const Home = () => {
   const getEvents = async () => {
     console.log("here");
     const list1 = await axios
-      .get(`http://localhost:8080/event/list`)
+      .get(`${config.backendURL}/event/list`)
       .then((response) => {
         console.log(response.data);
         setList(response.data);
-        // console.log(list);
       })
       .catch((error) => {
         console.log(error);
-        console.log("error");
       });
   };
 

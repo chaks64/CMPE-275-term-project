@@ -4,18 +4,18 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class ParticipantsID implements Serializable{
-	private long userID;
+	private long userId;
 	private long eventID;
 	
-	public ParticipantsID(long userID, long eventID) {
+	public ParticipantsID(long userId, long eventID) {
 		super();
-		this.userID = userID;
+		this.userId = userId;
 		this.eventID = eventID;
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(eventID, userID);
+		return Objects.hash(eventID, userId);
 	}
 	@Override
 	public boolean equals(Object obj) {
@@ -26,7 +26,7 @@ public class ParticipantsID implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		ParticipantsID other = (ParticipantsID) obj;
-		return eventID == other.eventID && userID == other.userID;
+		return eventID == other.eventID && userId == other.userId;
 	}
 	
 	
