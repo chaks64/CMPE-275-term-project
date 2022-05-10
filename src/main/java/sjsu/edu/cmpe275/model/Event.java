@@ -174,11 +174,11 @@ public class Event {
 		this.user = user;
 	}
 
-	public Set<Event> getParticipateUser() {
+	public Set<User> getParticipateUser() {
 		return participateUser;
 	}
 
-	public void setParticipateUser(Set<Event> participateUser) {
+	public void setParticipateUser(Set<User> participateUser) {
 		this.participateUser = participateUser;
 	}
 	
