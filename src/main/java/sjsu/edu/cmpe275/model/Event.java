@@ -54,10 +54,10 @@ public class Event {
     			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
     			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
 //    @JsonIgnoreProperties({"address","team","opponents"})
-	private Set<Event> participateUser = new HashSet<>();
+	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
-			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<Event> participateUser) {
+			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<User> participateUser) {
 		super();
 		this.eventID = eventID;
 		this.title = title;
