@@ -45,9 +45,6 @@ export default function Login() {
   };
 
 
-
-
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -57,9 +54,10 @@ export default function Login() {
     };
     axios.defaults.withCredentials = true;
     const token1 = await axios
-      .post(`http://localhost:8080/user/login`, data)
+      .post(`${config.backendURL}/user/login`, data)
       .then((response) => {
-        console.log(response);
+        console.log(response.data);
+        localStorage.setItem("user",JSON.stringify(response.data));
       })
       .catch((error) => {
         console.log(error);

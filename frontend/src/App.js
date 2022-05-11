@@ -10,6 +10,7 @@ import Error from "./components/Verify/Error";
 import GoogleSignup from "./components/GoogleSignUp/GoogleSignUp";
 import Home from "./components/Home/Home";
 import CreateEvent from "./components/CreateEvent/CreateEvent";
+import EventDetails from "./components/EventDetails/EventDetails";
 
 export const ThemeContext = React.createContext();
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/googleSignup" element={<GoogleSignup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/createEvent" element={<CreateEvent />} />
+        <Route path="/eventDetails" element={<EventDetails />} />
       </Routes>
     </ThemeContext.Provider>
   );

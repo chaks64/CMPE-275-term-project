@@ -4,11 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-//<<<<<<< Updated upstream
 import javax.persistence.CascadeType;
-//=======
 import javax.persistence.Column;
-//>>>>>>> Stashed changes
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,32 +45,22 @@ public class Event {
 	private int fees;
 	private String policy;
 	
-//<<<<<<< Updated upstream
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)  
     @JoinColumn(name = "userId")
-	@JsonIgnoreProperties({"event","user"})
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     private User user;
 	
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "participants", 
     			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
     			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
-	@JsonIgnoreProperties({"event","user"})
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
 	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
 			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<User> participateUser) {
-//=======
-//	@ManyToOne(optional = true, fetch = FetchType.EAGER)  
-//    @JoinColumn(name = "userId")
-////    @JsonIgnoreProperties({"players","address","teamId"})
-//    private User user;
-//	
-//	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
-//			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
-//>>>>>>> Stashed changes
 		super();
 		this.eventID = eventID;
 		this.title = title;
@@ -94,22 +81,6 @@ public class Event {
 		// TODO Auto-generated constructor stub
 	}
 
-//<<<<<<< Updated upstream
-//	public long getEventID() {
-//		return eventID;
-//	}
-//
-//	public void setEventID(long eventID) {
-//=======
-//	public long getId() {
-//		return eventID;
-//	}
-//
-//	public void setId(long eventID) {
-//>>>>>>> Stashed changes
-//		this.eventID = eventID;
-//	}
-	
 
 	public String getTitle() {
 		return title;

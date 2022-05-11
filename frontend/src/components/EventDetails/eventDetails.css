@@ -1,0 +1,36 @@
+.container{
+    display: flex;
+    margin-bottom: 130px;
+}
+
+.left{
+    text-align: center;
+    float: left;
+    width: 40%;
+    margin: 0 auto;
+}
+
+.right{
+    text-align: center;
+    float: right;
+    width: 40%;
+    margin: 0 auto;
+}
+
+span{
+    padding: 0%;
+    margin: 0%;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+tr{
+    text-align: left;
+}
+
+td{
+    padding: 10px;
+}

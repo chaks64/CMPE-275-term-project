@@ -121,14 +121,16 @@ public class EventServiceImpl implements EventService{
 		System.out.println("in register for event "+ reqBody);
 		try {
 			Participants participants = new Participants();
-			Long userid = Long.parseLong((String) reqBody.get("userid"));
+			Integer integer = (Integer) reqBody.get("userid");
+			Long userid = new Long(integer);
 			participants.setUserId(userid);
 			if(userRepo.findByUserId(userid) == null) {
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
 				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 			}
 			
-			Long eventid = Long.parseLong((String) reqBody.get("eventid"));
+			integer = (Integer) reqBody.get("eventid");
+			Long eventid = new Long(integer);
 			participants.setEventID(eventid);
 			Event event = eventRepo.findByEventID(eventid);
 			if(event == null) {

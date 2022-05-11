@@ -7940,7 +7940,7 @@
   "resolved" "https://registry.npmjs.org/react-live-clock/-/react-live-clock-5.8.2.tgz"
   "version" "5.8.2"
 
-"react-modal@^3.8.1":
+"react-modal@^3.15.1", "react-modal@^3.8.1":
   "integrity" "sha512-duB9bxOaYg7Zt6TMFldIFxQRtSP+Dg3F1ZX3FXxSUn+3tZZ/9JCgeAQKDg7rhZSAqopq8TFRw3yIbnx77gyFTw=="
   "resolved" "https://registry.npmjs.org/react-modal/-/react-modal-3.15.1.tgz"
   "version" "3.15.1"

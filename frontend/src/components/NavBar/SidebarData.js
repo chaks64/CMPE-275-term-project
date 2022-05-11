@@ -12,8 +12,8 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Bookings',
-        path: '/',
+        title: 'My Events',
+        path: '/myEvents',
         icon: <FaIcons.FaHotel />,
         cName: 'nav-text'
     },
