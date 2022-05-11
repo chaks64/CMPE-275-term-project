@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+//<<<<<<< Updated upstream
 import javax.persistence.CascadeType;
+//=======
+import javax.persistence.Column;
+//>>>>>>> Stashed changes
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,6 +48,7 @@ public class Event {
 	private int fees;
 	private String policy;
 	
+//<<<<<<< Updated upstream
 	@JsonIgnore
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)  
     @JoinColumn(name = "userId")
@@ -60,6 +65,15 @@ public class Event {
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
 			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<User> participateUser) {
+//=======
+//	@ManyToOne(optional = true, fetch = FetchType.EAGER)  
+//    @JoinColumn(name = "userId")
+////    @JsonIgnoreProperties({"players","address","teamId"})
+//    private User user;
+//	
+//	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
+//			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user) {
+//>>>>>>> Stashed changes
 		super();
 		this.eventID = eventID;
 		this.title = title;
@@ -80,6 +94,27 @@ public class Event {
 		// TODO Auto-generated constructor stub
 	}
 
+//<<<<<<< Updated upstream
+//	public long getEventID() {
+//		return eventID;
+//	}
+//
+//	public void setEventID(long eventID) {
+//=======
+//	public long getId() {
+//		return eventID;
+//	}
+//
+//	public void setId(long eventID) {
+//>>>>>>> Stashed changes
+//		this.eventID = eventID;
+//	}
+	
+
+	public String getTitle() {
+		return title;
+	}
+
 	public long getEventID() {
 		return eventID;
 	}
@@ -88,8 +123,12 @@ public class Event {
 		this.eventID = eventID;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public void setTitle(String title) {

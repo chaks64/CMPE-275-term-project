@@ -70,6 +70,7 @@ public class User {
 	//constructor
 	public User(long userId, String email, String password, String accountType, String fullName, String screenName, String gender,
 			String description, Address address, boolean isVerified , Set<Event> event, Set<Event> participateEvents) {
+
 		super();
 		this.userId = userId;
 		this.email = email;

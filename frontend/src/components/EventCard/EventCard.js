@@ -6,7 +6,6 @@ const EventCard = ({ event }) => {
     const [role,setRole] = useState("person");
   return (
     <>
-        hiiiiiii
     {/*{console.log(user.accountType)}*/}
       <Card>
         <Card.Header>{event.id}</Card.Header>
