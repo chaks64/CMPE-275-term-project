@@ -10,5 +10,6 @@ import sjsu.edu.cmpe275.model.Event;
 @EnableJpaRepositories
 public interface EventRepository extends JpaRepository<Event, Long>{
 	public Event findByEventID(Long eventid);
+	public Event findOneByEventID(Long eventid);
 	public List<Event> findAllByUserUserId(Long userid);
 }

@@ -51,4 +51,10 @@ public class EventController {
 	public ResponseEntity<?> getMyEvents(@PathVariable String userid){
 		return eventService.listMyevents(userid);
 	}
+	
+	@GetMapping(value = "/{eventid}")
+	public ResponseEntity<?> eventDetails(@PathVariable Long eventid){
+		System.out.println("here");
+		return eventService.eventDetails(eventid);
+	}
 }

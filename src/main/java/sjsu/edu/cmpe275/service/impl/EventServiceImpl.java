@@ -218,4 +218,24 @@ public class EventServiceImpl implements EventService{
 		
 	}
 
+	@Override
+	public ResponseEntity<?> eventDetails(Long eventid) {
+		System.out.println("in my events details "+eventid);
+		try {
+//			Long eventId = Long.parseLong(eventid);
+			Event event = eventRepo.findOneByEventID(eventid);
+
+			if(event==null) {
+				ErrorResponse error = new ErrorResponse("204", "No event");
+				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<>(event, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

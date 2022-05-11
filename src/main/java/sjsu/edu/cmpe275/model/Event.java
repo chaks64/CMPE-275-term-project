@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -56,7 +55,6 @@ public class Event {
     			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
     			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
 	@JsonIgnoreProperties({"event","user"})
-//	@JsonBackReference
 	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
