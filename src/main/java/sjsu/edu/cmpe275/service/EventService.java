@@ -18,4 +18,7 @@ public interface EventService {
 	ResponseEntity<?> listMyevents(String userid);
 	
 	ResponseEntity<?> eventDetails(Long eventid);
+  
+  ResponseEntity<?> searchEvents(Map<String, Object> reqBody);
+
 }

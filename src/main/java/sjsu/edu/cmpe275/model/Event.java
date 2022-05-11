@@ -34,6 +34,7 @@ public class Event {
 	private LocalDateTime startDate;
 	private LocalDateTime endtDate;
 	private LocalDateTime deadline;
+	private String status;
 	
 	@Embedded
 	private Address address;
@@ -182,5 +183,8 @@ public class Event {
 	public void setParticipateUser(Set<User> participateUser) {
 		this.participateUser = participateUser;
 	}
-	
+
+	public String toString(){
+		return address.getCity() + " " + status + " " + startDate +  " " + endtDate + " " + title + " " + description + " ";
+	}
 }
