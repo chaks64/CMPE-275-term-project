@@ -99,9 +99,6 @@ public class EventServiceImpl implements EventService{
 	}
 	
 	
-	public ResponseEntity<?> searchEvents(Map<String, Object> reqBody) {
-		
-		return new ResponseEntity<>("Default answer", HttpStatus.CONTINUE);
-	}
+
 
 }
