@@ -1,12 +1,10 @@
 package sjsu.edu.cmpe275.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,14 +44,14 @@ public class Event {
 	
 	@ManyToOne(optional = true, fetch = FetchType.EAGER)  
     @JoinColumn(name = "userId")
-//    @JsonIgnoreProperties({"players","address","teamId"})
+    @JsonIgnoreProperties({"event"})
     private User user;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "participants", 
     			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
     			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
-//    @JsonIgnoreProperties({"address","team","opponents"})
+	@JsonIgnoreProperties({"user"})
 	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
