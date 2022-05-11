@@ -1,9 +1,7 @@
 package sjsu.edu.cmpe275.service.impl;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +11,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import sjsu.edu.cmpe275.model.Event;
+import sjsu.edu.cmpe275.model.Participants;
+import sjsu.edu.cmpe275.model.User;
+import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
+import sjsu.edu.cmpe275.model.Address;
+import sjsu.edu.cmpe275.repository.EventRepository;
+import sjsu.edu.cmpe275.repository.ParticipantRepository;
+import sjsu.edu.cmpe275.repository.UserRepository;
+import sjsu.edu.cmpe275.service.EventService;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.nimbusds.oauth2.sdk.http.HTTPResponse;
@@ -21,17 +28,17 @@ import sjsu.edu.cmpe275.ErrorHandler.ErrorExceptionHandler;
 import sjsu.edu.cmpe275.ErrorHandler.BadRequest;
 import sjsu.edu.cmpe275.model.Event;
 
-import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
-import sjsu.edu.cmpe275.model.Address;
-import sjsu.edu.cmpe275.model.Event;
-import sjsu.edu.cmpe275.repository.EventRepository;
-import sjsu.edu.cmpe275.service.EventService;
-
 @Service
 public class EventServiceImpl implements EventService{
 	
 	@Autowired
 	private EventRepository eventRepo;
+	
+	@Autowired
+	private ParticipantRepository participantRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 
 	@Override
 	public ResponseEntity<?> listEvents() {
@@ -63,6 +70,13 @@ public class EventServiceImpl implements EventService{
 			LocalDateTime end = LocalDateTime.parse((CharSequence) reqBody.get("end"));
 			LocalDateTime deadline = LocalDateTime.parse((CharSequence) reqBody.get("deadline"));
 			
+			Long userid = Long.parseLong((String) reqBody.get("userid"));
+			User user = userRepo.findByUserId(userid);
+			if(user == null) {
+				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
+				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+			}
+			event.setUser(user);
 			event.setStartDate(start);
 			event.setEndtDate(end);
 			event.setDeadline(deadline);
@@ -84,7 +98,7 @@ public class EventServiceImpl implements EventService{
 			Event newEvent = eventRepo.save(event);
 			
 			if(newEvent == null) {
-				ErrorResponse errorResponse = new ErrorResponse("E02", "Unable to create patient/admin");
+				ErrorResponse errorResponse = new ErrorResponse("E02", "Unable to create event");
 				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
 				return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
@@ -100,5 +114,96 @@ public class EventServiceImpl implements EventService{
 	
 	
 
+
+	@Override
+	public ResponseEntity<?> participateEvent(Map<String, Object> reqBody) {
+		System.out.println("in register for event "+ reqBody);
+		try {
+			Participants participants = new Participants();
+			Long userid = Long.parseLong((String) reqBody.get("userid"));
+			participants.setUserId(userid);
+			if(userRepo.findByUserId(userid) == null) {
+				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
+				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+			}
+			
+			Long eventid = Long.parseLong((String) reqBody.get("eventid"));
+			participants.setEventID(eventid);
+			Event event = eventRepo.findByEventID(eventid);
+			if(event == null) {
+				ErrorResponse errorResponse = new ErrorResponse("404", "Event not found");
+				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+			}
+			
+			if(event.getPolicy().equals("approval")){
+				participants.setStatus("notapproved");
+			} else {
+				participants.setStatus("approved");
+			}
+			
+			Participants newParticipants = participantRepo.save(participants);
+			if(newParticipants == null) {
+				ErrorResponse errorResponse = new ErrorResponse("E02", "Unable to register for event");
+				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			} else {
+				return new ResponseEntity<>(newParticipants, HttpStatus.OK);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> listApprovals(String userId, String status) {
+		System.out.println("here to show approval list");
+		try {
+			Long userid = Long.parseLong(userId);
+			List<User> users = new ArrayList<>();
+			List<Participants> listParticipants = participantRepo.findByUserIdAndStatus(userid, "notapproved");
+			if(listParticipants==null || listParticipants.size()==0) {
+				ErrorResponse error = new ErrorResponse("204", "No participants");
+				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+			} else {
+				
+				for(Participants p : listParticipants) {
+					Long id = p.getUserId();
+					User u = userRepo.findByUserId(id);
+					if(u != null)
+						users.add(u);
+				}
+				return new ResponseEntity<>(users, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> manageRequest(Map<String, Object> reqBody) {
+		// TODO Auto-generated method stub
+		System.out.println("in manage request "+reqBody);
+		try {
+			Long userid = Long.parseLong((String) reqBody.get("userid"));
+			Participants participant = participantRepo.findByUserId(userid);
+			if(participant == null) {
+				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
+				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+			}
+			Participants newParticipant = new Participants(participant.getUserId(), participant.getEventID(), (String) reqBody.get("status"));
+			participantRepo.save(newParticipant);
+			
+			return new ResponseEntity<>(newParticipant, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
 
 }

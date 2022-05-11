@@ -13,6 +13,10 @@ public class ParticipantsID implements Serializable{
 		this.eventID = eventID;
 	}
 	
+	public ParticipantsID() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(eventID, userId);

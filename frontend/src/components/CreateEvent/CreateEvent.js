@@ -246,7 +246,7 @@ const CreateEvent = () => {
                       value={eventInfo.policy}
                     >
                       <option value="auto">Auto Approved</option>
-                      <option value="approal">Approval Required</option>
+                      <option value="approval">Approval Required</option>
                     </select>
                   </div>
                 </div>

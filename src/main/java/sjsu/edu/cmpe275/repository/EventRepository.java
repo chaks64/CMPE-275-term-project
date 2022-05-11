@@ -7,9 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import sjsu.edu.cmpe275.model.Event;
 
-@Repository
-public interface EventRepository extends JpaRepository<Event, Long> {
 
-	public List<Event> findByDescriptionIgnoreCaseContainsOrTitleIgnoreCaseContains(String description, String title);
-
+public interface EventRepository extends JpaRepository<Event, Long>{
+	public Event findByEventID(Long eventid);
+public List<Event> findByDescriptionIgnoreCaseContainsOrTitleIgnoreCaseContains(String description, String title);
 }
