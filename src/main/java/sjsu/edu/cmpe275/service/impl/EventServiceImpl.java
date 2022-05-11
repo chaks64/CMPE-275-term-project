@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import sjsu.edu.cmpe275.model.Event;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -204,6 +205,35 @@ public class EventServiceImpl implements EventService{
 			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
+	}
+	
+//	@Override
+	public ResponseEntity<?> searchEvents(Map<String, Object> reqBody) {
+//		String dum1 = (String) reqBody.get("keyword");
+		String location = "%" + ((String) reqBody.get("location")).toLowerCase() + "%";
+
+		String status = ((String) reqBody.get("status")).toLowerCase();
+		String startDate = "%" + ((String) reqBody.get("startTime")).toLowerCase() + "%";
+		// String format is "2022--05-04"
+		String endtDate = "%" + ((String) reqBody.get("endtTime")).toLowerCase() + "%";
+		String keyword = "%" + ((String) reqBody.get("keyword")).toLowerCase() + "%";
+		// TODO check if the organizer needs % or not
+		// TODO the query to be used is (if using like; change if we need and):-
+		// select * from event where lower(city) like :location and lower(status) = :status and start_date like :startTime and endt_date like :endtDate and (description like :keyword or title like :keyword) and organizer like :organizer;
+		String organizer = "%" + ((String) reqBody.get("organizer")).toLowerCase() + "%";
+//		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword, organizer);
+		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword);
+//		List<Event> events = new ArrayList<>();
+		if(events==null || events.size()==0) {
+			ErrorResponse error = new ErrorResponse("204", "No events");
+			return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+		} else {
+			for(Event e: events) {
+				System.out.println(e);
+			}
+			return new ResponseEntity<>("need to send events here", HttpStatus.OK);
+		}
+
 	}
 
 }
