@@ -33,6 +33,7 @@ public class Event {
 	private LocalDateTime startDate;
 	private LocalDateTime endtDate;
 	private LocalDateTime deadline;
+	private String status;
 	
 	@Embedded
 	private Address address;
