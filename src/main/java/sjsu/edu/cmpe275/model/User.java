@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -52,15 +53,17 @@ public class User {
 	
 	private String googleSubId;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
-//    @JsonIgnoreProperties({"team","address","opponents"})
+	@JsonIgnoreProperties({"event","user"})
     private Set<Event> event = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@JsonIgnore
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "participants", 
     			joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), 
     			inverseJoinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"))
-//    @JsonIgnoreProperties({"address","team","opponents"})
+    @JsonIgnoreProperties({"event","user"})
 	private Set<Event> participateEvents = new HashSet<>();
 	
 	

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +29,26 @@ public class EventController {
 	
 	@GetMapping(value = "/list")
 	public ResponseEntity<?> getEvent(){
+		return eventService.listEvents();
+	}
+	
+	@PostMapping(value = "/register")
+	public ResponseEntity<?> participateEvent(@RequestBody Map<String, Object> inputJson){
+		return eventService.participateEvent(inputJson);
+	}
+	
+	@GetMapping(value = "/partlist/{userid}/{status}")
+	public ResponseEntity<?> getParticipants(@PathVariable String userid, @PathVariable String status){
+		return eventService.listApprovals(userid, status);
+	}
+	
+	@PostMapping(value = "/manage")
+	public ResponseEntity<?> manageRequest(@RequestBody Map<String, Object> inputJson){
+		return eventService.manageRequest(inputJson);
+	}
+	
+	@GetMapping(value = "/mylist")
+	public ResponseEntity<?> getMyEvent(@PathVariable String userid){
 		return eventService.listEvents();
 	}
 }

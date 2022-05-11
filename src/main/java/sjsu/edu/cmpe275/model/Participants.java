@@ -12,13 +12,19 @@ public class Participants {
 	
 	@Id
 	private long eventID;
+	
+	private String status;
 
-	public long getUserID() {
-		return userId;
+	
+	public Participants() {
+		// TODO Auto-generated constructor stub
 	}
-
-	public void setUserID(long userId) {
+	
+	public Participants(long userId, long eventID, String status) {
+		super();
 		this.userId = userId;
+		this.eventID = eventID;
+		this.status = status;
 	}
 
 	public long getEventID() {
@@ -27,6 +33,22 @@ public class Participants {
 
 	public void setEventID(long eventID) {
 		this.eventID = eventID;
+	}
+
+	public long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

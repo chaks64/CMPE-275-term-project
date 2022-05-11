@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -42,16 +43,17 @@ public class Event {
 	private int fees;
 	private String policy;
 	
-	@ManyToOne(optional = true, fetch = FetchType.EAGER)  
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)  
     @JoinColumn(name = "userId")
-    @JsonIgnoreProperties({"event"})
+	@JsonIgnoreProperties({"event","user"})
     private User user;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+	@ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
     @JoinTable(name = "participants", 
     			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
     			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
-	@JsonIgnoreProperties({"user"})
+	@JsonIgnoreProperties({"event","user"})
+//	@JsonBackReference
 	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
