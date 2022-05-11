@@ -47,8 +47,8 @@ public class EventController {
 		return eventService.manageRequest(inputJson);
 	}
 	
-	@GetMapping(value = "/mylist")
-	public ResponseEntity<?> getMyEvent(@PathVariable String userid){
-		return eventService.listEvents();
+	@GetMapping(value = "/mylist/{userid}")
+	public ResponseEntity<?> getMyEvents(@PathVariable String userid){
+		return eventService.listMyevents(userid);
 	}
 }

@@ -14,4 +14,6 @@ public interface EventService {
 	ResponseEntity<?> listApprovals(String userid, String status);
 	
 	ResponseEntity<?> manageRequest(Map<String, Object> reqBody);
+	
+	ResponseEntity<?> listMyevents(String userid);
 }

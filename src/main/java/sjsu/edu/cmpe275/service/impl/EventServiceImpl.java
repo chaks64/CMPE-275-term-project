@@ -197,4 +197,25 @@ public class EventServiceImpl implements EventService{
 		
 	}
 
+	@Override
+	public ResponseEntity<?> listMyevents(String userId) {
+		System.out.println("in my events request "+userId);
+		try {
+			Long userid = Long.parseLong(userId);
+			List<Event> eventsList = eventRepo.findAllByUserUserId(userid);
+
+			if(eventsList==null || eventsList.size()==0) {
+				ErrorResponse error = new ErrorResponse("204", "No participants");
+				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<>(eventsList, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+	}
+
 }
