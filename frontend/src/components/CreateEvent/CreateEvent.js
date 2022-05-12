@@ -48,7 +48,7 @@ const CreateEvent = () => {
     };
 
     const token1 = await axios
-      .post(`h${config.backendURL}/event/create`, data)
+      .post(`${config.backendURL}/event/create`, data)
       .then((response) => {
         console.log(response.data);
         alert("event created");
