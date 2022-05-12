@@ -13,6 +13,7 @@ import CreateEvent from "./components/CreateEvent/CreateEvent";
 import EventDetails from "./components/EventDetails/EventDetails";
 import MyEvents from "./components/MyEvents/MyEvents";
 import ApprovalList from "./components/ApprovalList/ApprovalList";
+import RegEvents from "./components/RegEvent/RegEvents";
 
 export const ThemeContext = React.createContext();
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/eventDetails" element={<EventDetails />} />
         <Route path="/myEvents" element={<MyEvents />} />
         <Route path="/appList" element={<ApprovalList />} />
+        <Route path="/regEvent" element={<RegEvents />} />
       </Routes>
     </ThemeContext.Provider>
   );

@@ -30,6 +30,12 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
+        title: 'Part Events',
+        path: '/regEvent',
+        icon: <CgIcons.CgProfile />,
+        cName: 'nav-text'
+    },
+    {
         title: 'Logut',
         path: '/',
         icon: <FaIcons.FaSignOutAlt />,

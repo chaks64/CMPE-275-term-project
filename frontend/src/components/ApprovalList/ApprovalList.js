@@ -30,6 +30,7 @@ const ApprovalList = () => {
   const manageRequest = async (e) => {
     e.preventDefault();
     console.log(e.target.value);
+    localStorage.setItem("clock",new Date());
     const data = {
       userid: localStorage.getItem("userid"),
       status: e.target.value,

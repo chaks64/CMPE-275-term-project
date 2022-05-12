@@ -83,5 +83,11 @@ public class EventController {
 		return eventService.searchEvents(inputJson);
 // 		return new ResponseEntity<>("All  OK", HttpStatus.OK);
  	}
+	
+	@GetMapping(value = "/part/{userid}")
+	public ResponseEntity<?> partEvent(@PathVariable String userid){
+		System.out.println("here");
+		return eventService.participatedEvent(userid);
+	}
 
 }
