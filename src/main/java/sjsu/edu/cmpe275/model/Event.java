@@ -77,7 +77,6 @@ public class Event {
 		this.participateUser = participateUser;
 	}
 	
-	
 	public Event() {
 		// TODO Auto-generated constructor stub
 	}
