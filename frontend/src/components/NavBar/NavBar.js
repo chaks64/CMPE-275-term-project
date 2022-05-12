@@ -12,11 +12,11 @@ import Clock from "react-live-clock";
 
 const NavBar = () => {
   const [temp, setTemp] = useState(localStorage.getItem("clock"));
-  const [, setCount] = useState(0);
+  // const [, setCount] = useState(0);
   const [sidebar, setSidebar] = useState(false);
-  const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
-    useContext(ThemeContext);
-  let time = new Date().toLocaleTimeString();
+  // const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
+  //   useContext(ThemeContext);
+  // let time = new Date().toLocaleTimeString();
   const [date, setDate] = useState(new Date().toLocaleTimeString());
 
   // function useForceUpdate() {
@@ -127,16 +127,26 @@ const NavBar = () => {
                 className="profileImg"
               />
             </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
+
+            {(localStorage.getItem("userid") == null) ?
+              <li className="nav-text">
+              <Link to='/login'>
+                <FaIcons.FaSignInAlt/>
+                <span>Login</span>
+              </Link>
+            </li>
+            : (
+              SidebarData.map((item, index) => {
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })
+            )}
           </ul>
         </nav>
       </IconContext.Provider>
