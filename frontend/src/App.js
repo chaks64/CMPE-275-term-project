@@ -2,7 +2,7 @@ import "./App.css";
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import SignUp from "./components/SignUp/SignUp";
-import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/Login/Login";
 import NavBar from "./components/NavBar/NavBar";
 import Verify from "./components/Verify/Verify";
@@ -13,6 +13,7 @@ import CreateEvent from "./components/CreateEvent/CreateEvent";
 import EventDetails from "./components/EventDetails/EventDetails";
 import MyEvents from "./components/MyEvents/MyEvents";
 import ApprovalList from "./components/ApprovalList/ApprovalList";
+import Forum from "./components/Forum/Forum";
 
 export const ThemeContext = React.createContext();
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/eventDetails" element={<EventDetails />} />
         <Route path="/myEvents" element={<MyEvents />} />
         <Route path="/appList" element={<ApprovalList />} />
+        <Route path="/forum" element={<Forum />} />
       </Routes>
     </ThemeContext.Provider>
   );
