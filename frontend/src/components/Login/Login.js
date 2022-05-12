@@ -59,6 +59,7 @@ export default function Login() {
         console.log(response.data.userId);
         localStorage.setItem("user",(response.data));
         localStorage.setItem("userid",(response.data.userId));
+        navigate('/home')
       })
       .catch((error) => {
         console.log(error);
