@@ -33,11 +33,12 @@ const CreateEvent = () => {
       desc: eventInfo.desc,
       start: eventInfo.start,
       end: eventInfo.end,
-      deadline: eventInfo.deadline,
+      deadline: eventInfo.end,
       min: parseInt(eventInfo.minParticipants),
       max: parseInt(eventInfo.maxParticipants),
       policy: eventInfo.policy,
       fees: parseInt(eventInfo.fees),
+      userid: "1",
       address: {
         street: eventInfo.street,
         number: eventInfo.number,
@@ -113,7 +114,7 @@ const CreateEvent = () => {
                     <label className="label-name">End Date</label>
                     <input
                       id="end"
-                      type="date"
+                      type="datetime-local"
                       name="end"
                       className="form-input"
                       onChange={handleChange}

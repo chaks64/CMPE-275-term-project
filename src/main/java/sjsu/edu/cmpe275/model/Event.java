@@ -47,7 +47,7 @@ public class Event {
 	
 //	@JsonIgnore
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)  
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable=false)
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","user"}) 
     private User user;
 	

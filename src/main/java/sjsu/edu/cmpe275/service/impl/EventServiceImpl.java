@@ -181,7 +181,6 @@ public class EventServiceImpl implements EventService{
 				ErrorResponse error = new ErrorResponse("204", "No participants");
 				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
 			} else {
-				
 				for(Participants p : listParticipants) {
 					Long id = p.getUserId();
 					User u = userRepo.findByUserId(id);

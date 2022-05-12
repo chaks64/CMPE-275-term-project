@@ -53,9 +53,9 @@ public class User {
 	
 	private String googleSubId;
 	
-	@JsonIgnore
+	@JsonIgnore 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
-	@JsonIgnoreProperties({"event","user"})
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
     private Set<Event> event = new HashSet<>();
 	
 	@JsonIgnore
