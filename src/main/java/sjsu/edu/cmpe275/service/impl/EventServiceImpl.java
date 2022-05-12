@@ -162,10 +162,16 @@ public class EventServiceImpl implements EventService{
 	@Override
 	public ResponseEntity<?> listApprovals(String userId, String status) {
 		System.out.println("here to show approval list");
+		List<Participants> listParticipants = new ArrayList<>();
 		try {
 			Long userid = Long.parseLong(userId);
 			List<User> users = new ArrayList<>();
-			List<Participants> listParticipants = participantRepo.findByUserIdAndStatus(userid, "notapproved");
+			if(status.equals("notapproved")) {
+				listParticipants = participantRepo.findByUserIdAndStatus(userid, "notapproved");	
+			} else if(status.equals("all")) {
+				listParticipants = participantRepo.findByEventID(userid);
+			}
+			
 			if(listParticipants==null || listParticipants.size()==0) {
 				ErrorResponse error = new ErrorResponse("204", "No participants");
 				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
@@ -219,13 +225,8 @@ public class EventServiceImpl implements EventService{
 		// String format is "2022--05-04"
 		String endtDate = "%" + ((String) reqBody.get("endtTime")).toLowerCase() + "%";
 		String keyword = "%" + ((String) reqBody.get("keyword")).toLowerCase() + "%";
-		// TODO check if the organizer needs % or not
-		// TODO the query to be used is (if using like; change if we need and):-
-		// select * from event where lower(city) like :location and lower(status) = :status and start_date like :startTime and endt_date like :endtDate and (description like :keyword or title like :keyword) and organizer like :organizer;
 		String organizer = "%" + ((String) reqBody.get("organizer")).toLowerCase() + "%";
-//		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword, organizer);
 		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword);
-//		List<Event> events = new ArrayList<>();
 		if(events==null || events.size()==0) {
 			ErrorResponse error = new ErrorResponse("204", "No events");
 			return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);

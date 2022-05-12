@@ -34,7 +34,7 @@ export default function Login() {
         } else {
           alert("login done");
           Cookies.set("user",response.data.email);
-          localStorage.setItem("user",JSON.stringify(response.data));
+          localStorage.setItem("user",(response.data));
         }
         
       })
@@ -56,8 +56,9 @@ export default function Login() {
     const token1 = await axios
       .post(`${config.backendURL}/user/login`, data)
       .then((response) => {
-        console.log(response.data);
-        localStorage.setItem("user",JSON.stringify(response.data));
+        console.log(response.data.userId);
+        localStorage.setItem("user",(response.data));
+        localStorage.setItem("userid",(response.data.userId));
       })
       .catch((error) => {
         console.log(error);

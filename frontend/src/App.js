@@ -11,6 +11,8 @@ import GoogleSignup from "./components/GoogleSignUp/GoogleSignUp";
 import Home from "./components/Home/Home";
 import CreateEvent from "./components/CreateEvent/CreateEvent";
 import EventDetails from "./components/EventDetails/EventDetails";
+import MyEvents from "./components/MyEvents/MyEvents";
+import ApprovalList from "./components/ApprovalList/ApprovalList";
 
 export const ThemeContext = React.createContext();
 
@@ -31,6 +33,8 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/createEvent" element={<CreateEvent />} />
         <Route path="/eventDetails" element={<EventDetails />} />
+        <Route path="/myEvents" element={<MyEvents />} />
+        <Route path="/appList" element={<ApprovalList />} />
       </Routes>
     </ThemeContext.Provider>
   );

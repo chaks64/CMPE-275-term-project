@@ -48,7 +48,7 @@ public class Event {
 //	@JsonIgnore
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)  
     @JoinColumn(name = "userId")
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","user"}) 
     private User user;
 	
 //	@JsonIgnore
@@ -56,7 +56,7 @@ public class Event {
     @JoinTable(name = "participants", 
     			joinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"), 
     			inverseJoinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"))
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","user"}) 
 	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,

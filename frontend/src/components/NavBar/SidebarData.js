@@ -18,6 +18,12 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
+        title: 'Approval List',
+        path: '/createEvent',
+        icon: <CgIcons.CgProfile />,
+        cName: 'nav-text'
+    },
+    {
         title: 'Create Event',
         path: '/createEvent',
         icon: <CgIcons.CgProfile />,

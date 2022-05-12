@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";  
 
-const EventCard = ({ event }) => {
+const MyEventCard = ({ event }) => {
   // const user = JSON.parse(localStorage.getItem("user"));
   const [role, setRole] = useState("person");
-
+  
   return (
     <>
-      {/* {console.log(user.accountType)} */}
       <Card>
         <Card.Header>{event.eventID}</Card.Header>
         <Card.Body>
@@ -23,7 +22,7 @@ const EventCard = ({ event }) => {
               variant="primary"
               style={{ backgroundColor: "black" }}
             >
-            Details
+            See Participants
             </Button>
           </Link>
         </Card.Body>
@@ -32,4 +31,4 @@ const EventCard = ({ event }) => {
   );
 };
 
-export default EventCard;
+export default MyEventCard;

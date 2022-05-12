@@ -45,8 +45,9 @@ const EventDetails = () => {
 
   const getEvents = async () => {
     console.log("here");
+    const user = localStorage.getItem("user");
     const data = {
-      userid: 10,
+      userid: user.userId,
       eventid: details.eventID,
     };
     const list1 = await axios
