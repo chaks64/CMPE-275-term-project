@@ -162,6 +162,8 @@ public class EventServiceImpl implements EventService{
 		}
 	}
 
+	
+	//need to change the logic and rectify
 	@Override
 	public ResponseEntity<?> listApprovals(String userId, String status) {
 		System.out.println("here to show approval list");
