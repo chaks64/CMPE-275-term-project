@@ -46,7 +46,9 @@ public class ForumServiceImpl implements ForumService {
 DATATYPE:Integer
 java.lang.ClassCastException: class java.lang.Integer cannot be cast to class java.lang.String (java.lang.Integer and java.lang.String are in module java.base of loader 'bootstrap') */
             System.out.println("DATATYPE:"+reqBody.get("userid").getClass().getSimpleName());
-            Long userid = Long.parseLong((String) reqBody.get("userid"));
+//            Long userid = Long.parseLong((String) reqBody.get("userid"));
+            int userid1 = (int) reqBody.get("userid");
+            Long userid = Long.valueOf(userid1);
             User user = userRepo.findByUserId(userid);
             if(user == null) {
                 ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
@@ -56,7 +58,9 @@ java.lang.ClassCastException: class java.lang.Integer cannot be cast to class ja
             set.add(user);
             forum.setUser(set);
 
-            Long eventid = Long.parseLong((String) reqBody.get("eventid"));
+//            Long eventid = Long.parseLong((String) reqBody.get("eventid"));
+            int eventid1 = (int) reqBody.get("eventid");
+            Long eventid = Long.valueOf(eventid1);
             Event event = eventRepo.findByEventID(eventid);
             if(event == null) {
                 ErrorResponse errorResponse = new ErrorResponse("404", "Event not found");
