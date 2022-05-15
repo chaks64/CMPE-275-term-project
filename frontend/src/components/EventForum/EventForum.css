@@ -1,0 +1,32 @@
+.parent {
+    /* position: relative; */
+    justify-content: center;
+}
+
+
+.parent .inputBox {
+    position: absolute;
+    bottom: 0;
+    float: bottom;
+    margin-bottom: 100px;
+    /* width: 50%; */
+    margin-left: 40px;
+    justify-content: center;
+    /* margin-right: 100px; */
+    /* padding-right: 50px; */
+    /* Center horizontally*/
+    /* margin: 0 auto; */
+}
+
+.parent .inputBox .send-button{
+    /* margin-left: 10px; */
+    background-color: "#7C0200";
+    float: center;
+    margin-top: 20px;
+}
+
+
+.parent .inputBox .inputBox-child{
+    display: inline-block;
+    margin: auto 10px;
+}

@@ -8,7 +8,7 @@ import "./eventDetails.css";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import BillPage from "./BillPage";
-
+import EventForum from "../EventForum/EventForum";
 const EventDetails = () => {
   const location = useLocation();
   const { from } = location.state;
@@ -147,6 +147,7 @@ const EventDetails = () => {
 
         <div className="right">
           <h1>Forum</h1>
+          <EventForum id={details.eventID} type='SignupForum'/>
         </div>
       </div>
       <Footer />
