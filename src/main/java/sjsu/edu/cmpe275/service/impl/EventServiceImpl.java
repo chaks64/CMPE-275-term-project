@@ -112,8 +112,6 @@ public class EventServiceImpl implements EventService{
 		}
 		
 	}
-	
-	
 
 
 	@Override
@@ -164,6 +162,8 @@ public class EventServiceImpl implements EventService{
 		}
 	}
 
+	
+	//need to change the logic and rectify
 	@Override
 	public ResponseEntity<?> listApprovals(String userId, String status) {
 		System.out.println("here to show approval list");
@@ -275,6 +275,33 @@ public class EventServiceImpl implements EventService{
 			} else {
 				System.out.println(event.getParticipateUser().size());
 				return new ResponseEntity<>(event, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> participatedEvent(String userId) {
+		System.out.println("in my reg events "+userId);
+		try {
+			Long userid = Long.parseLong(userId);
+			List<Event> eventsList = new ArrayList<>();
+			List<Participants> list = participantRepo.findAllByUserId(userid);
+			System.out.println(list);
+			if(list==null || list.size()==0) {
+				ErrorResponse error = new ErrorResponse("204", "No participants");
+				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+			} else {
+				for(Participants p : list) {
+					Long id = p.getEventID();
+					Event e = eventRepo.findOneByEventID(id);
+					if(e != null)
+						eventsList.add(e);
+				}
+				return new ResponseEntity<>(eventsList, HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

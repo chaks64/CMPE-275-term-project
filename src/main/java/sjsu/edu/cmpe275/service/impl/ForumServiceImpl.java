@@ -42,7 +42,10 @@ public class ForumServiceImpl implements ForumService {
             Forum forum = new Forum();
             forum.setMsg((String) reqBody.get("msg"));
             forum.setForumType((String) reqBody.get("forumType"));
-
+/**in create msg for Forum {userid=3, eventid=3, userMsg=, forumType=SignupForum}
+DATATYPE:Integer
+java.lang.ClassCastException: class java.lang.Integer cannot be cast to class java.lang.String (java.lang.Integer and java.lang.String are in module java.base of loader 'bootstrap') */
+            System.out.println("DATATYPE:"+reqBody.get("userid").getClass().getSimpleName());
             Long userid = Long.parseLong((String) reqBody.get("userid"));
             User user = userRepo.findByUserId(userid);
             if(user == null) {

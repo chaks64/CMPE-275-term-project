@@ -8,19 +8,21 @@ import { IconContext } from "react-icons";
 import { ReactComponent as Logo } from "../../imgs/logo1.svg";
 import { ThemeContext } from "../../App";
 import { Button, Col } from "react-bootstrap";
-import Clock from 'react-live-clock';
+import Clock from "react-live-clock";
 
 const NavBar = () => {
-
   const [temp, setTemp] = useState(localStorage.getItem("clock"));
-
-
+  // const [, setCount] = useState(0);
   const [sidebar, setSidebar] = useState(false);
-  const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
-    useContext(ThemeContext);
-  let time = new Date().toLocaleTimeString();
+  // const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
+  //   useContext(ThemeContext);
+  // let time = new Date().toLocaleTimeString();
   const [date, setDate] = useState(new Date().toLocaleTimeString());
 
+  // function useForceUpdate() {
+  //   const [value, setValue] = useState(0); // integer state
+  //   return () => setValue((value) => value + 1); // update the state to force render
+  // }
   const [newTime, setNewTime] = useState(new Date());
 
   const updateTime = () => {
@@ -35,28 +37,21 @@ const NavBar = () => {
 
   const changeTime = () => {
     console.log("here");
-    console.log("System Time:", newTime);
-    // console.log("New Time set by date time picker", newTime);
-    let changedDateTime = new Date(newTime);
-    // console.log("mimicTime Flag", mimicTime);
-    // console.log(changedDateTime);
     setTemp(newTime);
-    localStorage.setItem("clock",newTime);
-    console.log("temp", temp);
-
-    const newAllotTime = new Date(changedDateTime);
-    setSystemTime(newAllotTime);
-    toggleMimicTime(true);
-    console.log("mimicTime Flag", mimicTime);
+    localStorage.setItem("clock", newTime);
+    window.location.reload(false);
   };
 
   const setToCurrentTime = () => {
     setDate(new Date());
-    setSystemTime(date);
-    toggleMimicTime(false);
+    localStorage.setItem("clock", newTime);
+    window.location.reload(false);
   };
   return (
     <>
+      {/* {console.log(new Date().getTime(),"++++++++++++++++++++++++++++++++",Date.parse(temp))} */}
+      {/* {console.log(Math.abs(new Date().getTime() - temp.getTime()) / 1000)} */}
+
       <IconContext.Provider value={{ color: "#fff" }}>
         <div className="navbar">
           <Link to="/home" className="menu-bars">
@@ -65,20 +60,22 @@ const NavBar = () => {
           <Logo className="logo" />
 
           <Col md={2}>
-            <p style={{ color: "white" }}>Current Time : {date}</p>
-            <p style={{ color: "white" }}>
-              Current Date : {new Date().toLocaleDateString()}
-            </p>
+            <Clock
+              date={`${temp}:00`}
+              format={"YYYY-MM-DD, h:mm:ss A"}
+              ticking={true}
+              style={{ color: "white" }}
+            />
           </Col>
 
-          <Col md={2}>
+          {/* <Col md={2}>
             <p style={{ color: "white" }}>
               System Time : {systemTime.toLocaleTimeString()}
             </p>
             <p style={{ color: "white" }}>
               System Date : {systemTime.toLocaleDateString()}
             </p>
-          </Col>
+          </Col> */}
 
           <Col md={2}>
             <input
@@ -110,7 +107,7 @@ const NavBar = () => {
               onClick={() => {
                 setToCurrentTime();
               }}
-              style={{ backgroundColor: "#7C0200", color:"white" }}
+              style={{ backgroundColor: "#7C0200", color: "white" }}
             >
               Set to Current Date and Time
             </button>
@@ -130,25 +127,28 @@ const NavBar = () => {
                 className="profileImg"
               />
             </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
-                  </Link>
-                </li>
-              );
-            })}
+
+            {(localStorage.getItem("userid") == null) ?
+              <li className="nav-text">
+              <Link to='/login'>
+                <FaIcons.FaSignInAlt/>
+                <span>Login</span>
+              </Link>
+            </li>
+            : (
+              SidebarData.map((item, index) => {
+                return (
+                  <li key={index} className={item.cName}>
+                    <Link to={item.path}>
+                      {item.icon}
+                      <span>{item.title}</span>
+                    </Link>
+                  </li>
+                );
+              })
+            )}
           </ul>
         </nav>
-
-        <Clock
-          date={`${temp}:00`}
-          format={'dddd, MMMM Mo, YYYY, h:mm:ss A'}
-          ticking={true}
-          />
-
       </IconContext.Provider>
     </>
   );

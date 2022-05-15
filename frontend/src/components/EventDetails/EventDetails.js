@@ -8,12 +8,13 @@ import "./eventDetails.css";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import BillPage from "./BillPage";
-
+import EventForum from "../EventForum/EventForum";
 const EventDetails = () => {
   const location = useLocation();
   const { from } = location.state;
   const [details, setDetails] = useState(from);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [allow, setAllow] = useState(false);
   const customStyles = {
     content: {
       top: "50%",
@@ -24,6 +25,21 @@ const EventDetails = () => {
       transform: "translate(-50%, -50%)",
       // backgroundColor       : '#F0AA89'
     },
+  };
+
+  useEffect(() => {
+    calcTime();
+  }, []);
+
+  const calcTime = () => {
+    const temp =
+      Math.abs(
+        Date.parse(details.startDate) -
+          Date.parse(localStorage.getItem("clock"))
+      ) / 36e5;
+    if (temp > 72) {
+      setAllow(true);
+    }
   };
 
   const onRegister = (e) => {
@@ -63,7 +79,18 @@ const EventDetails = () => {
 
   return (
     <>
-      {console.log(details)}
+      {console.log(details.startDate)}
+      {console.log(
+        details.startDate,
+        "++++++++++++++++++++++++++++++++",
+        localStorage.getItem("clock")
+      )}
+      {console.log(
+        Math.abs(
+          Date.parse(details.startDate) -
+            Date.parse(localStorage.getItem("clock"))
+        ) / 36e5
+      )}
       <NavBar />
       <div className="container">
         <div className="left">
@@ -100,6 +127,7 @@ const EventDetails = () => {
             </tr>
           </table>
           <Button
+            disabled={allow}
             variant="primary"
             style={{ backgroundColor: "black" }}
             onClick={onRegister}
@@ -119,6 +147,7 @@ const EventDetails = () => {
 
         <div className="right">
           <h1>Forum</h1>
+          <EventForum id={details.eventID} type='SignupForum'/>
         </div>
       </div>
       <Footer />

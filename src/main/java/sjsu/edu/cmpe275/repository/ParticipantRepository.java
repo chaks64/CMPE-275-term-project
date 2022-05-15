@@ -13,5 +13,7 @@ public interface ParticipantRepository extends JpaRepository<Participants, Long>
 	
 	public List<Participants> findByEventID(Long eventid);
 	
+	public List<Participants> findAllByUserId(Long userId);
+	
 	public Participants findByUserId(Long userid);
 }
