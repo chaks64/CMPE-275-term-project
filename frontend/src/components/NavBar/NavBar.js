@@ -107,7 +107,7 @@ const NavBar = () => {
               onClick={() => {
                 setToCurrentTime();
               }}
-              style={{ backgroundColor: "#7C0200", color: "white" }}
+              style={{ backgroundColor: "#7C0200", color: "white" ,marginTop:'4.2%'}}
             >
               Set to Current Date and Time
             </button>

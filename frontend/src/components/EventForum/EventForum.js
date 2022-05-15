@@ -15,16 +15,14 @@ import { red } from '@mui/material/colors';
 const EventForum = (props) => {
     console.log(`props value is:`, props)
     const [userMsg,setUserMsg]=useState();
-    const [render,setRender]=useState(0);
+    var [render,setRender]=useState(0);
     const [messages,setMessages]=useState('');
-    const user = localStorage.getItem("user");
-    const{userId}=user;
-    console.log(user)
-    console.log(userId)
+    const userid = localStorage.getItem("userid");
+    console.log(`logged in user id:`,userid)
     var flag=false;
     useEffect(()=>{
     // get all msgs related to this event
-    console.log(`Fetching all messages from useEffect`)
+    console.log(`Fetching all messages from useEffect`,render)
     axios.get(`${config.backendURL}/forum/msgs/${props.id}/${props.type}`)
         .then((res)=>{
             const {data}=res;
@@ -57,26 +55,21 @@ const EventForum = (props) => {
     const handleSubmit=(e)=>{
         e.preventDefault();
         var timestamp=Date.now();
-        console.log(JSON.stringify(user))
-        var userid=user.userId;
         var forumType=props.type;
         var eventid=props.id;
-        console.log(eventid, userid,userMsg,forumType);
-        var api_data={
-            userid,
-            eventid,
-            userMsg,
-            forumType
-        }
+        var msg=userMsg;
+        console.log(msg,forumType,userid,eventid,timestamp);
+        var api_data={msg,forumType,userid,eventid}
         console.log(api_data);
         axios.post(`${config.backendURL}/forum/createMsg`,api_data)
-        .then(()=>{
+        .then((res)=>{
+            console.log(res);
             setRender(render++);
         }).catch((error)=>{
             console.log(error)
-            // if(typeof(userId)=='undefined'){
-            //     alert('Login in required!!')
-            // }
+            if(typeof(userid)=='undefined'){
+                alert('Login in required!!')
+            }
         })
     }
 
@@ -102,10 +95,10 @@ const EventForum = (props) => {
                     }))}
             </div>
             <div className='inputBox'>
-                <div className='inputBox-child'>
+                <div className='inputBox-child-1'>
             <TextField id="msg" label="Type Something here" variant="outlined" onChange={handleChange}/>
             </div>
-            <div className='inputBox-child'>
+            <div className='inputBox-child-2'>
             <Button variant='contained' style={{
                 backgroundColor: "#7C0200",
                 height: "2rem",
