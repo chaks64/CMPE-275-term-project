@@ -28,11 +28,5 @@ export const SidebarData = [
         path: '/regEvent',
         icon: <CgIcons.CgProfile />,
         cName: 'nav-text'
-    },
-    {
-        title: 'Logout',
-        path: '/',
-        icon: <FaIcons.FaSignOutAlt />,
-        cName: 'nav-text'
     }
 ]

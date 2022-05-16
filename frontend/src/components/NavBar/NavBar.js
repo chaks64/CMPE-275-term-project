@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
@@ -12,6 +12,7 @@ import Clock from "react-live-clock";
 
 const NavBar = () => {
   const [temp, setTemp] = useState(localStorage.getItem("clock"));
+  let navigate = useNavigate();
   // const [, setCount] = useState(0);
   const [sidebar, setSidebar] = useState(false);
   // const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
@@ -19,6 +20,10 @@ const NavBar = () => {
   // let time = new Date().toLocaleTimeString();
   const [date, setDate] = useState(new Date().toLocaleTimeString());
 
+  const onLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   // function useForceUpdate() {
   //   const [value, setValue] = useState(0); // integer state
   //   return () => setValue((value) => value + 1); // update the state to force render
@@ -144,6 +149,17 @@ const NavBar = () => {
                 );
               })
             )}
+            <li className="nav-text">
+              <Link to={"/login"}>
+                <FaIcons.FaSignOutAlt />
+                <span
+                  style={{ color: "white", display: "block" }}
+                  onClick={onLogout}
+                >
+                  Logout
+                </span>
+              </Link>
+            </li>
           </ul>
         </nav>
       </IconContext.Provider>
