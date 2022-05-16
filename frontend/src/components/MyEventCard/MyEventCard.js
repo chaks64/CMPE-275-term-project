@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";  
+import { Link } from "react-router-dom"; 
+
 
 const MyEventCard = ({ event }) => {
   // const user = JSON.parse(localStorage.getItem("user"));
@@ -14,15 +15,17 @@ const MyEventCard = ({ event }) => {
           <Card.Title>{event.title}</Card.Title>
           <Card.Text>{event.description}</Card.Text>
           <Link
-            to="/eventDetails"
+            to={`/forum/${event.eventID}`}
             state={{ from: event }}
             style={{ color: "white" }}
           >
             <Button
               variant="primary"
               style={{ backgroundColor: "black" }}
+              component = {Link} 
+              to="/favorite"
             >
-            See Participants
+            Participants Forum
             </Button>
           </Link>
         </Card.Body>
