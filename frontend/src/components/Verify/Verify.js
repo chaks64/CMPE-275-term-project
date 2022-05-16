@@ -9,7 +9,7 @@ const Verify = () => {
       <NavBar />
       <center>
         <h1>Account/User verified...</h1>
-        <a href="/signup">
+        <a href="/login">
           <h2>Click here to Login</h2>
         </a>
       </center>

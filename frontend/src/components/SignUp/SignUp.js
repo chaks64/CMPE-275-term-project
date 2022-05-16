@@ -5,15 +5,15 @@ import "./SignUp.css";
 import { useFormik } from "formik";
 import { validate } from "../../utils/utils";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { config } from "../../utils/utils";
+import { Alert } from 'react-bootstrap';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [show,setShow] = useState(false);
   const [message, setMessage] = useState("");
-  const [error, setError] = useState(false);
 
   const initialValues = {
     email: "",
@@ -40,7 +40,6 @@ const Signup = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
     console.log("here");
     const data = {
       email: formik.values.email,
@@ -58,42 +57,39 @@ const Signup = () => {
         zipcode: formik.values.zip,
       },
     };
-
     // axios.defaults.withCredentials = true;
     const token1 = await axios
       .post(`${config.backendURL}/user/signup`, data)
       .then((response) => {
         console.log(response);
-        toast.info("Signup successfull!! Now Verify", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-        navigate('/login')
+        navigate("/login");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
+        setShow(true);
+        if(error.response.data.errorDesc !== undefined){
+          setMessage(error.response.data.errorDesc)
+        } else {
+          setMessage("Server error please try again")
+        }
       });
   };
 
   return (
     <>
       <NavBar />
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      {show ? (
+        <Alert
+          variant="danger"
+          onClose={() => setShow(false)}
+          dismissible
+          className="size"
+        >
+          <p>{message}</p>
+        </Alert>
+      ) : (
+        console.log(<p></p>)
+      )}
       <div className="main-box">
         <div className="Heading">
           <h2 className="title">Join MJ Events</h2>
@@ -101,6 +97,57 @@ const Signup = () => {
         <form onSubmit={onSubmit}>
           <div className="main">
             <div className="left">
+              <div className="input-group">
+                <label className="label-name">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  name="email"
+                  className="form-input"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  required
+                />
+                {formik.touched.email && errors.email ? (
+                  <div className="error">{errors.email} </div>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <label className="label-name">Password</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  className="form-input"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.password}
+                  required
+                />
+                {formik.touched.password && errors.password ? (
+                  <div className="error">{errors.password} </div>
+                ) : null}
+              </div>
+
+              <div className="input-group">
+                <label className="label-name">Account Type</label>
+                <select
+                  id="accType"
+                  type="accType"
+                  name="accType"
+                  className="form-input"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.accType}
+                  defaultValue="preson"
+                  required
+                >
+                  <option value="person">Person</option>
+                  <option value="organization">Organization</option>
+                </select>
+              </div>
+
               <div className="input-group">
                 <label className="label-name">Full Name</label>
                 <input
@@ -111,6 +158,7 @@ const Signup = () => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.firstname}
+                  required
                 />
                 {formik.touched.firstname && errors.firstname ? (
                   <div className="error">{errors.firstname} </div>
@@ -131,51 +179,6 @@ const Signup = () => {
                   <div className="error">{errors.lastname} </div>
                 ) : null}
               </div>
-              <div className="input-group">
-                <label className="label-name">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  className="form-input"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.email}
-                />
-                {formik.touched.email && errors.email ? (
-                  <div className="error">{errors.email} </div>
-                ) : null}
-              </div>
-              <div className="input-group">
-                <label className="label-name">Password</label>
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  className="form-input"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.password}
-                />
-                {formik.touched.password && errors.password ? (
-                  <div className="error">{errors.password} </div>
-                ) : null}
-              </div>
-              <div className="input-group">
-                <label className="label-name">Confirm Password</label>
-                <input
-                  id="cpassword"
-                  name="cpassword"
-                  type="password"
-                  className="form-input"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  value={formik.values.cpassword}
-                />
-                {formik.touched.cpassword && errors.cpassword ? (
-                  <div className="error">{errors.cpassword} </div>
-                ) : null}
-              </div>
 
               <div className="input-group">
                 <button className="submit-button">Join</button>
@@ -186,7 +189,7 @@ const Signup = () => {
                 <label className="label-name">Description</label>
                 <input
                   id="desc"
-                  type="desc"
+                  type="text"
                   name="desc"
                   className="form-input"
                   onBlur={formik.handleBlur}
@@ -198,7 +201,7 @@ const Signup = () => {
                 <label className="label-name">Street</label>
                 <input
                   id="street"
-                  type="street"
+                  type="text"
                   name="street"
                   className="form-input"
                   onBlur={formik.handleBlur}
@@ -226,7 +229,7 @@ const Signup = () => {
                     <label className="label-name">City</label>
                     <input
                       id="city"
-                      type="city"
+                      type="text"
                       name="city"
                       className="form-input"
                       onBlur={formik.handleBlur}
@@ -243,7 +246,7 @@ const Signup = () => {
                     <label className="label-name">State</label>
                     <input
                       id="state"
-                      type="state"
+                      type="text"
                       name="state"
                       className="form-input"
                       onBlur={formik.handleBlur}
@@ -255,7 +258,7 @@ const Signup = () => {
                     <label className="label-name">Zip Code</label>
                     <input
                       id="zip"
-                      type="zip"
+                      type="number"
                       name="zip"
                       className="form-input"
                       onBlur={formik.handleBlur}
@@ -266,29 +269,14 @@ const Signup = () => {
                 </div>
               </div>
 
-              <div className="input-group">
-                <div className="divide">
-                  <div className="parts">
-                    <label className="label-name">Account Type</label>
-
-                    <select
-                      id="accType"
-                      type="accType"
-                      name="accType"
-                      className="form-input"
-                      onBlur={formik.handleBlur}
-                      onChange={formik.handleChange}
-                      value={formik.values.accType}
-                    >
-                      <option value="person">Person</option>
-                      <option value="organization">Organization</option>
-                    </select>
-                  </div>
-                  <div className="parts">
+              {
+                (() => {
+                  if (formik.values.accType !== 'organization') {
+                    return (<div className="input-group">
                     <label className="label-name">Gender</label>
                     <select
                       id="gender"
-                      type="gender"
+                      // type="te"
                       name="gender"
                       className="form-input"
                       onBlur={formik.handleBlur}
@@ -299,9 +287,11 @@ const Signup = () => {
                       <option value="female">Female</option>
                       <option value="others">Others</option>
                     </select>
-                  </div>
-                </div>
-              </div>
+                  </div>);
+                  }
+                })()
+              }
+              
 
               <div className="input-group">
                 <p className="bold-weight">Already a member? </p>

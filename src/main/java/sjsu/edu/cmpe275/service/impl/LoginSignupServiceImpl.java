@@ -49,6 +49,12 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 			}
 			
+			User screenUser = userRepo.findByScreenName((String) reqBody.get("screenName"));
+			if(screenUser != null) {
+				ErrorResponse error = new ErrorResponse("409", "Screen Name already taken, use different");
+				return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+			}
+			
 			User newUser = new User();
 			newUser.setEmail((String) reqBody.get("email"));
 			newUser.setPassword((String) reqBody.get("password"));
@@ -67,7 +73,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			address.setCity(addressMap.get("city"));
 			address.setNumber(String.valueOf(addressMap.get("number")));
 			address.setState(addressMap.get("state"));
-			address.setZipCode(addressMap.get("zipcode"));
+			address.setZipCode(String.valueOf(addressMap.get("zipcode")));
 			
 			newUser.setAddress(address);
 			
@@ -109,6 +115,11 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			}
 			if(!user.getPassword().equals(password)) {
 				ErrorResponse error = new ErrorResponse("403", "Wrong Password");
+				return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+			}
+			
+			if(!user.isVerified()) {
+				ErrorResponse error = new ErrorResponse("403", "User not verified");
 				return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 			}
 			return new ResponseEntity<>(user, HttpStatus.OK);

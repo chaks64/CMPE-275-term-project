@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import sjsu.edu.cmpe275.model.Event;
 import sjsu.edu.cmpe275.model.Participants;
 import sjsu.edu.cmpe275.model.User;
 import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
@@ -71,7 +70,10 @@ public class EventServiceImpl implements EventService{
 			LocalDateTime end = LocalDateTime.parse((CharSequence) reqBody.get("end"));
 			LocalDateTime deadline = LocalDateTime.parse((CharSequence) reqBody.get("deadline"));
 			
-			Long userid = Long.parseLong((String) reqBody.get("userid"));
+			
+			
+			Integer integer = (Integer) reqBody.get("userid");
+			Long userid = new Long(integer);
 			User user = userRepo.findByUserId(userid);
 			if(user == null) {
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
@@ -174,7 +176,7 @@ public class EventServiceImpl implements EventService{
 			if(status.equals("notapproved")) {
 				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "notapproved");	
 			} else if(status.equals("all")) {
-				listParticipants = participantRepo.findByEventID(eventId);
+				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "");
 			}
 			
 			if(listParticipants==null || listParticipants.size()==0) {
@@ -236,9 +238,9 @@ public class EventServiceImpl implements EventService{
 			return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
 		} else {
 			for(Event e: events) {
-				System.out.println(e);
+				System.out.println(e.toString());
 			}
-			return new ResponseEntity<>("need to send events here", HttpStatus.OK);
+			return new ResponseEntity<>(events, HttpStatus.OK);
 		}
 
 	}

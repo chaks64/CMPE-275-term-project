@@ -5,45 +5,56 @@ import "./Login.css";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import GoogleLogin from "react-google-login";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { config } from "../../utils/utils";
+import { Alert } from "react-bootstrap";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
 
   let navigate = useNavigate();
-  
-  const responseGoogle =  async (resp) => {
+
+  const responseGoogle = async (resp) => {
     console.log(resp);
     const data = {
-        token: resp.tokenId,
-        subId:resp.googleId
-    }; 
-      console.log(data)
+      token: resp.tokenId,
+      subId: resp.googleId,
+    };
+    console.log(data);
     // axios.defaults.withCredentials = true;
     const token1 = await axios
       .post(`${config.backendURL}/user/googlesignon`, data)
       .then((response) => {
         console.log(response.data);
-        if(response.status === 206){
-            localStorage.setItem("token",resp.tokenId)
-            localStorage.setItem("subId",resp.googleId)
-            navigate('/googleSignup')
+        if (response.status === 206) {
+          localStorage.setItem("token", resp.tokenId);
+          localStorage.setItem("subId", resp.googleId);
+          localStorage.setItem("clock", new Date());
+          navigate("/googleSignup");
         } else {
           alert("login done");
-          Cookies.set("user",response.data.email);
-          localStorage.setItem("user",(response.data));
+          Cookies.set("user", response.data.email);
+          localStorage.setItem("user", response.data);
+          localStorage.setItem("user", JSON.stringify(response.data));
+          localStorage.setItem("userid", response.data.userId);
+          localStorage.setItem("clock", new Date());
+          navigate("/home");
         }
-        
       })
       .catch((error) => {
-        console.log(error);
-        console.log("error");
+        console.log(error.response.data);
+        setShow(true);
+        if (error.response.data.errorDesc !== undefined) {
+          setMessage(error.response.data.errorDesc);
+        } else {
+          setMessage("Server error please try again");
+        }
       });
   };
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -57,18 +68,39 @@ export default function Login() {
       .post(`${config.backendURL}/user/login`, data)
       .then((response) => {
         console.log(response.data.userId);
-        localStorage.setItem("user",JSON.stringify(response.data));
-        localStorage.setItem("userid",(response.data.userId));
-        navigate('/home')
+        localStorage.setItem("user", JSON.stringify(response.data));
+        localStorage.setItem("userid", response.data.userId);
+        localStorage.setItem("clock", new Date());
+        navigate("/home");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
+        setShow(true);
+        if (error.response.data.errorDesc !== undefined) {
+          setMessage(error.response.data.errorDesc);
+        } else {
+          setMessage("Server error please try again");
+        }
       });
   };
 
   return (
     <>
       <NavBar />
+
+      {show ? (
+        <Alert
+          variant="danger"
+          onClose={() => setShow(false)}
+          dismissible
+          className="size"
+        >
+          <p>{message}</p>
+        </Alert>
+      ) : (
+        console.log(<p></p>)
+      )}
+
       <div className="main-box">
         <div className="Heading">
           <h2 className="title">Login to MJ Events</h2>

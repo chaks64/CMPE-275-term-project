@@ -28,17 +28,20 @@ const CreateEvent = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log(user.userId);
     const data = {
       title: eventInfo.title,
       desc: eventInfo.desc,
       start: eventInfo.start,
       end: eventInfo.end,
-      deadline: eventInfo.end,
+      deadline: eventInfo.start,
       min: parseInt(eventInfo.minParticipants),
       max: parseInt(eventInfo.maxParticipants),
       policy: eventInfo.policy,
       fees: parseInt(eventInfo.fees),
-      userid: "1",
+      userid: user.userId,
       address: {
         street: eventInfo.street,
         number: eventInfo.number,
@@ -123,6 +126,19 @@ const CreateEvent = () => {
                   </div>
                 </div>
               </div>
+
+              <div className="input-group">
+              <label className="label-name">Deadline</label>
+                    <input
+                      id="deadline"
+                      type="datetime-local"
+                      name="deadline"
+                      className="form-input"
+                      onChange={handleChange}
+                      value={eventInfo.deadline}
+                    />
+              </div>
+
 
               <div className="input-group">
                 <div className="divide">
