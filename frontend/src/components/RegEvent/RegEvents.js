@@ -40,7 +40,7 @@ const RegEvents = () => {
               );
             })
           ) : (
-            <h1>No Partipated Events</h1>
+            <h1>No Participated Events</h1>
           )}
         </div>
       </div>
