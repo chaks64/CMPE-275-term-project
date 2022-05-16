@@ -56,7 +56,7 @@ const EventForum = (props) => {
         e.preventDefault();
         var timestamp=Date.now();
         var forumType=props.type;
-        var eventid=props.id;
+        var eventid=String(props.id);
         var msg=userMsg;
         console.log(msg,forumType,userid,eventid,timestamp);
         var api_data={msg,forumType,userid,eventid}

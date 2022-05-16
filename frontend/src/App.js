@@ -41,7 +41,7 @@ function App() {
         <Route path="/appList" element={<ApprovalList />} />
         <Route path="/forum/:eventid" element={<Forum />} />
         <Route path="/partList" element={<PartList />} />
-        <Route path="/forum" element={<Forum />} />
+        {/* <Route path="/forum" element={<Forum />} /> */}
         <Route path="/regEvent" element={<RegEvents />} />
         {/* <Route path="/participantForum" element={<RegEvents />} /> */}
 

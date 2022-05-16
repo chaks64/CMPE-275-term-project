@@ -54,8 +54,12 @@ public class ForumServiceImpl implements ForumService {
             forum.setUser(set);
 
 //            Long eventid = Long.parseLong((String) reqBody.get("eventid"));
-            int eventid1 = (int) reqBody.get("eventid");
-            Long eventid = Long.valueOf(eventid1);
+            // int eventid1 = (int) reqBody.get("eventid");
+            // Long eventid = Long.valueOf(eventid1);
+            System.out.println("DATATYPE:"+reqBody.get("eventid").getClass().getSimpleName());
+
+            Long eventid = Long.parseLong((String) reqBody.get("eventid"));
+
             Event event = eventRepo.findByEventID(eventid);
             if(event == null) {
                 ErrorResponse errorResponse = new ErrorResponse("404", "Event not found");

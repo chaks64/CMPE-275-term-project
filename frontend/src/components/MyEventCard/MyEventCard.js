@@ -13,12 +13,13 @@ const MyEventCard = ({ event }) => {
           <Card.Title>{event.title}</Card.Title>
           <Card.Text>{event.description}</Card.Text>
           <Link
-            to="/partList"
-            state={{ event: event }}
+            to="/eventDetails"
+            to={`/forum/${event.eventID}`}
+            state={{ from: event }}
             style={{ color: "white" }}
           >
             <Button variant="primary" style={{ backgroundColor: "black" }}>
-              Participants
+              Participants Forum
             </Button>
             <Link to="/appList" state={{ event: event }}>
               <Button
