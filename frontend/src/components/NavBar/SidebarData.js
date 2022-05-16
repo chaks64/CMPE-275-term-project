@@ -35,10 +35,4 @@ export const SidebarData = [
         icon: <FaIcons.FaSignOutAlt />,
         cName: 'nav-text'
     }
-    // {
-    //     title: 'Home',
-    //     path: '/',
-    //     icon: <AiIcons.AiFillHome />,
-    //     cName: 'nav-text'
-    // }
 ]

@@ -65,6 +65,7 @@ const EventForum = (props) => {
         .then((res)=>{
             console.log(res);
             setRender(render++);
+            window.location.reload(false);
         }).catch((error)=>{
             console.log(error)
             if(typeof(userid)=='undefined'){

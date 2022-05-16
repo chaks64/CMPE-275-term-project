@@ -92,7 +92,7 @@ const EventDetails = () => {
         ) / 36e5
       )}
       <NavBar />
-      <div className="container">
+      <div className="container1">
         <div className="left">
           <h1>Event ID: {details.eventID}</h1>
           <h1>Title: {details.title}</h1>
