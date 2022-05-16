@@ -213,9 +213,9 @@ public class EventServiceImpl implements EventService{
 		String location = "%" + ((String) reqBody.get("location")).toLowerCase() + "%";
 
 		String status = ((String) reqBody.get("status")).toLowerCase();
-		String startDate = "%" + ((String) reqBody.get("startTime")).toLowerCase() + "%";
-		// String format is "2022--05-04"
-		String endtDate = "%" + ((String) reqBody.get("endtTime")).toLowerCase() + "%";
+		String startDate = ((String) reqBody.get("startTime")).toLowerCase();
+		// String format is "2022-05-04"
+		String endtDate = ((String) reqBody.get("endtTime")).toLowerCase();
 		String keyword = "%" + ((String) reqBody.get("keyword")).toLowerCase() + "%";
 		// TODO check if the organizer needs % or not
 		// TODO the query to be used is (if using like; change if we need and):-
@@ -231,7 +231,7 @@ public class EventServiceImpl implements EventService{
 			for(Event e: events) {
 				System.out.println(e);
 			}
-			return new ResponseEntity<>("need to send events here", HttpStatus.OK);
+			return new ResponseEntity<>(events, HttpStatus.OK);
 		}
 
 	}
