@@ -136,10 +136,10 @@ public class EventServiceImpl implements EventService{
 				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 			}
 			
-			if(userid == event.getUser().getUserId()) {
-				ErrorResponse errorResponse = new ErrorResponse("500", "Cannot participate in own event");
-				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-			}
+//			if(userid == event.getUser().getUserId()) {
+//				ErrorResponse errorResponse = new ErrorResponse("500", "Cannot participate in own event");
+//				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+//			}
 			
 			if(event.getPolicy().equals("approval")){
 				participants.setStatus("notapproved");

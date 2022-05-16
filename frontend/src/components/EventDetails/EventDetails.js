@@ -44,13 +44,19 @@ const EventDetails = () => {
 
   const onRegister = (e) => {
     e.preventDefault();
-    if (details.policy === "auto" && details.fees === 0) {
+
+
+
+
+    if (details.policy === "auto" && details.fees > 0) {
       setModalIsOpenToTrue();
-    } else if (details.policy === "auto" && details.fees > 0) {
+    } else if (details.policy === "auto" && details.fees === 0) {
       getEvents();
       alert("Registered");
     } else {
+      getEvents();
       alert("Sent for approval");
+      
     }
   };
 
@@ -61,7 +67,7 @@ const EventDetails = () => {
 
   const getEvents = async () => {
     console.log("here");
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     const data = {
       userid: user.userId,
       eventid: details.eventID,

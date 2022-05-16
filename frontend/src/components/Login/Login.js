@@ -57,7 +57,7 @@ export default function Login() {
       .post(`${config.backendURL}/user/login`, data)
       .then((response) => {
         console.log(response.data.userId);
-        localStorage.setItem("user",(response.data));
+        localStorage.setItem("user",JSON.stringify(response.data));
         localStorage.setItem("userid",(response.data.userId));
         navigate('/home')
       })
