@@ -225,9 +225,9 @@ public class EventServiceImpl implements EventService{
 		String location = "%" + ((String) reqBody.get("location")).toLowerCase() + "%";
 
 		String status = ((String) reqBody.get("status")).toLowerCase();
-		String startDate = "%" + ((String) reqBody.get("startTime")).toLowerCase() + "%";
-		// String format is "2022--05-04"
-		String endtDate = "%" + ((String) reqBody.get("endtTime")).toLowerCase() + "%";
+		String startDate = ((String) reqBody.get("startTime")).toLowerCase();
+		// String format is "2022-05-04"
+		String endtDate = ((String) reqBody.get("endtTime")).toLowerCase();
 		String keyword = "%" + ((String) reqBody.get("keyword")).toLowerCase() + "%";
 		String organizer = "%" + ((String) reqBody.get("organizer")).toLowerCase() + "%";
 		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword);
@@ -238,7 +238,7 @@ public class EventServiceImpl implements EventService{
 			for(Event e: events) {
 				System.out.println(e);
 			}
-			return new ResponseEntity<>("need to send events here", HttpStatus.OK);
+			return new ResponseEntity<>(events, HttpStatus.OK);
 		}
 
 	}

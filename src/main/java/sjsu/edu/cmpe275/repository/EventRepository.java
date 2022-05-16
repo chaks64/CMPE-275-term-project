@@ -18,7 +18,7 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 	public List<Event> findByDescriptionIgnoreCaseContainsOrTitleIgnoreCaseContains(String description, String title);
 //	@Query(value = "SELECT * FROM event where lower(description) like CONCAT('%', :location, '%')", nativeQuery = true)
 //	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword, String organizer);
-	@Query(value = "select * from event where lower(city) like :location and lower(status) = :status and start_date like :startTime and endt_date like :endtDate and (description like :keyword or title like :keyword);", nativeQuery = true)
+	@Query(value = "select * from event where lower(city) like :location and lower(status) = :status and start_date >= date_format(:startTime,'%Y-%m-%d')  and endt_date <= date_format(:endtDate,'%Y-%m-%d') and (description like :keyword or title like :keyword);", nativeQuery = true)
 	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword);
 //=======
 
