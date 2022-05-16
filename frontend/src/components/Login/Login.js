@@ -33,12 +33,10 @@ export default function Login() {
         if (response.status === 206) {
           localStorage.setItem("token", resp.tokenId);
           localStorage.setItem("subId", resp.googleId);
-          localStorage.setItem("clock", new Date());
-          navigate("/googleSignup");
+          navigate("/googleSignup")
         } else {
           alert("login done");
           Cookies.set("user", response.data.email);
-          localStorage.setItem("user", response.data);
           localStorage.setItem("user", JSON.stringify(response.data));
           localStorage.setItem("userid", response.data.userId);
           localStorage.setItem("clock", new Date());

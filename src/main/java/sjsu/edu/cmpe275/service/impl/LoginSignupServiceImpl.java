@@ -54,7 +54,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				ErrorResponse error = new ErrorResponse("409", "Screen Name already taken, use different");
 				return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 			}
-			
+				
 			User newUser = new User();
 			newUser.setEmail((String) reqBody.get("email"));
 			newUser.setPassword((String) reqBody.get("password"));
@@ -135,14 +135,11 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 	public ResponseEntity<?> googleSignon(Map<String, Object> reqBody) {
 		
 		System.out.println("Req.body" + reqBody);
-//		final HttpTransport transport = new NetHttpTransport();
-//		final JsonFactory jsonFactory = new GsonFactory();
         String token = (String) reqBody.get("token");
         String subId = (String) reqBody.get("subId");
         
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
         		.setAudience(Collections.singletonList("155505368995-kkg9c40j38vb7c8lg05m2jke4rmtia4l.apps.googleusercontent.com"))
-//        		.setIssuer("accounts.google.com")
         		.build();
         System.out.println(verifier);
         
@@ -152,25 +149,8 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			System.out.println("here for check "+token);
 			if (idToken != null) {
                 Payload payload = idToken.getPayload();
-
-                // Print user identifier
                 String userId = payload.getSubject();
                 System.out.println("User ID: " + payload);
-//                
-//
-//                // Get profile information from payload
-//                String email = payload.getEmail();
-//                boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-//                String name = (String) payload.get("name");
-//                String pictureUrl = (String) payload.get("picture");
-//                String locale = (String) payload.get("locale");
-//                String familyName = (String) payload.get("family_name");
-//                String givenName = (String) payload.get("given_name");
-//
-//                System.out.println("email:"+email);
-//                System.out.println("givenName:"+name);
-//
-                // New or Existing user Logic
                 List<User> userList = userRepo.findAll();
                 System.out.println(userList.size());
                 for(User user : userList) {
@@ -199,6 +179,11 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 			}
 			
+			User screenUser = userRepo.findByScreenName((String) reqBody.get("screenName"));
+			if(screenUser != null) {
+				ErrorResponse error = new ErrorResponse("409", "Screen Name already taken, use different");
+				return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+			}
 			User newUser = new User();
 			newUser.setEmail((String) reqBody.get("email"));
 			newUser.setPassword("-1");
@@ -214,15 +199,13 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 			Address address = new Address();
 			address.setStreet(addressMap.get("street"));
 			address.setCity(addressMap.get("city"));
-			address.setNumber(addressMap.get("number"));
+			address.setNumber(String.valueOf(addressMap.get("number")));
 			address.setState(addressMap.get("state"));
-			address.setZipCode(addressMap.get("zipcode"));
+			address.setZipCode(String.valueOf(addressMap.get("number")));
 			newUser.setAddress(address);
-			
 			String tokenId = (String) reqBody.get("token");
 	        String subId = (String) reqBody.get("subId");
 	        newUser.setGoogleSubId(subId);
-	        
 	        GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
 	        		.setAudience(Collections.singleton("155505368995-kkg9c40j38vb7c8lg05m2jke4rmtia4l.apps.googleusercontent.com"))
 	        		.build();
@@ -232,8 +215,6 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				System.out.println(tokenId);
 				if (idToken != null) {
 	                Payload payload = idToken.getPayload();
-
-	                // Print user identifier
 	                String userId = payload.getSubject();
 	                System.out.println("User ID: " + userId);
 	                newUser.setFullName((String) payload.get("name"));
@@ -246,8 +227,6 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 	    				return new ResponseEntity<>(newUser, HttpStatus.CREATED);
 	    			}
 				}
-				
-				
 			} catch (Exception e) {
 				e.printStackTrace();
 				ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
