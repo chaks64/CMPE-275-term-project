@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Card, Button } from "react-bootstrap";
-import { Link } from "react-router-dom"; 
-
+import { Link } from "react-router-dom";
 
 const MyEventCard = ({ event }) => {
   // const user = JSON.parse(localStorage.getItem("user"));
-  const [role, setRole] = useState("person");
-  
+
   return (
     <>
       <Card>
@@ -15,18 +13,21 @@ const MyEventCard = ({ event }) => {
           <Card.Title>{event.title}</Card.Title>
           <Card.Text>{event.description}</Card.Text>
           <Link
-            to={`/forum/${event.eventID}`}
-            state={{ from: event }}
+            to="/partList"
+            state={{ event: event }}
             style={{ color: "white" }}
           >
-            <Button
-              variant="primary"
-              style={{ backgroundColor: "black" }}
-              component = {Link} 
-              to="/favorite"
-            >
-            Participants Forum
+            <Button variant="primary" style={{ backgroundColor: "black" }}>
+              Participants
             </Button>
+            <Link to="/appList" state={{ event: event }}>
+              <Button
+                variant="primary"
+                style={{ backgroundColor: "black", margin: "5px" }}
+              >
+                Approvals
+              </Button>
+            </Link>
           </Link>
         </Card.Body>
       </Card>

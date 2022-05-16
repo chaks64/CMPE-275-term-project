@@ -49,14 +49,11 @@ const NavBar = () => {
   };
   return (
     <>
-      {/* {console.log(new Date().getTime(),"++++++++++++++++++++++++++++++++",Date.parse(temp))} */}
-      {/* {console.log(Math.abs(new Date().getTime() - temp.getTime()) / 1000)} */}
-
       <IconContext.Provider value={{ color: "#fff" }}>
         <div className="navbar">
-          <Link to="/home" className="menu-bars">
-            <FaIcons.FaBars onClick={showSidebar} />
-          </Link>
+          {/* <Link to="" className="menu-bars"> */}
+            <FaIcons.FaBars className="menu-bars" onClick={showSidebar} />
+          {/* </Link> */}
           <Logo className="logo" />
 
           <Col md={2}>
@@ -116,9 +113,9 @@ const NavBar = () => {
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showSidebar}>
             <li className="navbar-toggle">
-              <Link to="#" className="menu-bars">
-                <AiIcons.AiOutlineClose />
-              </Link>
+              {/* <Link to="#" className="menu-bars"> */}
+                <AiIcons.AiOutlineClose className="menu-bars" />
+              {/* </Link> */}
             </li>
             <li>
               <img

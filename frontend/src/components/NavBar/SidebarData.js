@@ -7,7 +7,7 @@ import * as CgIcons from "react-icons/cg";
 export const SidebarData = [
     {
         title: 'Home',
-        path: '/',
+        path: '/home',
         icon: <AiIcons.AiFillHome />,
         cName: 'nav-text'
     },
@@ -15,12 +15,6 @@ export const SidebarData = [
         title: 'My Events',
         path: '/myEvents',
         icon: <FaIcons.FaHotel />,
-        cName: 'nav-text'
-    },
-    {
-        title: 'Approval List',
-        path: '/appList',
-        icon: <CgIcons.CgProfile />,
         cName: 'nav-text'
     },
     {

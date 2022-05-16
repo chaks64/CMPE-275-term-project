@@ -165,17 +165,18 @@ public class EventServiceImpl implements EventService{
 	
 	//need to change the logic and rectify
 	@Override
-	public ResponseEntity<?> listApprovals(String userId, String status) {
+	public ResponseEntity<?> listApprovals(String eventid, String status) {
 		System.out.println("here to show approval list");
 		List<Participants> listParticipants = new ArrayList<>();
 		try {
-			Long userid = Long.parseLong(userId);
+			Long eventId = Long.parseLong(eventid);
 			List<User> users = new ArrayList<>();
 			if(status.equals("notapproved")) {
-				listParticipants = participantRepo.findByUserIdAndStatus(userid, "notapproved");	
+				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "notapproved");	
 			} else if(status.equals("all")) {
-				listParticipants = participantRepo.findByEventID(userid);
+				listParticipants = participantRepo.findByEventID(eventId);
 			}
+//			listParticipants = participantRepo.findByEventID(eventId);
 			
 			if(listParticipants==null || listParticipants.size()==0) {
 				ErrorResponse error = new ErrorResponse("204", "No participants");

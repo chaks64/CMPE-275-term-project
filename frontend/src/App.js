@@ -16,6 +16,7 @@ import ApprovalList from "./components/ApprovalList/ApprovalList";
 import Forum from "./components/Forum/Forum";
 import RegEvents from "./components/RegEvent/RegEvents";
 import EventForum from "./components/EventForum/EventForum";
+import PartList from "./components/ApprovalList/PartList";
 
 export const ThemeContext = React.createContext();
 
@@ -39,6 +40,8 @@ function App() {
         <Route path="/myEvents" element={<MyEvents />} />
         <Route path="/appList" element={<ApprovalList />} />
         <Route path="/forum/:eventid" element={<Forum />} />
+        <Route path="/partList" element={<PartList />} />
+        <Route path="/forum" element={<Forum />} />
         <Route path="/regEvent" element={<RegEvents />} />
         {/* <Route path="/participantForum" element={<RegEvents />} /> */}
 
