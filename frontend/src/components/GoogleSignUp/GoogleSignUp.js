@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./GoogleSignUp.css";
@@ -10,10 +10,20 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Alert } from "react-bootstrap";
 
 const GoogleSignup = () => {
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const { state } = useLocation();
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const [redirectVar, setRedirectVar] = useState("");
+
+  useEffect(() => {
+    let redirect = "";
+    if (localStorage.getItem("token") != null) {
+      redirect = navigate("/home");
+      setRedirectVar(redirect);
+      console.log(redirectVar);
+    }
+  }, []);
   
 
   const initialValues = {
@@ -80,6 +90,7 @@ const GoogleSignup = () => {
 
   return (
     <>
+      {redirectVar}
       <NavBar />
       {show ? (
         <Alert

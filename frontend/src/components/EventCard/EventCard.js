@@ -47,13 +47,13 @@ const EventCard = ({ event }) => {
             state={{ from: event }}
             style={{ color: "white" }}
           >
-            <Button
+            {/* <Button
             disabled={dis}
               variant="primary"
               style={{ backgroundColor: "black" }}
             >
             Participant Forum
-            </Button>
+            </Button> */}
           </Link>
         </Card.Body>
       </Card>

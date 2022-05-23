@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./Login.css";
@@ -15,8 +15,18 @@ export default function Login() {
   const [password, setpassword] = useState("");
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
+  const [redirectVar, setRedirectVar] = useState("");
 
   let navigate = useNavigate();
+
+  useEffect(() => {
+    let redirect = "";
+    if (localStorage.getItem("token") != null) {
+      redirect = navigate("/home");
+      setRedirectVar(redirect);
+      console.log(redirectVar);
+    }
+  }, []);
 
   const responseGoogle = async (resp) => {
     console.log(resp);
@@ -33,7 +43,7 @@ export default function Login() {
         if (response.status === 206) {
           localStorage.setItem("token", resp.tokenId);
           localStorage.setItem("subId", resp.googleId);
-          navigate("/googleSignup")
+          navigate("/googleSignup");
         } else {
           alert("login done");
           Cookies.set("user", response.data.email);
@@ -84,6 +94,7 @@ export default function Login() {
 
   return (
     <>
+      {redirectVar}
       <NavBar />
 
       {show ? (

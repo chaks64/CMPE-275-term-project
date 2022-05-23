@@ -8,6 +8,8 @@ import { IconContext } from "react-icons";
 import { ReactComponent as Logo } from "../../imgs/logo1.svg";
 import { ThemeContext } from "../../App";
 import { Button, Col } from "react-bootstrap";
+// import * as IoIcons from "react-icons/io";
+import * as CgIcons from "react-icons/cg";
 import Clock from "react-live-clock";
 
 const NavBar = () => {
@@ -30,11 +32,11 @@ const NavBar = () => {
   // }
   const [newTime, setNewTime] = useState(new Date());
 
-  const updateTime = () => {
-    let time = new Date().toLocaleTimeString();
-    setDate(time);
-  };
-  setInterval(updateTime, 1000);
+  // const updateTime = () => {
+  //   let time = new Date().toLocaleTimeString();
+  //   setDate(time);
+  // };
+  // setInterval(updateTime, 1000);
 
   const showSidebar = () => {
     setSidebar(!sidebar);
@@ -48,7 +50,7 @@ const NavBar = () => {
   };
 
   const setToCurrentTime = () => {
-    setDate(new Date());
+    // setDate(new Date());
     localStorage.setItem("clock", newTime);
     window.location.reload(false);
   };
@@ -57,7 +59,7 @@ const NavBar = () => {
       <IconContext.Provider value={{ color: "#fff" }}>
         <div className="navbar">
           {/* <Link to="" className="menu-bars"> */}
-            <FaIcons.FaBars className="menu-bars" onClick={showSidebar} />
+          <FaIcons.FaBars className="menu-bars" onClick={showSidebar} />
           {/* </Link> */}
           <Logo className="logo" />
 
@@ -65,19 +67,10 @@ const NavBar = () => {
             <Clock
               date={`${temp}:00`}
               format={"YYYY-MM-DD, h:mm:ss A"}
-              ticking={true}
+              ticking={false}
               style={{ color: "white" }}
             />
           </Col>
-
-          {/* <Col md={2}>
-            <p style={{ color: "white" }}>
-              System Time : {systemTime.toLocaleTimeString()}
-            </p>
-            <p style={{ color: "white" }}>
-              System Date : {systemTime.toLocaleDateString()}
-            </p>
-          </Col> */}
 
           <Col md={2}>
             <input
@@ -109,7 +102,11 @@ const NavBar = () => {
               onClick={() => {
                 setToCurrentTime();
               }}
-              style={{ backgroundColor: "#7C0200", color: "white" ,marginTop:'4.2%'}}
+              style={{
+                backgroundColor: "#7C0200",
+                color: "white",
+                marginTop: "4.2%",
+              }}
             >
               Set to Current Date and Time
             </button>
@@ -119,7 +116,7 @@ const NavBar = () => {
           <ul className="nav-menu-items" onClick={showSidebar}>
             <li className="navbar-toggle">
               {/* <Link to="#" className="menu-bars"> */}
-                <AiIcons.AiOutlineClose className="menu-bars" />
+              <AiIcons.AiOutlineClose className="menu-bars" />
               {/* </Link> */}
             </li>
             <li>
@@ -130,36 +127,79 @@ const NavBar = () => {
               />
             </li>
 
-            {(localStorage.getItem("userid") == null) ?
+            {localStorage.getItem("userid") == null ? (
               <li className="nav-text">
-              <Link to='/login'>
-                <FaIcons.FaSignInAlt/>
-                <span>Login</span>
-              </Link>
-            </li>
-            : (
-              SidebarData.map((item, index) => {
-                return (
-                  <li key={index} className={item.cName}>
-                    <Link to={item.path}>
-                      {item.icon}
-                      <span>{item.title}</span>
-                    </Link>
-                  </li>
-                );
-              })
-            )}
-            <li className="nav-text">
-              <Link to={"/login"}>
-                <FaIcons.FaSignOutAlt />
-                <span
-                  style={{ color: "white", display: "block" }}
-                  onClick={onLogout}
+                <Link to="/login">
+                  <FaIcons.FaSignInAlt />
+                  <span>Login</span>
+                </Link>
+              </li>
+            ) : (
+              <>
+                <li className="nav-text">
+                  <Link to={"/home"}>
+                    <AiIcons.AiFillHome />
+                    <span style={{ color: "white", display: "block" }}>
+                      Home
+                    </span>
+                  </Link>
+                </li>
+                <li className="nav-text">
+                  <Link to={"/createEvent"}>
+                    <FaIcons.FaEdit />
+                    <span style={{ color: "white", display: "block" }}>
+                      Create Event
+                    </span>
+                  </Link>
+                </li>
+                <li className="nav-text">
+                  <Link to={"/myEvents"}>
+                    <AiIcons.AiOutlineOrderedList />
+                    <span style={{ color: "white", display: "block" }}>
+                      Organized Events
+                    </span>
+                  </Link>
+                </li>
+                <li
+                  className={
+                    JSON.parse(localStorage.getItem("user")).accountType ===
+                    "person"
+                      ? "nav-text"
+                      : "hide"
+                  }
                 >
-                  Logout
-                </span>
-              </Link>
-            </li>
+                  <Link to={"/regEvent"}>
+                    <AiIcons.AiOutlineOrderedList />
+                    <span style={{ color: "white", display: "block" }}>
+                      Participated Events
+                    </span>
+                  </Link>
+                </li>
+
+                <li className="nav-text">
+                  <Link to={"/login"}>
+                    <FaIcons.FaSignOutAlt />
+                    <span
+                      style={{ color: "white", display: "block" }}
+                      onClick={onLogout}
+                    >
+                      Logout
+                    </span>
+                  </Link>
+                </li>
+              </>
+
+              // SidebarData.map((item, index) => {
+              //   return (
+              //     <li key={index} className={item.cName}>
+              //       <Link to={item.path}>
+              //         {item.icon}
+              //         <span>{item.title}</span>
+              //       </Link>
+              //     </li>
+              //   );
+              // })
+            )}
           </ul>
         </nav>
       </IconContext.Provider>

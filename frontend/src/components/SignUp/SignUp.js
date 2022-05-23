@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./SignUp.css";
@@ -8,12 +8,23 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { config } from "../../utils/utils";
-import { Alert } from 'react-bootstrap';
+import { Alert } from "react-bootstrap";
 
 const Signup = () => {
-  const navigate = useNavigate();
-  const [show,setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
+  const [redirectVar, setRedirectVar] = useState("");
+
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    let redirect = "";
+    if (localStorage.getItem("token") != null) {
+      redirect = navigate("/home");
+      setRedirectVar(redirect);
+      console.log(redirectVar);
+    }
+  }, []);
 
   const initialValues = {
     email: "",
@@ -67,16 +78,17 @@ const Signup = () => {
       .catch((error) => {
         console.log(error.response.data);
         setShow(true);
-        if(error.response.data.errorDesc !== undefined){
-          setMessage(error.response.data.errorDesc)
+        if (error.response.data.errorDesc !== undefined) {
+          setMessage(error.response.data.errorDesc);
         } else {
-          setMessage("Server error please try again")
+          setMessage("Server error please try again");
         }
       });
   };
 
   return (
     <>
+      {redirectVar}
       <NavBar />
       {show ? (
         <Alert
@@ -218,29 +230,28 @@ const Signup = () => {
                 </div>
               </div>
 
-              {
-                (() => {
-                  if (formik.values.accType !== 'organization') {
-                    return (<div className="input-group">
-                    <label className="label-name">Gender</label>
-                    <select
-                      id="gender"
-                      // type="te"
-                      name="gender"
-                      className="form-input"
-                      onBlur={formik.handleBlur}
-                      onChange={formik.handleChange}
-                      value={formik.values.gender}
-                    >
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="others">Others</option>
-                    </select>
-                  </div>);
-                  }
-                })()
-              }
-              
+              {(() => {
+                if (formik.values.accType !== "organization") {
+                  return (
+                    <div className="input-group">
+                      <label className="label-name">Gender</label>
+                      <select
+                        id="gender"
+                        // type="te"
+                        name="gender"
+                        className="form-input"
+                        onBlur={formik.handleBlur}
+                        onChange={formik.handleChange}
+                        value={formik.values.gender}
+                      >
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="others">Others</option>
+                      </select>
+                    </div>
+                  );
+                }
+              })()}
 
               <div className="input-group">
                 <p className="bold-weight">Already a member? </p>
