@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import EventCard from "../EventCard/EventCard";
 import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import axios from "axios";
 import { config } from "../../utils/utils";
+import EventCard1 from "../EventCard/EventCard1";
 
 const RegEvents = () => {
   const [list, setList] = useState([]);
@@ -35,7 +35,7 @@ const RegEvents = () => {
             list.map((event, i) => {
               return (
                 <div className="col-md-4 mt-3">
-                  <EventCard key={i} event={event} />
+                  <EventCard1 key={i} event={event} />
                 </div>
               );
             })

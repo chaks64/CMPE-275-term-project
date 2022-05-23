@@ -5,13 +5,11 @@ import axios from "axios";
 import { config } from "../../utils/utils";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./eventDetails.css";
-import { Button } from "react-bootstrap";
-import Modal from "react-modal";
-import BillPage from "./BillPage";
-import EventForum from "../EventForum/EventForum";
 import { Alert } from "react-bootstrap";
+import ParticipantForum from "../EventForum/ParticipantForum";
+import StarRatings from "react-star-ratings";
 
-const EventDetails = () => {
+const PartEventDets = () => {
   const location = useLocation();
   const { from } = location.state;
   const [details, setDetails] = useState(from);
@@ -19,18 +17,7 @@ const EventDetails = () => {
   const [allow, setAllow] = useState(false);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      // backgroundColor       : '#F0AA89'
-    },
-  };
+  const [rate, setRate] = useState(0);
 
   const navigate = useNavigate();
 
@@ -56,6 +43,10 @@ const EventDetails = () => {
           setMessage("Server error please try again");
         }
       });
+  };
+
+  const changeRating = (newRating, name) => {
+    setRate(newRating);
   };
 
   const vefrify = () => {
@@ -180,22 +171,6 @@ const EventDetails = () => {
               </td>
             </tr>
             <tr>
-              <td>Min Participants:</td>
-              <td>{details.minParticpants}</td>
-            </tr>
-            <tr>
-              <td>Max Participants:</td>
-              <td>{details.maxParticpants}</td>
-            </tr>
-            <tr>
-              <td>Fees:</td>
-              <td>${details.fees}</td>
-            </tr>
-            <tr>
-              <td>Current Participants:</td>
-              <td>{details.participateUser.length}</td>
-            </tr>
-            <tr>
               <td>Start Date:</td>
               <td>{new Date(details.startDate).toDateString()}</td>
             </tr>
@@ -203,33 +178,45 @@ const EventDetails = () => {
               <td>End Date:</td>
               <td>{new Date(details.endtDate).toDateString()}</td>
             </tr>
-            <tr>
-              <td>Dead Line Date:</td>
-              <td>{new Date(details.deadline).toDateString()}</td>
-            </tr>
           </table>
-          <Button
-            disabled={allow}
-            variant="primary"
-            style={{ backgroundColor: "black" }}
-            onClick={onRegister}
-          >
-            Register
-          </Button>
-
-          <Modal
-            isOpen={modalIsOpen}
-            // style={customStyles}
-            onRequestClose={() => setModalIsOpen(false)}
-          >
-            <button onClick={setModalIsOpenToTrue}>x</button>
-            <BillPage details={details} />
-          </Modal>
+          <div style={{ border: "1px solid #1c1c1c" }}>
+            Review Organizer
+            <table>
+              <tr>
+                <td>Rate</td>
+                <td>
+                  <StarRatings
+                    rating={rate}
+                    starRatedColor="blue"
+                    changeRating={changeRating}
+                    numberOfStars={5}
+                    name="rating"
+                    starDimension="20px"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td>Review</td>
+                <td>
+                  <textarea></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td align="center" colSpan="2">
+                  <button className="submit-button">Review</button>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
 
         <div className="right" style={{ border: "1px solid" }}>
-          <h1> Signup Forum</h1>
-          <EventForum id={details.eventID} type="SignupForum" event={details} />
+          <h1>Participant Forum</h1>
+          <ParticipantForum
+            id={details.eventID}
+            type="SignupForum"
+            event={details}
+          />
         </div>
       </div>
       <Footer />
@@ -237,4 +224,4 @@ const EventDetails = () => {
   );
 };
 
-export default EventDetails;
+export default PartEventDets;

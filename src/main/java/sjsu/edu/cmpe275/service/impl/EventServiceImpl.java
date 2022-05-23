@@ -182,11 +182,12 @@ public class EventServiceImpl implements EventService{
 		try {
 			Long eventId = Long.parseLong(eventid);
 			List<User> users = new ArrayList<>();
-			if(status.equals("notapproved")) {
-				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "notapproved");	
-			} else if(status.equals("all")) {
-				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "");
-			}
+//			if(status.equals("notapproved")) {
+//				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "notapproved");	
+//			} else if(status.equals("all")) {
+//				listParticipants = participantRepo.findByEventIDAndStatus(eventId, "");
+//			}
+			listParticipants = participantRepo.findByEventIDAndStatus(eventId, status);
 			
 			if(listParticipants==null || listParticipants.size()==0) {
 				ErrorResponse error = new ErrorResponse("204", "No participants");

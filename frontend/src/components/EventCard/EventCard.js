@@ -4,21 +4,8 @@ import { Link } from "react-router-dom";
 
 const EventCard = ({ event }) => {
   // const user = JSON.parse(localStorage.getItem("user"));
-  const [role, setRole] = useState("person");
-  const [dis, setDis] = useState(false);
-
   useEffect(() => {
-    console.log(localStorage.getItem("clock"));
-    console.log(new Date(event.startDate),"-------")
-    let one = new Date(localStorage.getItem("clock"));
-    let two = new Date(event.startDate);
-    const diff = (two - one);
-
-    console.log(diff);
-
-    if(diff < 1){
-      setDis(true);
-    }
+    
   }, []);
 
   return (

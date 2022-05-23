@@ -20,7 +20,7 @@ const ApprovalList = () => {
   }, []);
 
   const getEvents = async () => {
-    console.log("here ",event);
+    console.log("here ", event);
     const user = localStorage.getItem("userid");
     const list1 = await axios
       .get(`${config.backendURL}/event/partlist/${event.eventID}/notapproved`)
@@ -30,12 +30,12 @@ const ApprovalList = () => {
       })
       .catch((error) => {
         console.log(error.response.data);
-          setShow(true);
-          if (error.response.data.errorDesc === undefined) {
-            setMessage("Server error please try again");
-          } else {
-            setMessage(error.response.data.errorDesc);
-          }
+        setShow(true);
+        if (error.response.data.errorDesc === undefined) {
+          setMessage("Server error please try again");
+        } else {
+          setMessage(error.response.data.errorDesc);
+        }
       });
   };
 
@@ -90,10 +90,18 @@ const ApprovalList = () => {
                   <td className="text-center">{user.email}</td>
                   <td className="text-center">{user.fullName}</td>
                   <td className="text-center">
-                    <button value="approved" id={user.userId} onClick={manageRequest}>
+                    <button
+                      value="approved"
+                      id={user.userId}
+                      onClick={manageRequest}
+                    >
                       Approve
                     </button>{" "}
-                    <button value="reject" onClick={manageRequest}>
+                    <button
+                      value="reject"
+                      id={user.userId}
+                      onClick={manageRequest}
+                    >
                       Reject
                     </button>
                   </td>

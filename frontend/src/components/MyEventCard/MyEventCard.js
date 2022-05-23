@@ -13,7 +13,7 @@ const MyEventCard = ({ event }) => {
           <Card.Title>{event.title}</Card.Title>
           <Card.Text>{event.description}</Card.Text>
           <Link
-            to="/eventDetails"
+            to="/partListdets"
             state={{ from: event }}
             style={{ color: "white" }}
           >
