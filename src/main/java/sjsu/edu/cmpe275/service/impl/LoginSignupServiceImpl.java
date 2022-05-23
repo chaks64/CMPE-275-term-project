@@ -184,6 +184,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				ErrorResponse error = new ErrorResponse("409", "Screen Name already taken, use different");
 				return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 			}
+			
 			User newUser = new User();
 			newUser.setEmail((String) reqBody.get("email"));
 			newUser.setPassword("-1");

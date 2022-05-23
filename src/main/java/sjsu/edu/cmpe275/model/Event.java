@@ -59,7 +59,7 @@ public class Event {
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","user"}) 
 	private Set<User> participateUser = new HashSet<>();
 
-	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline,
+	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline, String status,
 			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<User> participateUser) {
 		super();
 		this.eventID = eventID;
@@ -75,6 +75,7 @@ public class Event {
 		this.policy = policy;
 		this.user = user;
 		this.participateUser = participateUser;
+		this.status = status;
 	}
 
 	public Event() {

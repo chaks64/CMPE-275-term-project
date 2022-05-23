@@ -97,7 +97,7 @@ public class EventServiceImpl implements EventService{
 			event.setMaxParticpants((int) reqBody.get("max"));
 			event.setFees((int) reqBody.get("fees"));
 			event.setPolicy((String) reqBody.get("policy"));
-			
+			event.setStatus("active");
 			Event newEvent = eventRepo.save(event);
 			
 			if(newEvent == null) {
