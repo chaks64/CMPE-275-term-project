@@ -6,7 +6,9 @@ import Footer from "../Footer/Footer";
 import "./approval.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { Alert } from "react-bootstrap";
+import { Alert, Button } from "react-bootstrap";
+import Modal from "react-modal";
+import Reviews from "./Reviews";
 
 const ApprovalList = () => {
   const location = useLocation();
@@ -15,9 +17,15 @@ const ApprovalList = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const { event } = location.state;
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   useEffect(() => {
     getEvents();
   }, []);
+
+  const onClick = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
 
   const getEvents = async () => {
     console.log("here ", event);
@@ -37,6 +45,11 @@ const ApprovalList = () => {
           setMessage(error.response.data.errorDesc);
         }
       });
+  };
+
+  const setModalIsOpenToTrue = () => {
+    console.log("here");
+    setModalIsOpen(!modalIsOpen);
   };
 
   const manageRequest = async (e) => {
@@ -80,6 +93,7 @@ const ApprovalList = () => {
               <th className="text-center">Participant Email</th>
               <th className="text-center">Participant Name</th>
               <th className="text-center">Approve/Reject</th>
+              <th className="text-center">Reviews</th>
             </tr>
           </thead>
           <tbody>
@@ -104,6 +118,24 @@ const ApprovalList = () => {
                     >
                       Reject
                     </button>
+                  </td>
+                  <td className="text-center">
+                    <Button
+                      // disabled={allow}
+                      variant="primary"
+                      style={{ backgroundColor: "black" }}
+                      onClick={onClick}
+                    >
+                      See Reviews
+                    </Button>
+                    <Modal
+                      isOpen={modalIsOpen}
+                      // style={customStyles}
+                      onRequestClose={() => setModalIsOpen(false)}
+                    >
+                      <button onClick={setModalIsOpenToTrue}>x</button>
+                      <Reviews userid={user.userId} />
+                    </Modal>
                   </td>
                 </tr>
               ))

@@ -35,8 +35,9 @@ const EventDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // vefrify();
     eventDetails();
-    vefrify();
+
     // calcTime();
   }, []);
 
@@ -121,8 +122,6 @@ const EventDetails = () => {
           alert("Sent for approval");
         }
         navigate("/home");
-
-        // setList(response.data);
       })
       .catch((error) => {
         console.log(error);

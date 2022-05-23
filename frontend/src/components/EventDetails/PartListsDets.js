@@ -20,10 +20,16 @@ const PartListsDets = () => {
   const [message, setMessage] = useState("");
   const [list, setList] = useState([]);
   const [rate, setRate] = useState(0);
+  const [review, setReview] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getEvents();
   }, []);
+
+  const handleReview = (e) => {
+    setReview(e.target.value);
+  };
 
   const changeRating = (newRating, name) => {
     setRate(newRating);
@@ -48,13 +54,6 @@ const PartListsDets = () => {
       });
   };
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    vefrify();
-    // calcTime();
-  }, []);
-
   const vefrify = () => {
     console.log(details.participateUser);
     var d = new Date(
@@ -75,6 +74,33 @@ const PartListsDets = () => {
       setAllow(true);
     }
   };
+
+  const onSubmit = async(e) =>{
+      e.preventDefault();
+      const data = {
+        userid: parseInt(e.target.id),
+        rating: rate,
+        review: review,
+        type: "participant"
+      }
+      console.log(data);
+      const list1 = await axios
+      .post(`${config.backendURL}/review/post`,data)
+      .then((response) => {
+        console.log(response.data);
+        setShow(false);
+        alert('Reviewed Participant');
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setShow(true);
+        if (error.response.data.errorDesc === undefined) {
+          setMessage("Server error please try again");
+        } else {
+          setMessage(error.response.data.errorDesc);
+        }
+      });
+  }
 
   // const calcTime = () => {
   //   const temp =
@@ -144,12 +170,16 @@ const PartListsDets = () => {
                               <tr>
                                 <td>Review</td>
                                 <td>
-                                  <textarea></textarea>
+                                  <textarea
+                                    value={review}
+                                    name="review"
+                                    onChange={handleReview}
+                                  />
                                 </td>
                               </tr>
                               <tr>
                                 <td align="center" colSpan="2">
-                                  <button className="submit-button">
+                                  <button id={user.userId} className="submit-button" onClick={onSubmit}>
                                     Review
                                   </button>
                                 </td>
@@ -170,7 +200,11 @@ const PartListsDets = () => {
 
         <div className="right">
           <h1> Participant Forum</h1>
-          <ParticipantForum id={details.eventID} type="SignupForum" event={details} />
+          <ParticipantForum
+            id={details.eventID}
+            type="SignupForum"
+            event={details}
+          />
         </div>
       </div>
       <Footer />

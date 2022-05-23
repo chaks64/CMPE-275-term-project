@@ -151,7 +151,7 @@ const Signup = () => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   value={formik.values.accType}
-                  defaultValue="preson"
+                  defaultValue="person"
                   required
                 >
                   <option value="person">Person</option>

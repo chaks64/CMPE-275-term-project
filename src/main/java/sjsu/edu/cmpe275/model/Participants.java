@@ -15,7 +15,6 @@ public class Participants {
 	
 	private String status;
 
-	
 	public Participants() {
 		// TODO Auto-generated constructor stub
 	}

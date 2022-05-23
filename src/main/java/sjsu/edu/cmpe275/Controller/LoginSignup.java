@@ -1,11 +1,14 @@
 package sjsu.edu.cmpe275.Controller;
 
+import static sjsu.edu.cmpe275.config.Config.IP_ADDRESS;
+
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +25,9 @@ import sjsu.edu.cmpe275.model.User;
 import sjsu.edu.cmpe275.repository.ConfirmTokenRepository;
 import sjsu.edu.cmpe275.repository.UserRepository;
 import sjsu.edu.cmpe275.service.LoginSignupService;
+import sjsu.edu.cmpe275.service.impl.EmailSenderService;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 @CrossOrigin
 public class LoginSignup {
@@ -36,6 +40,9 @@ public class LoginSignup {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private EmailSenderService emailSenderService;
 	
 	
 	@PostMapping(value = "/login")
@@ -64,7 +71,6 @@ public class LoginSignup {
 	
 	@RequestMapping(value = "/confirm-account", method = { RequestMethod.GET, RequestMethod.POST })
 	public ResponseEntity<?> confirmUserAccount(ModelAndView modelAndView, @RequestParam("token") String confirmationToken) {
-		//System.out.println("inside method to confirm");
 		ConfirmationToken token = confirmTokenRepository.findByConfirmationToken(confirmationToken);
 		HttpHeaders headers = new HttpHeaders();
 		if (token != null) {
@@ -72,6 +78,13 @@ public class LoginSignup {
 			user.setVerified(true);
 			User newUser = userRepo.save(user);
 			System.out.println("confirmed " + newUser.getFullName() + "verification " + newUser.isVerified());
+			
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setTo(user.getEmail());
+			mailMessage.setSubject("Verification Successfull!");
+			mailMessage.setFrom("shahchintan64@gmail.com");
+			mailMessage.setText("Thank you "+user.getFullName()+" for verification");
+			emailSenderService.sendEmail(mailMessage);
 			
 		    headers.add("Location", "http://localhost:3000/verify");    
 		    return new ResponseEntity<Object>(headers, HttpStatus.FOUND);

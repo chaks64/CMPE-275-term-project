@@ -18,7 +18,7 @@ const GoogleSignup = () => {
 
   useEffect(() => {
     let redirect = "";
-    if (localStorage.getItem("token") != null) {
+    if (localStorage.getItem("user") != null) {
       redirect = navigate("/home");
       setRedirectVar(redirect);
       console.log(redirectVar);

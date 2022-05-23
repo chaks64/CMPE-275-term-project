@@ -21,7 +21,7 @@ export default function Login() {
 
   useEffect(() => {
     let redirect = "";
-    if (localStorage.getItem("token") != null) {
+    if (localStorage.getItem("user") != null) {
       redirect = navigate("/home");
       setRedirectVar(redirect);
       console.log(redirectVar);
@@ -39,7 +39,7 @@ export default function Login() {
     const token1 = await axios
       .post(`${config.backendURL}/user/googlesignon`, data)
       .then((response) => {
-        console.log(response.data);
+        console.log(response.status);
         if (response.status === 206) {
           localStorage.setItem("token", resp.tokenId);
           localStorage.setItem("subId", resp.googleId);

@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
 @Entity
 @Table(name = "user")
 public class User {
@@ -55,7 +54,7 @@ public class User {
 	
 	@JsonIgnore 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","user"}) 
     private Set<Event> event = new HashSet<>();
 	
 	@JsonIgnore
@@ -63,14 +62,19 @@ public class User {
     @JoinTable(name = "participants", 
     			joinColumns = @JoinColumn(name = "userId", referencedColumnName = "userId"), 
     			inverseJoinColumns = @JoinColumn(name = "eventID", referencedColumnName = "eventID"))
-    @JsonIgnoreProperties({"event","user"})
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","user"}) 
 	private Set<Event> participateEvents = new HashSet<>();
+	
+	@JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE })
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) 
+    private Set<Reviews> reviews = new HashSet<>();
 	
 	
 	//constructor
-	public User(long userId, String email, String password, String accountType, String fullName, String screenName, String gender,
-			String description, Address address, boolean isVerified , Set<Event> event, Set<Event> participateEvents) {
-
+	public User(long userId, String email, String password, String accountType, String fullName, String screenName,
+			String gender, String description, Address address, boolean isVerified, String googleSubId,
+			Set<Event> event, Set<Event> participateEvents, Set<Reviews> reviews) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -82,12 +86,24 @@ public class User {
 		this.description = description;
 		this.address = address;
 		this.isVerified = isVerified;
+		this.googleSubId = googleSubId;
 		this.event = event;
 		this.participateEvents = participateEvents;
+		this.reviews = reviews;
 	}
 
 	public User() {
 		
+	}
+
+
+
+	public Set<Reviews> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Set<Reviews> reviews) {
+		this.reviews = reviews;
 	}
 
 	//getters and setters

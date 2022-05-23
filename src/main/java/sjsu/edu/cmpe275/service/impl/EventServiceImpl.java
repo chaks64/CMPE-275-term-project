@@ -13,6 +13,7 @@ import sjsu.edu.cmpe275.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import sjsu.edu.cmpe275.model.Participants;
@@ -23,13 +24,6 @@ import sjsu.edu.cmpe275.repository.EventRepository;
 import sjsu.edu.cmpe275.repository.ParticipantRepository;
 import sjsu.edu.cmpe275.repository.UserRepository;
 import sjsu.edu.cmpe275.service.EventService;
-import org.springframework.web.client.HttpClientErrorException;
-
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
-
-import sjsu.edu.cmpe275.ErrorHandler.ErrorExceptionHandler;
-import sjsu.edu.cmpe275.ErrorHandler.BadRequest;
-import sjsu.edu.cmpe275.model.Event;
 
 @Service
 public class EventServiceImpl implements EventService{
@@ -42,6 +36,9 @@ public class EventServiceImpl implements EventService{
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired
+	private EmailSenderService emailSenderService;
 
 	@Override
 	public ResponseEntity<?> listEvents() {
@@ -107,6 +104,14 @@ public class EventServiceImpl implements EventService{
 				ErrorResponse errorResponse = new ErrorResponse("E02", "Unable to create event");
 				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
+				
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(user.getEmail());
+				mailMessage.setSubject("New Event Created!");
+				mailMessage.setFrom("shahchintan64@gmail.com");
+				mailMessage.setText("Your event "+event.getTitle()+" has been created");
+				emailSenderService.sendEmail(mailMessage);
+				
 				return new ResponseEntity<>(newEvent, HttpStatus.CREATED);
 			}
 			

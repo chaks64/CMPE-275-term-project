@@ -18,7 +18,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="forum")
-
 public class Forum {
 
     @Id

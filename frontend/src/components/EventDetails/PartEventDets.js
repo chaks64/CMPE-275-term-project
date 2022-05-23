@@ -18,14 +18,19 @@ const PartEventDets = () => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [rate, setRate] = useState(0);
+  const [review, setReview] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     eventDetails();
-    vefrify();
+    // vefrify();
     // calcTime();
   }, []);
+
+  const handleReview = (e) => {
+    setReview(e.target.value);
+  };
 
   const eventDetails = async () => {
     const list1 = await axios
@@ -68,6 +73,33 @@ const PartEventDets = () => {
     } else if (details.status === "cancel") {
       setAllow(true);
     }
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      userid: details.user.userId,
+      rating: rate,
+      review: review,
+      type: "organizer"
+    };
+    console.log(data);
+    const list1 = await axios
+      .post(`${config.backendURL}/review/post`, data)
+      .then((response) => {
+        console.log(response.data);
+        setShow(false);
+        alert("Reviewed Organizer");
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        setShow(true);
+        if (error.response.data.errorDesc === undefined) {
+          setMessage("Server error please try again");
+        } else {
+          setMessage(error.response.data.errorDesc);
+        }
+      });
   };
 
   // const calcTime = () => {
@@ -198,12 +230,16 @@ const PartEventDets = () => {
               <tr>
                 <td>Review</td>
                 <td>
-                  <textarea></textarea>
+                  <textarea
+                    value={review}
+                    name="review"
+                    onChange={handleReview}
+                  />
                 </td>
               </tr>
               <tr>
                 <td align="center" colSpan="2">
-                  <button className="submit-button">Review</button>
+                  <button className="submit-button" onClick={onSubmit}>Review</button>
                 </td>
               </tr>
             </table>
