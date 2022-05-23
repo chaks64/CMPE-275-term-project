@@ -142,6 +142,54 @@ const Signup = () => {
                 ) : null}
               </div>
               <div className="input-group">
+                <label className="label-name">Account Type</label>
+                <select
+                  id="accType"
+                  type="accType"
+                  name="accType"
+                  className="form-input"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.accType}
+                  defaultValue="preson"
+                  required
+                >
+                  <option value="person">Person</option>
+                  <option value="organization">Organization</option>
+                </select>
+              </div>
+
+              <div className="input-group">
+                <label className="label-name">Full Name</label>
+                <input
+                  id="firstname"
+                  type="text"
+                  name="firstname"
+                  className="form-input"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.firstname}
+                />
+                {formik.touched.firstname && errors.firstname ? (
+                  <div className="error">{errors.firstname} </div>
+                ) : null}
+              </div>
+              <div className="input-group">
+                <label className="label-name">Screen Name</label>
+                <input
+                  id="lastname"
+                  type="text"
+                  name="lastname"
+                  className="form-input"
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  value={formik.values.lastname}
+                />
+                {formik.touched.lastname && errors.lastname ? (
+                  <div className="error">{errors.lastname} </div>
+                ) : null}
+              </div>
+              <div className="input-group">
                 <button className="submit-button">Join</button>
               </div>
             </div>

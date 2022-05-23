@@ -41,20 +41,20 @@ const EventCard = ({ event }) => {
             Details
             </Button>
           </Link>
-          <Link
+          {/* <Link
             // to="/eventDetails"
             to={`/forum/${event.eventID}`}
             state={{ from: event }}
             style={{ color: "white" }}
           >
-            {/* <Button
+            <Button
             disabled={dis}
               variant="primary"
               style={{ backgroundColor: "black" }}
             >
             Participant Forum
-            </Button> */}
-          </Link>
+            </Button>
+          </Link> */}
         </Card.Body>
       </Card>
     </>

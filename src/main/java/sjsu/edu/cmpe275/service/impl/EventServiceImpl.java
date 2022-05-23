@@ -2,8 +2,11 @@ package sjsu.edu.cmpe275.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
 import sjsu.edu.cmpe275.model.Event;
 
 
@@ -138,10 +141,10 @@ public class EventServiceImpl implements EventService{
 				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 			}
 			
-//			if(userid == event.getUser().getUserId()) {
-//				ErrorResponse errorResponse = new ErrorResponse("500", "Cannot participate in own event");
-//				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-//			}
+			if(userid == event.getUser().getUserId()) {
+				ErrorResponse errorResponse = new ErrorResponse("500", "Cannot participate in own event");
+				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 			
 			if(event.getPolicy().equals("approval")){
 				participants.setStatus("notapproved");
@@ -149,8 +152,14 @@ public class EventServiceImpl implements EventService{
 				participants.setStatus("approved");
 			}
 			
+			Participants alreadyParticipant = participantRepo.findByUserIdAndEventID(userid, eventid);
+			if(alreadyParticipant != null) {
+				ErrorResponse errorResponse = new ErrorResponse("E02", "Already registered for the event");
+				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
 			Participants newParticipants = participantRepo.save(participants);
-			if(newParticipants == null) {
+			if(newParticipants == null) {	
 				ErrorResponse errorResponse = new ErrorResponse("E02", "Unable to register for event");
 				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
@@ -276,6 +285,17 @@ public class EventServiceImpl implements EventService{
 				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
 			} else {
 				System.out.println(event.getParticipateUser().size());
+				if(event.getParticipateUser().size() > 0) {
+					Set<User> pList = event.getParticipateUser();
+					for(User u : event.getParticipateUser()) {
+						Long userid = u.getUserId();
+						Participants participants = participantRepo.findByUserIdAndEventID(userid, eventid);
+						if(!participants.getStatus().equals("approved")) {
+							pList.remove(u);
+						}
+					}
+					event.setParticipateUser(pList);
+				}
 				return new ResponseEntity<>(event, HttpStatus.OK);
 			}
 		} catch (Exception e) {
@@ -298,10 +318,12 @@ public class EventServiceImpl implements EventService{
 				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
 			} else {
 				for(Participants p : list) {
-					Long id = p.getEventID();
-					Event e = eventRepo.findOneByEventID(id);
-					if(e != null)
-						eventsList.add(e);
+					if(p.getStatus().equals("approved")) {
+						Long id = p.getEventID();
+						Event e = eventRepo.findOneByEventID(id);
+						if(e != null)
+							eventsList.add(e);
+					}
 				}
 				return new ResponseEntity<>(eventsList, HttpStatus.OK);
 			}

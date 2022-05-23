@@ -6,11 +6,14 @@ import Footer from "../Footer/Footer";
 import "./approval.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { Alert } from "react-bootstrap";
 
 const ApprovalList = () => {
   const location = useLocation();
   let navigate = useNavigate();
   const [list, setList] = useState([]);
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
   const { event } = location.state;
   useEffect(() => {
     getEvents();
@@ -26,16 +29,21 @@ const ApprovalList = () => {
         setList(response.data);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
+          setShow(true);
+          if (error.response.data.errorDesc === undefined) {
+            setMessage("Server error please try again");
+          } else {
+            setMessage(error.response.data.errorDesc);
+          }
       });
   };
 
   const manageRequest = async (e) => {
     e.preventDefault();
-    console.log(e.target.value);
-    localStorage.setItem("clock",new Date());
+    console.log(e.target.id);
     const data = {
-      userid: localStorage.getItem("userid"),
+      userid: e.target.id,
       status: e.target.value,
     };
     const list1 = await axios
@@ -52,6 +60,18 @@ const ApprovalList = () => {
   return (
     <>
       <NavBar />
+      {show ? (
+        <Alert
+          variant="danger"
+          onClose={() => setShow(false)}
+          dismissible
+          className="size"
+        >
+          <p>{message}</p>
+        </Alert>
+      ) : (
+        console.log(<p></p>)
+      )}
       <div>
         <table className="styled-table">
           <thead>
@@ -70,7 +90,7 @@ const ApprovalList = () => {
                   <td className="text-center">{user.email}</td>
                   <td className="text-center">{user.fullName}</td>
                   <td className="text-center">
-                    <button value="approved" onClick={manageRequest}>
+                    <button value="approved" id={user.userId} onClick={manageRequest}>
                       Approve
                     </button>{" "}
                     <button value="reject" onClick={manageRequest}>

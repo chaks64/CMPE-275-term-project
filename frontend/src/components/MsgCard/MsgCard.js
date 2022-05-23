@@ -22,7 +22,7 @@ const MsgCard = (props) => {
     return (
         <div>
             <div className='msg'>
-            {msg.msg}
+            <span style={{paddingLeft:"5px"}}>{msg.msg}</span>
             <div className='buttons'>
             <Button size="small" startIcon={<ReplyIcon  sx={{ color: red[900] }} ></ReplyIcon> } onClick={handleReply}>
             </Button>

@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import SignUp from "./components/SignUp/SignUp";

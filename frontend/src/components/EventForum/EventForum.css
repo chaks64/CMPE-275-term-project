@@ -1,7 +1,3 @@
-/* .parent {
-    display: flex;
-}  */
-
 
 /* .parent .inputBox {
     position: absolute;
@@ -31,7 +27,7 @@
     flex: 1;
     position: fixed;
     bottom: 0;
-    margin-bottom: 100px;
+    margin-bottom: 130px;
     float: left;
     width: 20%;
     margin-left: 2%;
@@ -45,9 +41,14 @@
     flex: 1;
     position: fixed;
     bottom: 0;
-    margin-bottom: 100px;
+    margin-bottom: 130px;
     float: left;
     /* width: 40%; */
     margin-left: 22%;
     /* justify-content: center; */
 }
+
+/* .right{
+    margin-top: 10px;
+    border: 1px solid #1c1c1c;
+} */
