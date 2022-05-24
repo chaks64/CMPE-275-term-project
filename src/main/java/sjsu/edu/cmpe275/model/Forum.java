@@ -25,6 +25,8 @@ public class Forum {
     private long msgID;
 
     private String msg;
+    private String img;
+
 
     private String forumType;
     @JsonIgnore
@@ -70,6 +72,14 @@ public class Forum {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getForumType() {

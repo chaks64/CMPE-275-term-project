@@ -19,6 +19,13 @@ const EventForum = (props) => {
   const [messages, setMessages] = useState("");
   const [allow, setAllow] = useState(false);
   const userid = localStorage.getItem("userid");
+  const [image, setimage] = useState("");
+  var organizer=false;
+  if(props.details.user.userId==userid){
+//organizer is seding message
+organizer=true;
+  }
+
   console.log(`logged in user id:`, userid);
   var flag = false;
 
@@ -74,9 +81,9 @@ const EventForum = (props) => {
     var timestamp = Date.now();
     var forumType = props.type;
     var eventid = String(props.id);
-    var msg = userMsg;
-    console.log(msg, forumType, userid, eventid, timestamp);
-    var api_data = { msg, forumType, userid, eventid };
+    var message = userMsg;
+    console.log(message, forumType, userid, eventid, timestamp);
+    var api_data = { message, forumType, userid, eventid };
     console.log(api_data);
     axios
       .post(`${config.backendURL}/forum/createMsg`, api_data)
@@ -106,10 +113,8 @@ const EventForum = (props) => {
                 <MsgCard
                   key={msg.msgID}
                   id={msg.msgID}
-                  // name={prod.name}
-                  // price={prod.price}
-                  // url={prod.url}
                   msg={msg}
+                  isOrganizer={organizer}
                 />{" "}
               </div>
             );
