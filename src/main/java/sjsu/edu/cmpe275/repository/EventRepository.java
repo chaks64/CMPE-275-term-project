@@ -19,8 +19,8 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 //	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword, String organizer);
 //	@Query(value = "select * from event where lower(city) like :location and lower(status) = :status and DATE_FORMAT(start_date, '%m/%d/%Y %H:%i:%s') >= DATE_FORMAT(:startTime,'%m/%d/%Y %H:%i:%s') and DATE_FORMAT(endt_date, '%m/%d/%Y %H:%i:%s') >= DATE_FORMAT(:endtDate,'%m/%d/%Y %H:%i:%s') and (lower(description) like :keyword or lower(title) like :keyword)", nativeQuery = true)
 //	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword);
-	@Query(value = "select * from event where lower(city) like :location and lower(status) = :status and DATE_FORMAT(start_date, '%m/%d/%Y %H:%i:%s') >= DATE_FORMAT(:startTime,'%m/%d/%Y %H:%i:%s') and DATE_FORMAT(endt_date, '%m/%d/%Y %H:%i:%s') <= DATE_FORMAT(:endtDate,'%m/%d/%Y %H:%i:%s') and (lower(description) like :keyword or lower(title) like :keyword)", nativeQuery = true)
-	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword);
+	@Query(value = "select * from event inner join user on event.user_id = user.user_id where lower(event.city) like :location and lower(event.status) = :status and DATE_FORMAT(event.start_date, '%m/%d/%Y %H:%i:%s') >= DATE_FORMAT(:startTime,'%m/%d/%Y %H:%i:%s') and DATE_FORMAT(event.endt_date, '%m/%d/%Y %H:%i:%s') <= DATE_FORMAT(:endtDate,'%m/%d/%Y %H:%i:%s') and (lower(event.description) like :keyword or lower(event.title) like :keyword) and lower(user.screen_name) like :organizer", nativeQuery = true)
+	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword, String organizer);
 //=======
 
     public Event findByEventID(Long eventID);
