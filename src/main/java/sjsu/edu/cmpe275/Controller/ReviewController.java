@@ -29,8 +29,8 @@ public class ReviewController {
         return reviewsService.postReview(inputJson);
     }
     
-    @GetMapping(value = "/show/{userid}")
-	public ResponseEntity<?> getParticipants(@PathVariable String userid){
-		return reviewsService.showReviews(userid);
+    @GetMapping(value = "/show/{userid}/{userType}")
+	public ResponseEntity<?> getParticipants(@PathVariable String userid, @PathVariable String userType){
+		return reviewsService.showReviews(userid, userType);
 	}
 }

@@ -4,7 +4,7 @@ import { config } from "../../utils/utils";
 import "./approval.css";
 import { Alert } from "react-bootstrap";
 
-const Reviews = ({ userid }) => {
+const Reviews = ({ userid, userType }) => {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
   const [list, setList] = useState([]);
@@ -16,7 +16,7 @@ const Reviews = ({ userid }) => {
   const getReviews = async () => {
     console.log("here ", userid);
     const list1 = await axios
-      .get(`${config.backendURL}/review/show/${userid}`)
+      .get(`${config.backendURL}/review/show/${userid}/${userType}`)
       .then((response) => {
         console.log(response.data);
         setList(response.data);

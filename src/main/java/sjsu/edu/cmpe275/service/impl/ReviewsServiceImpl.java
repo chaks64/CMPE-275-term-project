@@ -80,8 +80,8 @@ public class ReviewsServiceImpl implements ReviewsService{
 	}
 
 	@Override
-	public ResponseEntity<?> showReviews(String userId) {
-		System.out.println("in show review "+userId);
+	public ResponseEntity<?> showReviews(String userId, String userType) {
+		System.out.println("in show review "+userId+" "+userType);
         try {
             Long userid = Long.parseLong(String.valueOf(userId));
             User user = userRepository.findByUserId(userid);
@@ -90,12 +90,11 @@ public class ReviewsServiceImpl implements ReviewsService{
                 return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
             } else {
             	Set<Reviews> reviews = user.getReviews();
-            	System.out.println(reviews);
-//            	Set<Reviews> reviews1 = reviews.stream()
-//            			.filter(r -> r.getRating()==4)
-//            			.collect(Collectors.toSet());
+            	Set<Reviews> reviews1 = reviews.stream()
+            			.filter(r -> r.getReviewType().equals(userType))
+            			.collect(Collectors.toSet());
             	
-                return new ResponseEntity<>(reviews, HttpStatus.OK);
+                return new ResponseEntity<>(reviews1, HttpStatus.OK);
             }
         } catch (Exception e) {
             e.printStackTrace();

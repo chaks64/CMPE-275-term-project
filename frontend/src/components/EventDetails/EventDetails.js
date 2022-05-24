@@ -10,6 +10,7 @@ import Modal from "react-modal";
 import BillPage from "./BillPage";
 import EventForum from "../EventForum/EventForum";
 import { Alert } from "react-bootstrap";
+import Reviews from "../ApprovalList/Reviews";
 
 const EventDetails = () => {
   const location = useLocation();
@@ -19,18 +20,7 @@ const EventDetails = () => {
   const [allow, setAllow] = useState(false);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
-
-  const customStyles = {
-    content: {
-      top: "50%",
-      left: "50%",
-      right: "auto",
-      bottom: "auto",
-      marginRight: "-50%",
-      transform: "translate(-50%, -50%)",
-      // backgroundColor       : '#F0AA89'
-    },
-  };
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -103,6 +93,11 @@ const EventDetails = () => {
   const setModalIsOpenToTrue = () => {
     console.log("here");
     setModalIsOpen(!modalIsOpen);
+  };
+
+  const setModal = () => {
+    console.log("here");
+    setOpen(!open);
   };
 
   const getEvents = async () => {
@@ -206,15 +201,33 @@ const EventDetails = () => {
               <td>Dead Line Date:</td>
               <td>{new Date(details.deadline).toDateString()}</td>
             </tr>
+            <tr>
+              <td>
+                <Button
+                  variant="primary"
+                  style={{ backgroundColor: "black" }}
+                  onClick={setModal}
+                >
+                  See Reputation
+                </Button>
+              </td>
+              <td>
+                <Button
+                  disabled={allow}
+                  variant="primary"
+                  style={{ backgroundColor: "black" }}
+                  onClick={onRegister}
+                >
+                  Register
+                </Button>
+              </td>
+            </tr>
           </table>
-          <Button
-            disabled={allow}
-            variant="primary"
-            style={{ backgroundColor: "black" }}
-            onClick={onRegister}
-          >
-            Register
-          </Button>
+
+          <Modal isOpen={open} onRequestClose={() => setOpen(false)}>
+            <button onClick={setModal}>x</button>
+            <Reviews userid={details.user.userId} userType="organizer"/>
+          </Modal>
 
           <Modal
             isOpen={modalIsOpen}
