@@ -1,9 +1,0 @@
-.outer-box {
-    margin: 10px auto;
-    text-align: center;
-    font-family: proxima-nova, Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-flow: column;
-    margin-bottom: 130px !important;
-  }
-  

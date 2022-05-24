@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import sjsu.edu.cmpe275.model.Participants;
 import sjsu.edu.cmpe275.model.User;
+import sjsu.edu.cmpe275.model.VirtualTime;
 import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
 import sjsu.edu.cmpe275.model.Address;
 import sjsu.edu.cmpe275.repository.EventRepository;
@@ -42,7 +43,8 @@ public class EventServiceImpl implements EventService{
 
 	@Override
 	public ResponseEntity<?> listEvents() {
-		
+		VirtualTime vTime = VirtualTime.getInstance();
+		System.out.println("---------"+vTime.getSystemTime());
 		try {
 			List<Event> events = eventRepo.findAll();
 			if(events==null || events.size()==0) {
