@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import sjsu.edu.cmpe275.model.Event;
-import sjsu.edu.cmpe275.repository.EventRepository;
 import sjsu.edu.cmpe275.service.EventService;
 
 @Controller
@@ -27,9 +25,6 @@ public class EventController {
 	
 	@Autowired
 	private EventService eventService;
-
-	@Autowired
-	private EventRepository eventRepo;
 
 	@PostMapping(value = "/create")
 	public ResponseEntity<?> createEvent(@RequestBody Map<String, Object> inputJson){
