@@ -83,7 +83,10 @@ const EventDetails = () => {
 
   const onRegister = (e) => {
     e.preventDefault();
-    if (details.policy === "auto" && details.fees > 0) {
+
+    if (details.participateUser.length === details.maxParticpants) {
+      alert("Maximum Limit of participants reached");
+    } else if (details.policy === "auto" && details.fees > 0) {
       setModalIsOpenToTrue();
     } else {
       getEvents();
@@ -226,7 +229,7 @@ const EventDetails = () => {
 
           <Modal isOpen={open} onRequestClose={() => setOpen(false)}>
             <button onClick={setModal}>x</button>
-            <Reviews userid={details.user.userId} userType="organizer"/>
+            <Reviews userid={details.user.userId} userType="organizer" />
           </Modal>
 
           <Modal
