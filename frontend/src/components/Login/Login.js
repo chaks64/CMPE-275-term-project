@@ -3,7 +3,6 @@ import Footer from "../Footer/Footer";
 import NavBar from "../NavBar/NavBar";
 import "./Login.css";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
 import GoogleLogin from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -71,7 +70,7 @@ export default function Login() {
       email: email,
       password: password,
     };
-    axios.defaults.withCredentials = true;
+    // axios.defaults.withCredentials = true;
     const token1 = await axios
       .post(`${config.backendURL}/user/login`, data)
       .then((response) => {

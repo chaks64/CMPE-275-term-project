@@ -180,7 +180,7 @@ const NavBar = () => {
                 </li>
 
                 <li className="nav-text">
-                  <Link to={"/login"}>
+                  {/* <Link to={"/login"}> */}
                     <FaIcons.FaSignOutAlt />
                     <span
                       style={{ color: "white", display: "block" }}
@@ -188,7 +188,7 @@ const NavBar = () => {
                     >
                       Logout
                     </span>
-                  </Link>
+                  {/* </Link> */}
                 </li>
               </>
             )}

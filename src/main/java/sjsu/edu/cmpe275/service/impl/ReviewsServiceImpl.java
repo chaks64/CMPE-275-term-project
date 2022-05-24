@@ -1,6 +1,5 @@
 package sjsu.edu.cmpe275.service.impl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,7 +11,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
-import sjsu.edu.cmpe275.model.Forum;
 import sjsu.edu.cmpe275.model.Reviews;
 import sjsu.edu.cmpe275.model.User;
 import sjsu.edu.cmpe275.repository.ReviewRepository;

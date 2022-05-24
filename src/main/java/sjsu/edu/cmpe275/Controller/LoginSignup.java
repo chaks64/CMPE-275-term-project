@@ -45,10 +45,7 @@ public class LoginSignup {
 	private EmailSenderService emailSenderService;
 	
 	
-	@PostMapping(value = "/login")
-	public ResponseEntity<?> logineUser(@RequestBody Map<String, Object> inputJson){
-		return loginSignupService.loginUser(inputJson);
-	}
+	
 	
 	@PostMapping(value = "/signup")
 	public ResponseEntity<?> createUser(@RequestBody Map<String, Object> inputJson){
@@ -56,6 +53,10 @@ public class LoginSignup {
 		return loginSignupService.createUser(inputJson);
 	}
 	
+	@PostMapping(value = "/login")
+	public ResponseEntity<?> logineUser(@RequestBody Map<String, Object> inputJson){
+		return loginSignupService.loginUser(inputJson);
+	}
 	
 	@RequestMapping(value="/googlesignon", method = RequestMethod.POST, produces = {"application/json"})
     public ResponseEntity<?> googleSignon(@RequestBody Map<String, Object> inputJson){

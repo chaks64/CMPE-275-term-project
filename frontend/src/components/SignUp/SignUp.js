@@ -38,7 +38,7 @@ const Signup = () => {
     city: "",
     state: "",
     zip: "",
-    accType: "",
+    accType: "person",
     gender: "",
   };
 
