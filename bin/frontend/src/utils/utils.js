@@ -32,6 +32,12 @@ export const validate = (values) => {
         errors.lastname = "Screen Name cannot be blank";
     }
 
+    if(values.accType === 'organization'){
+      if(!new RegExp('^' + values.firstname).test(values.lastname)){
+        errors.lastname = "Screen Name should start with full name";
+      }
+    }
+
     
   
     return errors;

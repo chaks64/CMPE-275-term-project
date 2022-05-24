@@ -126,3 +126,9 @@ background-image: url('https://i.imgur.com/GnyDvKN.png');
   position: relative;
   text-align: left;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

@@ -77,8 +77,7 @@ public class EventController {
 			response.put("success", false);
  			response.put("message", "All parameters are needed to perform search. Send default parameters if needed.");
  			return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
- 		} 
-
+ 		}
 // 		List<Event> x = eventRepo.findByDescriptionIgnoreCaseContainsOrTitleIgnoreCaseContains(dum1, dum1);
 		return eventService.searchEvents(inputJson);
 // 		return new ResponseEntity<>("All  OK", HttpStatus.OK);

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 import { SidebarData } from "./SidebarData";
@@ -8,26 +8,35 @@ import { IconContext } from "react-icons";
 import { ReactComponent as Logo } from "../../imgs/logo1.svg";
 import { ThemeContext } from "../../App";
 import { Button, Col } from "react-bootstrap";
-import Clock from 'react-live-clock';
+// import * as IoIcons from "react-icons/io";
+import * as CgIcons from "react-icons/cg";
+import Clock from "react-live-clock";
 
 const NavBar = () => {
-
   const [temp, setTemp] = useState(localStorage.getItem("clock"));
-
-
+  let navigate = useNavigate();
+  // const [, setCount] = useState(0);
   const [sidebar, setSidebar] = useState(false);
-  const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
-    useContext(ThemeContext);
-  let time = new Date().toLocaleTimeString();
+  // const { systemTime, setSystemTime, mimicTime, toggleMimicTime } =
+  //   useContext(ThemeContext);
+  // let time = new Date().toLocaleTimeString();
   const [date, setDate] = useState(new Date().toLocaleTimeString());
 
+  const onLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+  // function useForceUpdate() {
+  //   const [value, setValue] = useState(0); // integer state
+  //   return () => setValue((value) => value + 1); // update the state to force render
+  // }
   const [newTime, setNewTime] = useState(new Date());
 
-  const updateTime = () => {
-    let time = new Date().toLocaleTimeString();
-    setDate(time);
-  };
-  setInterval(updateTime, 1000);
+  // const updateTime = () => {
+  //   let time = new Date().toLocaleTimeString();
+  //   setDate(time);
+  // };
+  // setInterval(updateTime, 1000);
 
   const showSidebar = () => {
     setSidebar(!sidebar);
@@ -35,49 +44,32 @@ const NavBar = () => {
 
   const changeTime = () => {
     console.log("here");
-    console.log("System Time:", newTime);
-    // console.log("New Time set by date time picker", newTime);
-    let changedDateTime = new Date(newTime);
-    // console.log("mimicTime Flag", mimicTime);
-    // console.log(changedDateTime);
     setTemp(newTime);
-    localStorage.setItem("clock",newTime);
-    console.log("temp", temp);
-
-    const newAllotTime = new Date(changedDateTime);
-    setSystemTime(newAllotTime);
-    toggleMimicTime(true);
-    console.log("mimicTime Flag", mimicTime);
+    localStorage.setItem("clock", newTime);
+    window.location.reload(false);
   };
 
   const setToCurrentTime = () => {
-    setDate(new Date());
-    setSystemTime(date);
-    toggleMimicTime(false);
+    // setDate(new Date());
+    localStorage.setItem("clock", newTime);
+    window.location.reload(false);
   };
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>
         <div className="navbar">
-          <Link to="/home" className="menu-bars">
-            <FaIcons.FaBars onClick={showSidebar} />
-          </Link>
+          {/* <Link to="" className="menu-bars"> */}
+          <FaIcons.FaBars className="menu-bars" onClick={showSidebar} />
+          {/* </Link> */}
           <Logo className="logo" />
 
           <Col md={2}>
-            <p style={{ color: "white" }}>Current Time : {date}</p>
-            <p style={{ color: "white" }}>
-              Current Date : {new Date().toLocaleDateString()}
-            </p>
-          </Col>
-
-          <Col md={2}>
-            <p style={{ color: "white" }}>
-              System Time : {systemTime.toLocaleTimeString()}
-            </p>
-            <p style={{ color: "white" }}>
-              System Date : {systemTime.toLocaleDateString()}
-            </p>
+            <Clock
+              date={`${temp}:00`}
+              format={"YYYY-MM-DD, h:mm:ss A"}
+              ticking={false}
+              style={{ color: "white" }}
+            />
           </Col>
 
           <Col md={2}>
@@ -110,7 +102,11 @@ const NavBar = () => {
               onClick={() => {
                 setToCurrentTime();
               }}
-              style={{ backgroundColor: "#7C0200", color:"white" }}
+              style={{
+                backgroundColor: "#7C0200",
+                color: "white",
+                marginTop: "4.2%",
+              }}
             >
               Set to Current Date and Time
             </button>
@@ -119,9 +115,9 @@ const NavBar = () => {
         <nav className={sidebar ? "nav-menu active" : "nav-menu"}>
           <ul className="nav-menu-items" onClick={showSidebar}>
             <li className="navbar-toggle">
-              <Link to="#" className="menu-bars">
-                <AiIcons.AiOutlineClose />
-              </Link>
+              {/* <Link to="#" className="menu-bars"> */}
+              <AiIcons.AiOutlineClose className="menu-bars" />
+              {/* </Link> */}
             </li>
             <li>
               <img
@@ -130,25 +126,82 @@ const NavBar = () => {
                 className="profileImg"
               />
             </li>
-            {SidebarData.map((item, index) => {
-              return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
-                    {item.icon}
-                    <span>{item.title}</span>
+
+            {localStorage.getItem("userid") == null ? (
+              <li className="nav-text">
+                <Link to="/login">
+                  <FaIcons.FaSignInAlt />
+                  <span>Login</span>
+                </Link>
+              </li>
+            ) : (
+              <>
+                <li className="nav-text">
+                  <Link to={"/home"}>
+                    <AiIcons.AiFillHome />
+                    <span style={{ color: "white", display: "block" }}>
+                      Home
+                    </span>
                   </Link>
                 </li>
-              );
-            })}
+                <li className="nav-text">
+                  <Link to={"/createEvent"}>
+                    <FaIcons.FaEdit />
+                    <span style={{ color: "white", display: "block" }}>
+                      Create Event
+                    </span>
+                  </Link>
+                </li>
+                <li className="nav-text">
+                  <Link to={"/myEvents"}>
+                    <AiIcons.AiOutlineOrderedList />
+                    <span style={{ color: "white", display: "block" }}>
+                      Organized Events
+                    </span>
+                  </Link>
+                </li>
+                <li
+                  className={
+                    JSON.parse(localStorage.getItem("user")).accountType ===
+                    "person"
+                      ? "nav-text"
+                      : "hide"
+                  }
+                >
+                  <Link to={"/regEvent"}>
+                    <AiIcons.AiOutlineOrderedList />
+                    <span style={{ color: "white", display: "block" }}>
+                      Participated Events
+                    </span>
+                  </Link>
+                </li>
+
+                <li className="nav-text">
+                  <Link to={"/login"}>
+                    <FaIcons.FaSignOutAlt />
+                    <span
+                      style={{ color: "white", display: "block" }}
+                      onClick={onLogout}
+                    >
+                      Logout
+                    </span>
+                  </Link>
+                </li>
+              </>
+
+              // SidebarData.map((item, index) => {
+              //   return (
+              //     <li key={index} className={item.cName}>
+              //       <Link to={item.path}>
+              //         {item.icon}
+              //         <span>{item.title}</span>
+              //       </Link>
+              //     </li>
+              //   );
+              // })
+            )}
           </ul>
         </nav>
-
-        <Clock
-          date={`${temp}:00`}
-          format={'dddd, MMMM Mo, YYYY, h:mm:ss A'}
-          ticking={true}
-          />
-
       </IconContext.Provider>
     </>
   );

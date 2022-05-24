@@ -148,3 +148,9 @@
   padding: 10px 19px;
   cursor: pointer;
 }
+
+.size{
+  width: 30%;
+  margin: auto;
+  margin-top: 10px;
+}

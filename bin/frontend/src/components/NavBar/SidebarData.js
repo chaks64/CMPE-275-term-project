@@ -7,13 +7,13 @@ import * as CgIcons from "react-icons/cg";
 export const SidebarData = [
     {
         title: 'Home',
-        path: '/',
+        path: '/home',
         icon: <AiIcons.AiFillHome />,
         cName: 'nav-text'
     },
     {
-        title: 'Bookings',
-        path: '/',
+        title: 'My Events',
+        path: '/myEvents',
         icon: <FaIcons.FaHotel />,
         cName: 'nav-text'
     },
@@ -24,15 +24,9 @@ export const SidebarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Logut',
-        path: '/',
-        icon: <FaIcons.FaSignOutAlt />,
+        title: 'Part Events',
+        path: '/regEvent',
+        icon: <CgIcons.CgProfile />,
         cName: 'nav-text'
     }
-    // {
-    //     title: 'Home',
-    //     path: '/',
-    //     icon: <AiIcons.AiFillHome />,
-    //     cName: 'nav-text'
-    // }
 ]

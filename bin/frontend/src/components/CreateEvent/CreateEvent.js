@@ -5,6 +5,7 @@ import "./CreateEvent.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { config } from "../../utils/utils";
+import { Alert } from "react-bootstrap";
 
 const CreateEvent = () => {
   const [eventInfo, setEventInfo] = useState({
@@ -24,46 +25,122 @@ const CreateEvent = () => {
     policy: "auto",
   });
 
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    const data = {
-      title: eventInfo.title,
-      desc: eventInfo.desc,
-      start: eventInfo.start,
-      end: eventInfo.end,
-      deadline: eventInfo.deadline,
-      min: parseInt(eventInfo.minParticipants),
-      max: parseInt(eventInfo.maxParticipants),
-      policy: eventInfo.policy,
-      fees: parseInt(eventInfo.fees),
-      address: {
-        street: eventInfo.street,
-        number: eventInfo.number,
-        city: eventInfo.city,
-        state: eventInfo.state,
-        zipcode: eventInfo.zip,
-      },
-    };
-
-    const token1 = await axios
-      .post(`h${config.backendURL}/event/create`, data)
-      .then((response) => {
-        console.log(response.data);
-        alert("event created");
-        navigate("/home");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (eventInfo.maxParticipants < eventInfo.minParticipants) {
+      alert("Minimum participants should be less than maximum participants");
+    } else {
+      const user = JSON.parse(localStorage.getItem("user"));
+      console.log(user.userId);
+      const data = {
+        title: eventInfo.title,
+        desc: eventInfo.desc,
+        start: eventInfo.start,
+        end: eventInfo.end,
+        deadline: eventInfo.start,
+        min: parseInt(eventInfo.minParticipants),
+        max: parseInt(eventInfo.maxParticipants),
+        policy: eventInfo.policy,
+        fees: parseInt(eventInfo.fees),
+        userid: user.userId,
+        address: {
+          street: eventInfo.street,
+          number: eventInfo.number,
+          city: eventInfo.city,
+          state: eventInfo.state,
+          zipcode: eventInfo.zip,
+        },
+      };
+      const token1 = await axios
+        .post(`${config.backendURL}/event/create`, data)
+        .then((response) => {
+          console.log(response.data);
+          alert("event created");
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.log(error.response.data);
+          setShow(true);
+          if (error.response.data.errorDesc !== undefined) {
+            setMessage(error.response.data.errorDesc);
+          } else {
+            setMessage("Server error please try again");
+          }
+        });
+    }
   };
+
+  const handleStart = (event) => {
+    console.log(eventInfo.start === "");
+    var d = new Date(); /* midnight in China on April 13th */
+    d.toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
+    let two = new Date(event.target.value);
+    const diff = (two - d) / (1000 * 60 * 60 * 24);
+    console.log(d, "  ", two);
+    console.log(diff);
+    if (two < d) {
+      alert("Please select Future date");
+    } else {
+      setEventInfo({ ...eventInfo, [event.target.name]: event.target.value });
+    }
+  };
+
+  const handleEnd = (event) => {
+    if (eventInfo.start === "") {
+      alert("Please select Start date first");
+    } else {
+      var d = new Date(eventInfo.start);
+      d.toLocaleString();
+      let two = new Date(event.target.value);
+      const diff = (two - d) / (1000 * 60 * 60 * 24);
+      console.log(diff);
+      if (two < d) {
+        alert("End date should be greater than start date");
+      } else {
+        setEventInfo({ ...eventInfo, [event.target.name]: event.target.value });
+      }
+    }
+  };
+
+  const handleDead = (event) => {
+    if (eventInfo.start === "") {
+      alert("Please select Start date first");
+    } else {
+      let d = new Date(eventInfo.start);
+      let two = new Date(event.target.value);
+      const diff = (two - d) / (1000 * 60 * 60 * 24);
+      console.log(d, "  ", two);
+      console.log(diff);
+      if (d < two) {
+        alert("Registration deadline should be before event start date");
+      } else {
+        setEventInfo({ ...eventInfo, [event.target.name]: event.target.value });
+      }
+    }
+  };
+
   const handleChange = (event) => {
     setEventInfo({ ...eventInfo, [event.target.name]: event.target.value });
   };
   return (
     <>
       <NavBar />
+      {show ? (
+        <Alert
+          variant="danger"
+          onClose={() => setShow(false)}
+          dismissible
+          className="size"
+        >
+          <p>{message}</p>
+        </Alert>
+      ) : (
+        console.log(<p></p>)
+      )}
       <div className="main-box">
         <div className="Heading">
           <h2 className="title">Create New Event</h2>
@@ -80,6 +157,7 @@ const CreateEvent = () => {
                   className="form-input"
                   value={eventInfo.title}
                   onChange={handleChange}
+                  required
                 />
               </div>
 
@@ -104,8 +182,9 @@ const CreateEvent = () => {
                       type="datetime-local"
                       name="start"
                       className="form-input"
-                      onChange={handleChange}
+                      onChange={handleStart}
                       value={eventInfo.start}
+                      required
                     />
                   </div>
 
@@ -113,14 +192,26 @@ const CreateEvent = () => {
                     <label className="label-name">End Date</label>
                     <input
                       id="end"
-                      type="date"
+                      type="datetime-local"
                       name="end"
                       className="form-input"
-                      onChange={handleChange}
+                      onChange={handleEnd}
                       value={eventInfo.end}
                     />
                   </div>
                 </div>
+              </div>
+
+              <div className="input-group">
+                <label className="label-name">Deadline</label>
+                <input
+                  id="deadline"
+                  type="datetime-local"
+                  name="deadline"
+                  className="form-input"
+                  onChange={handleDead}
+                  value={eventInfo.deadline}
+                />
               </div>
 
               <div className="input-group">
@@ -134,6 +225,7 @@ const CreateEvent = () => {
                       className="form-input"
                       onChange={handleChange}
                       value={eventInfo.minParticipants}
+                      required
                     />
                   </div>
 
@@ -146,6 +238,7 @@ const CreateEvent = () => {
                       className="form-input"
                       onChange={handleChange}
                       value={eventInfo.maxParticipants}
+                      required
                     />
                   </div>
                 </div>
@@ -246,7 +339,7 @@ const CreateEvent = () => {
                       value={eventInfo.policy}
                     >
                       <option value="auto">Auto Approved</option>
-                      <option value="approal">Approval Required</option>
+                      <option value="approval">Approval Required</option>
                     </select>
                   </div>
                 </div>
