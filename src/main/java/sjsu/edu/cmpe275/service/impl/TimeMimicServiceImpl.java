@@ -28,7 +28,7 @@ public class TimeMimicServiceImpl {
 			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	public ResponseEntity<?> getTime() {
 		try {
 			VirtualTime vTime = VirtualTime.getInstance();

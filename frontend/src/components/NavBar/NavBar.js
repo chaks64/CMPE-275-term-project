@@ -7,6 +7,8 @@ import { IconContext } from "react-icons";
 import { ReactComponent as Logo } from "../../imgs/logo1.svg";
 import { Col } from "react-bootstrap";
 import Clock from "react-live-clock";
+import axios from "axios";
+import { config } from "../../utils/utils";
 
 const NavBar = () => {
   const [temp, setTemp] = useState(localStorage.getItem("clock"));
@@ -28,14 +30,35 @@ const NavBar = () => {
     console.log("here");
     setTemp(newTime);
     localStorage.setItem("clock", newTime);
-    window.location.reload(false);
+    updateTime();
+    
   };
 
   const setToCurrentTime = () => {
     // setDate(new Date());
     localStorage.setItem("clock", newTime);
-    window.location.reload(false);
+    updateTime();
   };
+
+  const updateTime = async (e) => {
+    // e.preventDefault();
+    console.log("here");
+    const data = {
+      time: temp,
+    };
+    const list1 = await axios
+      .post(`${config.backendURL}/time/update`, data)
+      .then((response) => {
+        console.log(response.data);
+        window.location.reload(false);
+        
+      })
+      .catch((error) => {
+        console.log(error);
+       
+      });
+  };
+
   return (
     <>
       <IconContext.Provider value={{ color: "#fff" }}>

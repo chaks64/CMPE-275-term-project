@@ -38,6 +38,7 @@ const PartEventDets = () => {
       .then((response) => {
         console.log(response.data);
         setDetails(response.data);
+        vefrify();
       })
       .catch((error) => {
         console.log(error);
@@ -60,17 +61,15 @@ const PartEventDets = () => {
       localStorage.getItem("clock")
     ); /* midnight in China on April 13th */
     d.toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
-    let two = new Date(details.deadline);
+    let two = new Date(details.startDate);
+    let one = new Date(details.endtDate);
     const diff = (two - d) / (1000 * 60 * 60 * 24);
+    const diff2 = (d - one)/(1000 * 60 * 60 * 24);
     console.log(d, "  ", two);
-    console.log(diff);
-    if (details.user.userId === localStorage.getItem("userid")) {
+    console.log(diff2);
+    if (diff > 0) {
       setAllow(true);
-    } else if (details.participateUser.length === details.minParticpants) {
-      setAllow(true);
-    } else if (diff < 0) {
-      setAllow(true);
-    } else if (details.status === "cancel") {
+    } else if (diff2 > 7) {
       setAllow(true);
     }
   };
@@ -211,7 +210,7 @@ const PartEventDets = () => {
               <td>{new Date(details.endtDate).toDateString()}</td>
             </tr>
           </table>
-          <div style={{ border: "1px solid #1c1c1c" }}>
+          <div className={allow ? "hide": ""} style={{ border: "1px solid #1c1c1c" }}>
             Review Organizer
             <table>
               <tr>

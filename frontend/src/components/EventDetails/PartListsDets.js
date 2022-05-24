@@ -14,7 +14,6 @@ const PartListsDets = () => {
   const location = useLocation();
   const { from } = location.state;
   const [details, setDetails] = useState(from);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allow, setAllow] = useState(false);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState("");
@@ -42,6 +41,7 @@ const PartListsDets = () => {
       .then((response) => {
         console.log(response.data);
         setList(response.data);
+        vefrify();
       })
       .catch((error) => {
         console.log(error.response.data);
@@ -60,17 +60,15 @@ const PartListsDets = () => {
       localStorage.getItem("clock")
     ); /* midnight in China on April 13th */
     d.toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
-    let two = new Date(details.deadline);
+    let two = new Date(details.startDate);
+    let one = new Date(details.endtDate);
     const diff = (two - d) / (1000 * 60 * 60 * 24);
+    const diff2 = (d - one)/(1000 * 60 * 60 * 24);
     console.log(d, "  ", two);
-    console.log(diff);
-    if (details.user.userId === localStorage.getItem("userid")) {
+    console.log(diff2);
+    if (diff > 0) {
       setAllow(true);
-    } else if (details.participateUser.length === details.minParticpants) {
-      setAllow(true);
-    } else if (diff < 0) {
-      setAllow(true);
-    } else if (details.status === "cancel") {
+    } else if (diff2 > 7) {
       setAllow(true);
     }
   };
@@ -148,7 +146,7 @@ const PartListsDets = () => {
                       <td className="text-center">{user.fullName}</td>
                     </tr>
                     <tr>
-                      <td align="center" colSpan="3">
+                      <td align="center" colSpan="3" className={allow ? "hide": ""}>
                         <Accordion defaultActiveKey={6}>
                           <Accordion.Header>Review</Accordion.Header>
                           <Accordion.Body>
