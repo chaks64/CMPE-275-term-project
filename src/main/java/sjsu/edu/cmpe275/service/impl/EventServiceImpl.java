@@ -265,13 +265,16 @@ public class EventServiceImpl implements EventService{
 
 		String status = "%" + ((String) reqBody.get("status")).toLowerCase() + "%";
 		String startDate = ((String) reqBody.get("startTime"));
-		// String format is "2022--05-04"
+		startDate = startDate.equals("") ? "2000-01-01T00:00:00.000" : startDate;
+		// String format is "2022-05-04"
 		String endtDate = ((String) reqBody.get("endtTime"));
+		endtDate = endtDate.equals("") ? "2050-01-01T00:00:00.000" : endtDate;
 		String keyword = "%" + ((String) reqBody.get("keyword")).toLowerCase() + "%";
 		String organizer = "%" + ((String) reqBody.get("organizer")).toLowerCase() + "%";
-		System.out.println(location + status + startDate +  endtDate + keyword);
+		System.out.println(location + " " + status + " " +  startDate + " " +   endtDate + " " +  keyword +  " " + organizer	);
 //		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword);
 		List<Event> events = eventRepo.myfunction(location, status, startDate, endtDate, keyword, organizer);
+		System.out.println("The count is:- " + events.size());
 //		List<Event> events = new ArrayList<>();
 		if(events==null || events.size()==0) {
 			ErrorResponse error = new ErrorResponse("204", "No events");
