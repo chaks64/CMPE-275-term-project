@@ -263,7 +263,7 @@ public class EventServiceImpl implements EventService{
 //		String dum1 = (String) reqBody.get("keyword");
 		String location = "%" + ((String) reqBody.get("location")).toLowerCase() + "%";
 
-		String status = ((String) reqBody.get("status")).toLowerCase();
+		String status = "%" + ((String) reqBody.get("status")).toLowerCase() + "%";
 		String startDate = ((String) reqBody.get("startTime"));
 		// String format is "2022--05-04"
 		String endtDate = ((String) reqBody.get("endtTime"));
