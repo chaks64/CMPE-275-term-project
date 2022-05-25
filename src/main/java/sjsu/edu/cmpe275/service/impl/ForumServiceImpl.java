@@ -41,6 +41,7 @@ public class ForumServiceImpl implements ForumService {
         try {
             Forum forum = new Forum();
             forum.setMsg((String) reqBody.get("msg"));
+
             forum.setImg((String) reqBody.get("img"));
             forum.setForumType((String) reqBody.get("forumType"));
             System.out.println("DATATYPE:"+reqBody.get("userid").getClass().getSimpleName());

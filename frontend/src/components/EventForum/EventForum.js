@@ -7,26 +7,29 @@ import { config } from "../../utils/utils";
 import MsgCard from "../MsgCard/MsgCard";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import { red } from "@mui/material/colors";
-
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { storage_bucket } from "../../firebase/firebaseConfig";
 //Todo
 // 1. check why userid is undefined from localstorage
 // 2. Upload image
-// 3. Post msg (backend error)
 const EventForum = (props) => {
-  console.log(`props value is:`, props);
+  // console.log(`props value is:`, props);
+  const {event}=props;
+  console.log(`eventforum event: `,event)
   const [userMsg, setUserMsg] = useState();
   var [render, setRender] = useState(0);
   const [messages, setMessages] = useState("");
   const [allow, setAllow] = useState(false);
   const userid = localStorage.getItem("userid");
+  const [selectedFile, setSelectedFile] = useState();
   const [image, setimage] = useState("");
   var organizer=false;
-  if(props.details.user.userId==userid){
+  if(event.user?.userId==userid){
 //organizer is seding message
 organizer=true;
   }
 
-  console.log(`logged in user id:`, userid);
+  // console.log(`logged in user id:`, userid);
   var flag = false;
 
   useEffect(() => {
@@ -38,7 +41,7 @@ organizer=true;
       .then((res) => {
         const { data } = res;
         setMessages(data);
-        console.log(data);
+        // console.log(data);
         if (messages !== "{}") {
           flag = true;
         }
@@ -46,7 +49,7 @@ organizer=true;
       .catch((error) => {
         console.log(error);
       });
-  }, [render]);
+  }, []);
 
   const verify = () => {
     let event = props.event;
@@ -68,9 +71,29 @@ organizer=true;
   const handleChange = (e) => {
     console.log(e);
     setUserMsg(e.target.value);
+    console.log(`printing after setting`,userMsg)
   };
 
-  const handleImage = (e) => {};
+  const handleImage = (e) => {
+    console.log(`Inside here 1`)
+    // if (e.target.files[0]) {
+    //   console.log(`Inside here 2`)
+      // setTempImage(e.target.files[0]);
+      if (e.target.files[0] != null) {
+        console.log(`inside here 3`,e.target.files[0]);
+        const storageRef = ref(storage_bucket, e.target.files[0].name);
+        // 'file' comes from the Blob or File API
+        uploadBytes(storageRef, e.target.files[0])
+          .then((snapshot) => {
+            return getDownloadURL(snapshot.ref);
+          })
+          .then((downloadURL) => {
+            console.log("Download URL", downloadURL);
+            setimage(downloadURL);
+          });
+      }
+    // }
+  };
 
   if (messages != "{}") {
     flag = true;
@@ -81,10 +104,12 @@ organizer=true;
     var timestamp = Date.now();
     var forumType = props.type;
     var eventid = String(props.id);
-    var message = userMsg;
-    console.log(message, forumType, userid, eventid, timestamp);
-    var api_data = { message, forumType, userid, eventid };
-    console.log(api_data);
+    var msg = userMsg;
+    console.log(`final message`,userMsg)
+    var img=image;
+    // console.log(message, forumType, userid, eventid, timestamp);
+    var api_data = { msg,img, forumType, userid, eventid };
+    console.log(`createmsg data`,api_data);
     axios
       .post(`${config.backendURL}/forum/createMsg`, api_data)
       .then((res) => {
@@ -131,7 +156,7 @@ organizer=true;
         </div>
         <div className="inputBox-child-2">
           <Button
-            disabled={allow}
+            // disabled={allow}
             variant="contained"
             style={{
               backgroundColor: "#7C0200",
@@ -144,12 +169,17 @@ organizer=true;
             Send
           </Button>
           <Button
+          component="label"
             size="small"
             startIcon={
               <PhotoCameraIcon sx={{ color: red[900] }}></PhotoCameraIcon>
             }
-            onClick={handleImage}
-          ></Button>
+            // onClick={handleImage}
+          ><input
+          type="file"
+          hidden
+          onChange={handleImage}
+        /></Button>
         </div>
       </div>
     </div>
