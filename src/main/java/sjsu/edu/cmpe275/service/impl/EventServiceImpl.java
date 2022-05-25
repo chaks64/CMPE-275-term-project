@@ -353,104 +353,83 @@ public class EventServiceImpl implements EventService{
 	@Override
 	public ResponseEntity<?> getEventsForSystemReport() {
 		System.out.println("Here in getEventsForSystemReport service impl");
-//		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
-		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-		LocalDateTime start_date =  LocalDateTime.now();
-		String start_date1 = start_date.format(outputFormatter);
-		System.out.println(start_date1);
-//		System.out.println(LocalDateTime.parse(start_date1));
-//		System.out.println(start_date.format(outputFormatter).getClass().getSimpleName());
-//		LocalDateTime start_date1 = LocalDateTime.parse(start_date.format(outputFormatter));
-//		System.out.println(start_date1);
-//		LocalDateTime start_date =  LocalDateTime.now();
-		LocalDateTime end_date = LocalDateTime.now().minusDays(90);
-		String end_date1 = end_date.format(outputFormatter);
-		System.out.println(end_date1);
-//		System.out.println("start date" +start_date);
-//		System.out.println("end date" +end_date);
-//		System.out.println("sql date" +start_date.getClass().getSimpleName());
+
+		VirtualTime vTime = VirtualTime.getInstance();
+		LocalDateTime start_date = vTime.getSystemTime();
+		LocalDateTime end_date = start_date.minusDays(90);
+
+		HashMap<String, Integer> SystemReportHashMap = new HashMap<String, Integer>();
 
 		try {
-			List<Event> events = eventRepo.listAllEventForGivenTimeFrame(end_date1,start_date1);
-			System.out.println("printing events "+events);
-			System.out.println("priting length "+events.size());
-//			System.out.println(events.get(1).getFees());
-			int noOfCreatedEvents = events.size();
+
+			List<Event> events = eventRepo.findAll();
+			int noOfCreatedEvents = 0;
 			int noOfPaidEvents = 0;
 			double percentageOfPaidEvents = 0.0;
 			int noOfCancelledEvents = 0;
-			int noOfParticipantionRequests = (int) participantRepo.count();
+			List <Participants> noOfParticipationRequests = new ArrayList<>();
 			int totalNoOfMinParticipants = 0;
-			double partReqDividedByTotalMinParts = 0.0;
+			int partReqDividedByTotalMinParts = 0;
 			int noOfFinishedEvents = 0;
-//			int noOfParticipantsOfFinishedEvents = 0;
 			int avgNumberOfParticipantsOfFinishedEvents = 0;
-			List<Participants> participantsOfFinishedEvents = new ArrayList<>();
-//			HashMap<Long, List<Participants>> myMap = new HashMap<Long, List<Participants>>();
-
-//			List <Participants> participantsOfFinishedEvents = participantRepo.findByEventID(7L);
-//			System.out.println("hi "+participantsOfFinishedEvents.toString());
-			//for(Part)
+			List<Participants> p = new ArrayList<>();
 
 			if(events==null || events.size()==0) {
 				ErrorResponse error = new ErrorResponse("204", "No events");
 				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
 			} else {
-				System.out.println("here :"+ events.get(1).getMinParticpants());
 				for(int i=0;i<events.size();i++){
-					if(events.get(i).getFees() > 0){
-						noOfPaidEvents += 1;
+
+					if (events.get(i).getCreationTime().isAfter(end_date) && events.get(i).getCreationTime().isBefore(start_date)){
+						noOfCreatedEvents += 1;
+						if (events.get(i).getFees() > 0){
+							noOfPaidEvents += 1;
+						}
+
 					}
-					if (events.get(i).getStatus()=="cancel") {
+
+					if (events.get(i).getStatus().equals("cancel") && events.get(i).getDeadline().isAfter(end_date) && events.get(i).getDeadline().isBefore(start_date)) {
 						noOfCancelledEvents += 1;
-					}
-					if (events.get(i).getMinParticpants() > 0) {
+						noOfParticipationRequests.addAll(participantRepo.findByEventID(events.get(i).getEventID()));
 						totalNoOfMinParticipants += events.get(i).getMinParticpants();
+
 					}
+
 					if (events.get(i).getEndtDate().isAfter(end_date) && events.get(i).getEndtDate().isBefore(start_date)){
 						 noOfFinishedEvents += 1;
-						 Long eventid = events.get(i).getEventID();
-						System.out.println("printing event id:" +eventid);
-						System.out.println("printing type : "+participantRepo.findByEventID(eventid).getClass().getSimpleName());
-
-//						myMap.put(eventid,participantRepo.findByEventID(eventid));
-//						List<Participants> l = new ArrayList<>();
-//						l = participantRepo.findByEventID(eventid);
-//
-//						for(int j=0; j<l.size();j++){
-//							participantsOfFinishedEvents.add(l.get(j));
-//						}
-						participantsOfFinishedEvents.addAll( participantRepo.findAllByEventID(eventid));
-////						participantsOfFinishedEvents.add(p);
+						 p.addAll(participantRepo.findByEventID(events.get(i).getEventID()));
 
 					}
 				}
-				System.out.printf("now here: "+participantsOfFinishedEvents);
-//				System.out.println("printing map :" +myMap.values());
-//				System.out.println("pritinh mymap size :"+String.valueOf(myMap.values().size()));
 
-//				for (Map.Entry<Long, List<Participants>> set :
-//						myMap.entrySet()) {
-//					System.out.println("Shweta:" +set.getKey() + " = "
-//							+ set.getValue());
-//				}
-
-				System.out.println("No of paid events "+noOfPaidEvents);
-				System.out.println("No of created events "+noOfCreatedEvents);
+				System.out.println("No of created events : "+noOfCreatedEvents);
+				System.out.println("No of paid events : "+noOfPaidEvents);
 				percentageOfPaidEvents = Double.valueOf((noOfPaidEvents*100)/noOfCreatedEvents);
 				System.out.println("percentage of paid events: "+percentageOfPaidEvents);
+
 				System.out.println("No of cancelled events: "+noOfCancelledEvents);
-				System.out.println("Total no of participation requests: "+noOfParticipantionRequests);
-				System.out.println("Total No of min participants:" +totalNoOfMinParticipants);
-				partReqDividedByTotalMinParts = Double.valueOf(Double.valueOf(noOfParticipantionRequests) / Double.valueOf(totalNoOfMinParticipants));
-				System.out.println("printing partReqDividedByTotalMinParts: "+partReqDividedByTotalMinParts);
+				System.out.println("No of participation requests for cancelled events : "+noOfParticipationRequests.size());
+				System.out.println("Total no of min parts of cancelled events: "+totalNoOfMinParticipants);
+				partReqDividedByTotalMinParts = (noOfParticipationRequests.size() / totalNoOfMinParticipants);
+				System.out.println("cancelled participation requests divided by total no of min participants :"+partReqDividedByTotalMinParts);
+
 				System.out.println("No of finished events: "+noOfFinishedEvents);
-				System.out.println("Participants of finished events:" +participantsOfFinishedEvents.size());
-				avgNumberOfParticipantsOfFinishedEvents = participantsOfFinishedEvents.size()/noOfFinishedEvents;
+				System.out.println("No of participants of cancelled events : "+p.size());
+				avgNumberOfParticipantsOfFinishedEvents = p.size()/noOfFinishedEvents;
 				System.out.println("Average number of participants of finished events: "+avgNumberOfParticipantsOfFinishedEvents);
 
+				SystemReportHashMap.put("Number of created events",noOfCreatedEvents);
+				SystemReportHashMap.put("Percentage of paid events", (int) percentageOfPaidEvents);
 
-				return new ResponseEntity<>(events, HttpStatus.OK);
+				SystemReportHashMap.put("Number of cancelled events", noOfCancelledEvents);
+				SystemReportHashMap.put("Number of participation requests divided by total number of minimum participants for cancelled events", partReqDividedByTotalMinParts);
+
+				SystemReportHashMap.put("Number of finished events", noOfFinishedEvents);
+				SystemReportHashMap.put("Average number of participants of finished events", avgNumberOfParticipantsOfFinishedEvents);
+
+
+
+				return new ResponseEntity<>(SystemReportHashMap, HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

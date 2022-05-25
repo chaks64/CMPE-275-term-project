@@ -23,6 +23,9 @@ public interface ParticipantRepository extends JpaRepository<Participants, Long>
 	
 	public Participants findByUserIdAndEventID(Long userid, Long eventid);
 
-	@Query(value = "select * from participants where user_id = :userid and sign_up_time between :end_date1 and :start_date1", nativeQuery = true)
-	public List<Participants> listAllEventsForUserInGivenTimeFrame(Long userid, String end_date1, String start_date1);
+//	@Query(value = "select * from participants where user_id = :userid and sign_up_time between :end_date1 and :start_date1", nativeQuery = true)
+//	public List<Participants> listAllEventsForUserInGivenTimeFrame(Long userid, String end_date1, String start_date1);
+
+//	@Query(value = "select * from participants where user_id = :userid", nativeQuery = true)
+//	public List<Participants> listAllEventsForUserInGivenTimeFrame(Long userid);
 }

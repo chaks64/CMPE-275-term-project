@@ -39,30 +39,21 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
     private EventRepository eventRepo;
     @Override
     public ResponseEntity<?> getUserParticipationReport(Long userid) {
-        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
-        LocalDateTime start_date =  LocalDateTime.now();
-        String start_date1 = start_date.format(outputFormatter);
-        System.out.println("start_date: "+start_date1);
-        LocalDateTime end_date = LocalDateTime.now().minusDays(90);
-        String end_date1 = end_date.format(outputFormatter);
-        System.out.println("end_date: "+end_date1);
-        System.out.println("user id: "+userid);
+        VirtualTime vTime = VirtualTime.getInstance();
+        LocalDateTime start_date = vTime.getSystemTime();
+        LocalDateTime end_date = start_date.minusDays(90);
+        HashMap<String, Integer> UserReportHashMap = new HashMap<String, Integer>();
 
 
         try {
-            List<Participants> participants = participantRepo.listAllEventsForUserInGivenTimeFrame(userid,end_date1,start_date1);
-
-            for(Participants p : participants){
-                System.out.println(p.toString());
-            }
-
-//            System.out.println("hello "+participants.get(0).toString());
-//            System.out.println("printing sign up time :" +participants.get(0).getSignUpTime().toString());
+//            List<Participants> participants = participantRepo.listAllEventsForUserInGivenTimeFrame(userid,end_date1,start_date1);
+            List<Participants> participants = participantRepo.findAllByUserId(userid);
 
             int noOfSignedUpEvents = 0;
             int noOfRejectsAndApprovals = 0;
             Long eventid = null;
-            List<Event> noOfFinishedEvents = new ArrayList<>();
+            List<Event> noOfFinishedEventsList = new ArrayList<>();
+            int noOfFinishedEvents = 0;
 
             if(participants==null || participants.size()==0){
                 ErrorResponse error = new ErrorResponse("204", "No events");
@@ -80,15 +71,23 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
                     }
 
                     eventid = participants.get(i).getEventID();
-
-
+                    noOfFinishedEventsList.addAll(eventRepo.findAllByEventID(eventid));
                 }
-//                noOfSignedUpEvents = participants.size();
+                for(int j=0; j< noOfFinishedEventsList.size();j++){
+                    if(noOfFinishedEventsList.get(j).getEndtDate().isAfter(end_date) && noOfFinishedEventsList.get(j).getEndtDate().isBefore(start_date)){
+                        noOfFinishedEvents += 1;
+                    }
+                }
 
                 System.out.println("No of signed up events: "+noOfSignedUpEvents);
                 System.out.println("No of rejects and approvals: "+noOfRejectsAndApprovals);
                 System.out.println("No of finished events: "+noOfFinishedEvents);
-                return new ResponseEntity<>(participants, HttpStatus.OK);
+
+                UserReportHashMap.put("No of signed up events",noOfSignedUpEvents);
+                UserReportHashMap.put("No of rejects and approvals",noOfRejectsAndApprovals);
+                UserReportHashMap.put("No of finished events",noOfFinishedEvents);
+
+                return new ResponseEntity<>(UserReportHashMap, HttpStatus.OK);
             }
 
         } catch (Exception e) {

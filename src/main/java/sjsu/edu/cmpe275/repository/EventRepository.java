@@ -26,7 +26,9 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 
     public Event findByEventID(Long eventID);
 
-	public Event findAllByEventID(Long eventID);
+	public List<Event> findAllByEventID(Long eventID);
+
+	public List<Event> findAll();
 
 	@Query(value = "select * from event where lower(city) like :location and lower(status) = :status and start_date >= date_format(:startTime,'%Y-%m-%d')  and endt_date <= date_format(:endtDate,'%Y-%m-%d') and (description like :keyword or title like :keyword);", nativeQuery = true)
 	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword);
@@ -36,8 +38,9 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 //	public List<Event> listAllEventForGivenTimeFrame();
 
 //	@Query(value = "select * from event where creation_time between :start_date and :end_date", nativeQuery = true)
-@Query(value = "select * from event where creation_time between :end_date1 and :start_date1", nativeQuery = true)
-public List<Event> listAllEventForGivenTimeFrame(String end_date1, String start_date1);
+
+//@Query(value = "select * from event where creation_time between :end_date1 and :start_date1", nativeQuery = true)
+//public List<Event> listAllEventForGivenTimeFrame(String end_date1, String start_date1);
 
 
 //=======
