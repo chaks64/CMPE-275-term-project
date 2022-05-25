@@ -32,21 +32,22 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 	public List<Event> myfunction(String location, String status, String startTime, String endtDate, String keyword);
 
 
-//	@Query(value = "select * from event where creation_time = :sysdate",nativeQuery = true)
-//	public List<Event> listAllEventForGivenTimeFrame();
-
-//	@Query(value = "select * from event where creation_time between :start_date and :end_date", nativeQuery = true)
-@Query(value = "select * from event where creation_time between :end_date1 and :start_date1", nativeQuery = true)
-public List<Event> listAllEventForGivenTimeFrame(String end_date1, String start_date1);
+	//	@Query(value = "select * from event where creation_time = :sysdate",nativeQuery = true)
+	//	public List<Event> listAllEventForGivenTimeFrame();
+	
+	//	@Query(value = "select * from event where creation_time between :start_date and :end_date", nativeQuery = true)
+	@Query(value = "select * from event where creation_time between :end_date1 and :start_date1", nativeQuery = true)
+	public List<Event> listAllEventForGivenTimeFrame(String end_date1, String start_date1);
+	
+	@Query(value = "select * from event where user_id = :userid and creation_time between :end_date1 and :start_date1", nativeQuery = true)
+	public List<Event> listEventsForGivenUserAndTimeFrame(long userid, String end_date1, String start_date1);
+	
+	@Query(value = "select * from event where user_id = :userid and creation_time between :end_date1 and :start_date1", nativeQuery = true)
+	public List<Event> listPaidEventsForGivenUserAndTimeFrame(long userid, String end_date1, String start_date1);
 
 
 //=======
 
 //    public Event findByEventID(Long eventID);
-
-
-
-
-//>>>>>>> Stashed changes
 
 }
