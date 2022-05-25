@@ -14,6 +14,7 @@ import { red } from '@mui/material/colors';
 // 3. Post msg (backend error)
 const ParticipantForum = (props) => {
     console.log(`props value is:`, props)
+    const{event}=props;
     const [userMsg,setUserMsg]=useState();
     var [render,setRender]=useState(0);
     const [messages,setMessages]=useState('');

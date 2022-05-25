@@ -12,7 +12,7 @@ import SendIcon from '@mui/icons-material/Send';
 const MsgCard = (props) => {
     // console.log(`Printing data for`,props)
     const {msg,isOrganizer}=props
-    console.log(msg)
+    // console.log(msg)
     const [flag, setFlag] = useState(false);
     var sender='User'
     if(isOrganizer){

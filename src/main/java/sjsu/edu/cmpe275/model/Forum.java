@@ -45,10 +45,11 @@ public class Forum {
 //    @JsonIgnoreProperties({"address","team","opponents"})
     private Set<Event> event = new HashSet<>();
 
-    public Forum(long msgID, String msg, String forumType, Set<User> user, Set<Event> event) {
+    public Forum(long msgID, String msg,String img, String forumType, Set<User> user, Set<Event> event) {
         super();
         this.msgID = msgID;
         this.msg = msg;
+        this.img = img;
         this.forumType = forumType;
         this.user = user;
         this.event = event;
