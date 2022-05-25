@@ -1,6 +1,7 @@
 package sjsu.edu.cmpe275.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +35,8 @@ public class Event {
 	private String description;
 	private LocalDateTime startDate;
 	private LocalDateTime endtDate;
+
+	private LocalDateTime creationTime;
 	private LocalDateTime deadline;
 	private String status;
 	
@@ -60,7 +63,7 @@ public class Event {
 	private Set<User> participateUser = new HashSet<>();
 
 	public Event(long eventID, String title, String description, LocalDateTime startDate, LocalDateTime endtDate, LocalDateTime deadline, String status,
-			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<User> participateUser) {
+			Address address, int minParticpants, int maxParticpants, int fees, String policy, User user, Set<User> participateUser, LocalDateTime creationTime) {
 		super();
 		this.eventID = eventID;
 		this.title = title;
@@ -76,6 +79,7 @@ public class Event {
 		this.user = user;
 		this.participateUser = participateUser;
 		this.status = status;
+		this.creationTime = LocalDateTime.now();
 	}
 
 	public Event() {
@@ -193,6 +197,14 @@ public class Event {
 
 	public void setParticipateUser(Set<User> participateUser) {
 		this.participateUser = participateUser;
+	}
+
+	public LocalDateTime getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(LocalDateTime creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public String toString(){

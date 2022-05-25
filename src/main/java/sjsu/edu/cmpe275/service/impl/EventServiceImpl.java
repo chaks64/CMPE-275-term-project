@@ -1,12 +1,14 @@
 package sjsu.edu.cmpe275.service.impl;
 
+import java.sql.Array;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.sql.Date;
 
+import com.google.api.client.util.DateTime;
+import org.apache.tomcat.jni.Local;
 import sjsu.edu.cmpe275.model.Event;
 
 
@@ -75,7 +77,8 @@ public class EventServiceImpl implements EventService{
 			
 			
 			Integer integer = (Integer) reqBody.get("userid");
-			Long userid = new Long(integer);
+//			Long userid = new Long(integer);
+			Long userid = Long.valueOf(integer);
 			User user = userRepo.findByUserId(userid);
 			if(user == null) {
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
@@ -132,7 +135,8 @@ public class EventServiceImpl implements EventService{
 		try {
 			Participants participants = new Participants();
 			Integer integer = (Integer) reqBody.get("userid");
-			Long userid = new Long(integer);
+//			Long userid = new Long(integer);
+			Long userid = Long.valueOf(integer);
 			participants.setUserId(userid);
 			if(userRepo.findByUserId(userid) == null) {
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
@@ -140,7 +144,8 @@ public class EventServiceImpl implements EventService{
 			}
 			
 			integer = (Integer) reqBody.get("eventid");
-			Long eventid = new Long(integer);
+//			Long eventid = new Long(integer);
+			Long eventid = Long.valueOf(integer);
 			participants.setEventID(eventid);
 			Event event = eventRepo.findByEventID(eventid);
 			if(event == null) {
@@ -226,7 +231,7 @@ public class EventServiceImpl implements EventService{
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
 				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 			}
-			Participants newParticipant = new Participants(participant.getUserId(), participant.getEventID(), (String) reqBody.get("status"));
+			Participants newParticipant = new Participants(participant.getUserId(), participant.getEventID(), (String) reqBody.get("status"), (LocalDateTime) reqBody.get("signUpTime"), (LocalDateTime) reqBody.get("statusUpdateTime"));
 			participantRepo.save(newParticipant);
 			
 			return new ResponseEntity<>(newParticipant, HttpStatus.OK);
@@ -337,6 +342,115 @@ public class EventServiceImpl implements EventService{
 					}
 				}
 				return new ResponseEntity<>(eventsList, HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+			return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> getEventsForSystemReport() {
+		System.out.println("Here in getEventsForSystemReport service impl");
+//		DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSSS");
+		DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+		LocalDateTime start_date =  LocalDateTime.now();
+		String start_date1 = start_date.format(outputFormatter);
+		System.out.println(start_date1);
+//		System.out.println(LocalDateTime.parse(start_date1));
+//		System.out.println(start_date.format(outputFormatter).getClass().getSimpleName());
+//		LocalDateTime start_date1 = LocalDateTime.parse(start_date.format(outputFormatter));
+//		System.out.println(start_date1);
+//		LocalDateTime start_date =  LocalDateTime.now();
+		LocalDateTime end_date = LocalDateTime.now().minusDays(90);
+		String end_date1 = end_date.format(outputFormatter);
+		System.out.println(end_date1);
+//		System.out.println("start date" +start_date);
+//		System.out.println("end date" +end_date);
+//		System.out.println("sql date" +start_date.getClass().getSimpleName());
+
+		try {
+			List<Event> events = eventRepo.listAllEventForGivenTimeFrame(end_date1,start_date1);
+			System.out.println("printing events "+events);
+			System.out.println("priting length "+events.size());
+//			System.out.println(events.get(1).getFees());
+			int noOfCreatedEvents = events.size();
+			int noOfPaidEvents = 0;
+			double percentageOfPaidEvents = 0.0;
+			int noOfCancelledEvents = 0;
+			int noOfParticipantionRequests = (int) participantRepo.count();
+			int totalNoOfMinParticipants = 0;
+			double partReqDividedByTotalMinParts = 0.0;
+			int noOfFinishedEvents = 0;
+//			int noOfParticipantsOfFinishedEvents = 0;
+			int avgNumberOfParticipantsOfFinishedEvents = 0;
+			List<Participants> participantsOfFinishedEvents = new ArrayList<>();
+//			HashMap<Long, List<Participants>> myMap = new HashMap<Long, List<Participants>>();
+
+//			List <Participants> participantsOfFinishedEvents = participantRepo.findByEventID(7L);
+//			System.out.println("hi "+participantsOfFinishedEvents.toString());
+			//for(Part)
+
+			if(events==null || events.size()==0) {
+				ErrorResponse error = new ErrorResponse("204", "No events");
+				return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+			} else {
+				System.out.println("here :"+ events.get(1).getMinParticpants());
+				for(int i=0;i<events.size();i++){
+					if(events.get(i).getFees() > 0){
+						noOfPaidEvents += 1;
+					}
+					if (events.get(i).getStatus()=="cancel") {
+						noOfCancelledEvents += 1;
+					}
+					if (events.get(i).getMinParticpants() > 0) {
+						totalNoOfMinParticipants += events.get(i).getMinParticpants();
+					}
+					if (events.get(i).getEndtDate().isAfter(end_date) && events.get(i).getEndtDate().isBefore(start_date)){
+						 noOfFinishedEvents += 1;
+						 Long eventid = events.get(i).getEventID();
+						System.out.println("printing event id:" +eventid);
+						System.out.println("printing type : "+participantRepo.findByEventID(eventid).getClass().getSimpleName());
+
+//						myMap.put(eventid,participantRepo.findByEventID(eventid));
+//						List<Participants> l = new ArrayList<>();
+//						l = participantRepo.findByEventID(eventid);
+//
+//						for(int j=0; j<l.size();j++){
+//							participantsOfFinishedEvents.add(l.get(j));
+//						}
+						participantsOfFinishedEvents.addAll( participantRepo.findAllByEventID(eventid));
+////						participantsOfFinishedEvents.add(p);
+
+					}
+				}
+				System.out.printf("now here: "+participantsOfFinishedEvents);
+//				System.out.println("printing map :" +myMap.values());
+//				System.out.println("pritinh mymap size :"+String.valueOf(myMap.values().size()));
+
+//				for (Map.Entry<Long, List<Participants>> set :
+//						myMap.entrySet()) {
+//					System.out.println("Shweta:" +set.getKey() + " = "
+//							+ set.getValue());
+//				}
+
+				System.out.println("No of paid events "+noOfPaidEvents);
+				System.out.println("No of created events "+noOfCreatedEvents);
+				percentageOfPaidEvents = Double.valueOf((noOfPaidEvents*100)/noOfCreatedEvents);
+				System.out.println("percentage of paid events: "+percentageOfPaidEvents);
+				System.out.println("No of cancelled events: "+noOfCancelledEvents);
+				System.out.println("Total no of participation requests: "+noOfParticipantionRequests);
+				System.out.println("Total No of min participants:" +totalNoOfMinParticipants);
+				partReqDividedByTotalMinParts = Double.valueOf(Double.valueOf(noOfParticipantionRequests) / Double.valueOf(totalNoOfMinParticipants));
+				System.out.println("printing partReqDividedByTotalMinParts: "+partReqDividedByTotalMinParts);
+				System.out.println("No of finished events: "+noOfFinishedEvents);
+				System.out.println("Participants of finished events:" +participantsOfFinishedEvents.size());
+				avgNumberOfParticipantsOfFinishedEvents = participantsOfFinishedEvents.size()/noOfFinishedEvents;
+				System.out.println("Average number of participants of finished events: "+avgNumberOfParticipantsOfFinishedEvents);
+
+
+				return new ResponseEntity<>(events, HttpStatus.OK);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
