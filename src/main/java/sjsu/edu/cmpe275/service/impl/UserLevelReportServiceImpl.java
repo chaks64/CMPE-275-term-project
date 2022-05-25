@@ -37,6 +37,7 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
 
     @Autowired
     private EventRepository eventRepo;
+    
     @Override
     public ResponseEntity<?> getUserParticipationReport(Long userid) {
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
@@ -97,5 +98,42 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
             return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+    }
+    
+    public ResponseEntity<?> getUserOrganizerReport(Long userid){
+    	DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS");
+    	//set the start and end date
+        LocalDateTime start_date =  LocalDateTime.now();
+        String start_date1 = start_date.format(outputFormatter);
+        System.out.println("start_date: "+start_date1);
+        LocalDateTime end_date = LocalDateTime.now().minusDays(90);
+        String end_date1 = end_date.format(outputFormatter);
+        
+        // 1. Number of created events (based on creation time) and the percentage of paid events.
+        Integer numOfEventsCreated;
+        Float paidEventsPercent;
+        
+        // 2. Number of canceled events (based on registration deadline) and total number of participation requests (regardless of approval or not) divided by the total number of minimum participants for such events.
+        Integer numOfCancelledEvents;
+        Float participationReport;
+        
+        // 3. Number of finished events (based on finishing time), and the average number of participants of these events.
+        Integer numOfFinishedEvents;
+        Integer numOfPaidEvents;
+        
+        // 4. Number of paid events finished (based on finishing time) and total revenue from these events
+        Integer numOfFinishedPaidEvents;
+        
+        System.out.println("About to get organizer report for user id " + userid + " with start date as " + start_date1 + " and end date as "+ end_date1 + "...");
+        
+        try {
+        	List<Participants> participants = participantRepo.listAllEventsForUserInGivenTimeFrame(userid,end_date1,start_date1);
+        	
+		} catch (Exception e) {
+			e.printStackTrace();
+            ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+        return new ResponseEntity<>("hello", HttpStatus.OK);
     }
 }
