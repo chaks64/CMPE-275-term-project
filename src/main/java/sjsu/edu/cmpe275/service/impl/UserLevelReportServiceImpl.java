@@ -113,7 +113,7 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
         // 1. Number of created events (based on creation time) and the percentage of paid events.
         Integer numOfEventsCreated = 0;
         Integer totalNumberOfPaidEvents = 0;
-        double paidEventsPercent;
+        double paidEventsPercent = 0.0;
         
         // 2. Number of canceled events (based on registration deadline) and total number of participation requests (regardless of approval or not) divided by the total number of minimum participants for such events.
         Integer numOfCancelledEvents = 0;
@@ -175,9 +175,9 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
             		}
             	}
             	
-            	paidEventsPercent = (double)totalNumberOfPaidEvents * 100 / numOfEventsCreated;
-            	cancelledEventsFinalReport = (double)(totalNumberOfCancelledEventsParticipants) / totalNumberOfCancelledEventsMinimumParticipants;
-            	averageParticipants = (double) (numOfFinishedEvents) / totalParticipants;
+            	if(totalNumberOfPaidEvents>0 && numOfEventsCreated>0) paidEventsPercent = (double)totalNumberOfPaidEvents * 100 / numOfEventsCreated;
+            	if(totalNumberOfCancelledEventsParticipants>0 && totalNumberOfCancelledEventsMinimumParticipants>0) cancelledEventsFinalReport = (double)(totalNumberOfCancelledEventsParticipants) / totalNumberOfCancelledEventsMinimumParticipants;
+            	if(numOfFinishedEvents>0 && totalParticipants>0) averageParticipants = (double) (numOfFinishedEvents) / totalParticipants;
             	
 //            }
         	
