@@ -33,5 +33,9 @@ public class UserLevelReportController {
         return userLevelReportService.getUserParticipationReport(userid);
     }
 
+    @GetMapping(value = "/organizerreport/{userid}")
+    public ResponseEntity<?> getUserOrganizationReport(@PathVariable Long userid){
+        return userLevelReportService.getUserOrganizerReport(userid);
+    }
 
 }
