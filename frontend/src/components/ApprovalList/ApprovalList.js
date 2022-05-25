@@ -29,7 +29,6 @@ const ApprovalList = () => {
 
   const getEvents = async () => {
     console.log("here ", event);
-    const user = localStorage.getItem("userid");
     const list1 = await axios
       .get(`${config.backendURL}/event/partlist/${event.eventID}/notapproved`)
       .then((response) => {
@@ -134,7 +133,7 @@ const ApprovalList = () => {
                       onRequestClose={() => setModalIsOpen(false)}
                     >
                       <button onClick={setModalIsOpenToTrue}>x</button>
-                      <Reviews userid={user.userId} />
+                      <Reviews userid={user.userId} userType="participant"/>
                     </Modal>
                   </td>
                 </tr>

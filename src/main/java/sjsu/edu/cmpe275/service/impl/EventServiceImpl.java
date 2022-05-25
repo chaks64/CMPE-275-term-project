@@ -138,7 +138,8 @@ public class EventServiceImpl implements EventService{
 //			Long userid = new Long(integer);
 			Long userid = Long.valueOf(integer);
 			participants.setUserId(userid);
-			if(userRepo.findByUserId(userid) == null) {
+			User user = userRepo.findByUserId(userid);
+			if(user == null) {
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
 				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 			}
@@ -175,6 +176,12 @@ public class EventServiceImpl implements EventService{
 				ErrorResponse errorResponse = new ErrorResponse("E02", "Unable to register for event");
 				return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 			} else {
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(user.getEmail());
+				mailMessage.setSubject("Signed-up for event!");
+				mailMessage.setFrom("shahchintan64@gmail.com");
+				mailMessage.setText("You have signed-up for "+event.getTitle());
+				emailSenderService.sendEmail(mailMessage);
 				return new ResponseEntity<>(newParticipants, HttpStatus.OK);
 			}
 			
@@ -233,6 +240,14 @@ public class EventServiceImpl implements EventService{
 			}
 			Participants newParticipant = new Participants(participant.getUserId(), participant.getEventID(), (String) reqBody.get("status"), (LocalDateTime) reqBody.get("signUpTime"), (LocalDateTime) reqBody.get("statusUpdateTime"));
 			participantRepo.save(newParticipant);
+			User user = userRepo.findByUserId(participant.getUserId());
+			Event event = eventRepo.findByEventID(participant.getEventID());
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setTo(user.getEmail());
+			mailMessage.setSubject("Signup status Update!");
+			mailMessage.setFrom("shahchintan64@gmail.com");
+			mailMessage.setText("Your request for "+event.getTitle()+" has been "+(String) reqBody.get("status"));
+			emailSenderService.sendEmail(mailMessage);
 			
 			return new ResponseEntity<>(newParticipant, HttpStatus.OK);
 		} catch (Exception e) {

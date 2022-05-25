@@ -7,7 +7,20 @@
     padding-top: 15px;
 }
 
+.msg .sender{
+    margin-top: -2%;
+    font-size: small;
+    font-style: italic;
+    color:"#7C0200";
+}
+
 .msg .buttons{
     color:"#7C0200";
     text-align: right;
 }
+
+.msg .img .img-image{
+    height: 40%;
+    width: 40%;
+}
+

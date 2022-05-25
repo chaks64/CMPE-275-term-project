@@ -7,5 +7,5 @@ import org.springframework.http.ResponseEntity;
 public interface ReviewsService {
 	ResponseEntity<?> postReview(Map<String, Object> reqBody);
 	
-	ResponseEntity<?> showReviews(String userId);
+	ResponseEntity<?> showReviews(String userId, String userType);
 }

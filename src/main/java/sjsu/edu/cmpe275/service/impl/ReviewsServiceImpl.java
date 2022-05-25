@@ -1,6 +1,5 @@
 package sjsu.edu.cmpe275.service.impl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,7 +11,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
 import sjsu.edu.cmpe275.RequestModel.ErrorResponse;
-import sjsu.edu.cmpe275.model.Forum;
 import sjsu.edu.cmpe275.model.Reviews;
 import sjsu.edu.cmpe275.model.User;
 import sjsu.edu.cmpe275.repository.ReviewRepository;
@@ -64,9 +62,9 @@ public class ReviewsServiceImpl implements ReviewsService{
 			
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(user.getEmail());
-			mailMessage.setSubject("New Event Created!");
+			mailMessage.setSubject("You have been reviewed!");
 			mailMessage.setFrom("shahchintan64@gmail.com");
-			mailMessage.setText("You have been reviewed");
+			mailMessage.setText("You have received a review "+reviews.getReview());
 			emailSenderService.sendEmail(mailMessage);
 			
 			return new ResponseEntity<>(newReview , HttpStatus.OK);
@@ -80,8 +78,8 @@ public class ReviewsServiceImpl implements ReviewsService{
 	}
 
 	@Override
-	public ResponseEntity<?> showReviews(String userId) {
-		System.out.println("in show review "+userId);
+	public ResponseEntity<?> showReviews(String userId, String userType) {
+		System.out.println("in show review "+userId+" "+userType);
         try {
             Long userid = Long.parseLong(String.valueOf(userId));
             User user = userRepository.findByUserId(userid);
@@ -90,12 +88,11 @@ public class ReviewsServiceImpl implements ReviewsService{
                 return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
             } else {
             	Set<Reviews> reviews = user.getReviews();
-            	System.out.println(reviews);
-//            	Set<Reviews> reviews1 = reviews.stream()
-//            			.filter(r -> r.getRating()==4)
-//            			.collect(Collectors.toSet());
+            	Set<Reviews> reviews1 = reviews.stream()
+            			.filter(r -> r.getReviewType().equals(userType))
+            			.collect(Collectors.toSet());
             	
-                return new ResponseEntity<>(reviews, HttpStatus.OK);
+                return new ResponseEntity<>(reviews1, HttpStatus.OK);
             }
         } catch (Exception e) {
             e.printStackTrace();
