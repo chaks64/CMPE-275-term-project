@@ -1,10 +1,10 @@
 package sjsu.edu.cmpe275.Controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
+import com.google.api.client.util.DateTime;
+import net.minidev.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +82,14 @@ public class EventController {
 	public ResponseEntity<?> partEvent(@PathVariable String userid){
 		System.out.println("here");
 		return eventService.participatedEvent(userid);
+	}
+
+	@GetMapping(value = "/systemReport")
+	public ResponseEntity<?> getEventsForSystemReport(){
+
+//		System.out.println("printing time "+LocalDateTime.now());
+//		System.out.println("printing time again "+LocalDateTime.now().minusDays(90));
+		return eventService.getEventsForSystemReport();
 	}
 
 }

@@ -1,7 +1,9 @@
 package sjsu.edu.cmpe275.service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
+import com.google.api.client.util.DateTime;
 import org.springframework.http.ResponseEntity;
 
 public interface EventService {
@@ -22,5 +24,6 @@ public interface EventService {
 	ResponseEntity<?> searchEvents(Map<String, Object> reqBody);
 	
 	ResponseEntity<?> participatedEvent(String userid);
-	
+
+	ResponseEntity<?> getEventsForSystemReport();
 }
