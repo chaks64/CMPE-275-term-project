@@ -11,6 +11,34 @@
 }
 
 .search-class{
-    width: 50%;
+    width: 90% !important;
     margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.rounded{
+    margin: auto 5px;
+}
+
+.margin{
+    margin: auto;
+}
+
+.lable{
+    border: none !important;
+    padding-bottom: 0% !important;
+}
+
+.search-inp{
+    display: flex;
+    flex-direction: row;
+}
+
+.no-padding{
+    padding: 0.3rem 0.3rem;
+}
+
+.input-group{
+    margin: auto 5px;
 }

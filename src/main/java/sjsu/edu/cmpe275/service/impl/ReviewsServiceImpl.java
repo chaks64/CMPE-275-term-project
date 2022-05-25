@@ -91,7 +91,7 @@ public class ReviewsServiceImpl implements ReviewsService{
             	Set<Reviews> reviews1 = reviews.stream()
             			.filter(r -> r.getReviewType().equals(userType))
             			.collect(Collectors.toSet());
-            	
+            	System.out.println(reviews1);
                 return new ResponseEntity<>(reviews1, HttpStatus.OK);
             }
         } catch (Exception e) {

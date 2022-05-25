@@ -74,6 +74,8 @@ public class EventServiceImpl implements EventService{
 			LocalDateTime end = LocalDateTime.parse((CharSequence) reqBody.get("end"));
 			LocalDateTime deadline = LocalDateTime.parse((CharSequence) reqBody.get("deadline"));
 			
+			VirtualTime vTime = VirtualTime.getInstance();
+			System.out.println("---------"+vTime.getSystemTime());
 			
 			
 			Integer integer = (Integer) reqBody.get("userid");
@@ -88,7 +90,7 @@ public class EventServiceImpl implements EventService{
 			event.setStartDate(start);
 			event.setEndtDate(end);
 			event.setDeadline(deadline);
-			
+			event.setCreationTime(vTime.getSystemTime());		
 			Map<String, String> addressMap =(Map<String, String>) reqBody.get("address");
 			Address address = new Address();
 			address.setStreet(addressMap.get("street"));
@@ -422,13 +424,18 @@ public class EventServiceImpl implements EventService{
 
 				System.out.println("No of created events : "+noOfCreatedEvents);
 				System.out.println("No of paid events : "+noOfPaidEvents);
-				percentageOfPaidEvents = Double.valueOf((noOfPaidEvents*100)/noOfCreatedEvents);
+				
+				if(noOfCreatedEvents != 0)
+					percentageOfPaidEvents = Double.valueOf((noOfPaidEvents*100)/noOfCreatedEvents);
+				
 				System.out.println("percentage of paid events: "+percentageOfPaidEvents);
 
 				System.out.println("No of cancelled events: "+noOfCancelledEvents);
 				System.out.println("No of participation requests for cancelled events : "+noOfParticipationRequests.size());
 				System.out.println("Total no of min parts of cancelled events: "+totalNoOfMinParticipants);
-				partReqDividedByTotalMinParts = (noOfParticipationRequests.size() / totalNoOfMinParticipants);
+				
+				if(totalNoOfMinParticipants !=0)
+					partReqDividedByTotalMinParts = (noOfParticipationRequests.size() / totalNoOfMinParticipants);
 				System.out.println("cancelled participation requests divided by total no of min participants :"+partReqDividedByTotalMinParts);
 
 				System.out.println("No of finished events: "+noOfFinishedEvents);
@@ -436,14 +443,15 @@ public class EventServiceImpl implements EventService{
 				avgNumberOfParticipantsOfFinishedEvents = p.size()/noOfFinishedEvents;
 				System.out.println("Average number of participants of finished events: "+avgNumberOfParticipantsOfFinishedEvents);
 
-				SystemReportHashMap.put("Number of created events",noOfCreatedEvents);
-				SystemReportHashMap.put("Percentage of paid events", (int) percentageOfPaidEvents);
+				SystemReportHashMap.put("createdEvents",noOfCreatedEvents);
+				SystemReportHashMap.put("paidEvents", (int) percentageOfPaidEvents);
 
-				SystemReportHashMap.put("Number of cancelled events", noOfCancelledEvents);
-				SystemReportHashMap.put("Number of participation requests divided by total number of minimum participants for cancelled events", partReqDividedByTotalMinParts);
+				SystemReportHashMap.put("cancelEvents", noOfCancelledEvents);
+//				SystemReportHashMap.put("Number of participation requests divided by total number of minimum participants for cancelled events", partReqDividedByTotalMinParts);
+				SystemReportHashMap.put("partRatio", partReqDividedByTotalMinParts);
 
-				SystemReportHashMap.put("Number of finished events", noOfFinishedEvents);
-				SystemReportHashMap.put("Average number of participants of finished events", avgNumberOfParticipantsOfFinishedEvents);
+				SystemReportHashMap.put("finishedEvents", noOfFinishedEvents);
+				SystemReportHashMap.put("averagePart", avgNumberOfParticipantsOfFinishedEvents);
 
 
 

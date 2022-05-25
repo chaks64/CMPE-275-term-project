@@ -180,6 +180,15 @@ const NavBar = () => {
                 </li>
 
                 <li className="nav-text">
+                  <Link to={"/reports"}>
+                    <FaIcons.FaChartPie />
+                    <span style={{ color: "white", display: "block" }}>
+                      Reports
+                    </span>
+                  </Link>
+                </li>
+
+                <li className="nav-text">
                   {/* <Link to={"/login"}> */}
                     <FaIcons.FaSignOutAlt />
                     <span

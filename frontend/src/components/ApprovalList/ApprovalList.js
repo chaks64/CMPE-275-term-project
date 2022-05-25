@@ -18,12 +18,14 @@ const ApprovalList = () => {
   const [message, setMessage] = useState("");
   const { event } = location.state;
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [person,setPerson] = useState();
 
   useEffect(() => {
     getEvents();
   }, []);
 
-  const onClick = () => {
+  const onClick = (e) => {
+    setPerson(e.target.id)
     setModalIsOpen(!modalIsOpen);
   };
 
@@ -97,8 +99,8 @@ const ApprovalList = () => {
           </thead>
           <tbody>
             {list.length > 0 ? (
-              list.map((user) => (
-                <tr key={user.userId}>
+              list.map((user,i) => (
+                <tr key={i}>
                   <td className="text-center">{user.userId}</td>
                   <td className="text-center">{user.email}</td>
                   <td className="text-center">{user.fullName}</td>
@@ -124,8 +126,9 @@ const ApprovalList = () => {
                       variant="primary"
                       style={{ backgroundColor: "black" }}
                       onClick={onClick}
+                      id={user.userId}
                     >
-                      See Reviews
+                      Reputation
                     </Button>
                     <Modal
                       isOpen={modalIsOpen}
@@ -133,7 +136,7 @@ const ApprovalList = () => {
                       onRequestClose={() => setModalIsOpen(false)}
                     >
                       <button onClick={setModalIsOpenToTrue}>x</button>
-                      <Reviews userid={user.userId} userType="participant"/>
+                      <Reviews userid={person} userType="participant"/>
                     </Modal>
                   </td>
                 </tr>
