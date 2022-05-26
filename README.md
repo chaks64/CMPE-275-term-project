@@ -1,7 +1,5 @@
 # CMPE-275-term-project
 
-Group 12 
-
 Group members:
 
 1. Chintan Biren Shah (SJSU ID - 014926873) 
