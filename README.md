@@ -4,10 +4,10 @@ Group 12
 
 Group members:
 
-Chintan Biren Shah (SJSU ID - 014926873) 
-Sai Mahendra Kapdekar (SJSU ID - 015937727)
-Shweta Chavan (SJSU ID - 015215694) 
-Somil Manishkumar Jain (SJSU ID - 015898194)
+1. Chintan Biren Shah (SJSU ID - 014926873) 
+2. Sai Mahendra Kapdekar (SJSU ID - 015937727)
+3. Shweta Chavan (SJSU ID - 015215694) 
+4. Somil Manishkumar Jain (SJSU ID - 015898194)
 
 
 URL of the application: 
