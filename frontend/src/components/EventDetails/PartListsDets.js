@@ -200,7 +200,7 @@ const PartListsDets = () => {
           <h1> Participant Forum</h1>
           <ParticipantForum
             id={details.eventID}
-            type="SignupForum"
+            type="ParticipantForum"
             event={details}
           />
         </div>
