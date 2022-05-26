@@ -189,6 +189,15 @@ const NavBar = () => {
                 </li>
 
                 <li className="nav-text">
+                  <Link to={"/system"}>
+                    <FaIcons.FaChartPie />
+                    <span style={{ color: "white", display: "block" }}>
+                      System Reports
+                    </span>
+                  </Link>
+                </li>
+
+                <li className="nav-text">
                   {/* <Link to={"/login"}> */}
                     <FaIcons.FaSignOutAlt />
                     <span

@@ -57,8 +57,13 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
             int noOfFinishedEvents = 0;
 
             if(participants==null || participants.size()==0){
-                ErrorResponse error = new ErrorResponse("204", "No events");
-                return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+//                ErrorResponse error = new ErrorResponse("204", "No events");
+            	UserReportHashMap.put("noOfSignedUpEvents",noOfSignedUpEvents);
+                UserReportHashMap.put("noOfRejectsAndApprovals",noOfRejectsAndApprovals);
+                UserReportHashMap.put("noOfFinishedEvents",noOfFinishedEvents);
+                
+                
+                return new ResponseEntity<>(UserReportHashMap, HttpStatus.NO_CONTENT);
             }
             else{
 
@@ -84,9 +89,9 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
                 System.out.println("No of rejects and approvals: "+noOfRejectsAndApprovals);
                 System.out.println("No of finished events: "+noOfFinishedEvents);
 
-                UserReportHashMap.put("No of signed up events",noOfSignedUpEvents);
-                UserReportHashMap.put("No of rejects and approvals",noOfRejectsAndApprovals);
-                UserReportHashMap.put("No of finished events",noOfFinishedEvents);
+                UserReportHashMap.put("noOfSignedUpEvents",noOfSignedUpEvents);
+                UserReportHashMap.put("noOfRejectsAndApprovals",noOfRejectsAndApprovals);
+                UserReportHashMap.put("noOfFinishedEvents",noOfFinishedEvents);
 
                 return new ResponseEntity<>(UserReportHashMap, HttpStatus.OK);
             }

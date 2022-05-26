@@ -11,7 +11,7 @@ const EventCard = ({ event }) => {
   return (
     <>
       {/* {console.log(user.accountType)} */}
-      <Card>
+      <Card className="card1">
         <Card.Header>{event.eventID}</Card.Header>
         <Card.Body>
           <Card.Title>{event.title}</Card.Title>

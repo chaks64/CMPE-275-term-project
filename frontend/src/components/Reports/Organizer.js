@@ -6,14 +6,16 @@ import axios from "axios";
 import { config } from "../../utils/utils";
 import CountUp from "react-countup";
 
-const System = () => {
+const Organizer = () => {
   const [stats, setStats] = useState({
-    finishedEvents: 0,
-    paidEvents: 0,
-    partRatio: 0,
-    cancelEvents: 0,
-    createdEvents: 0,
-    averagePart: 0
+    PercentageOfPaidEvents:0,
+    NumberOfFinishedEvents:0,
+    NumberOfFinishedPaidEvents:0,
+    TotalParticipantsToMinimumParticipantsRatio:0,
+    AverageParticipantsInFinishedEvents:0,
+    TotalRevenueFinishedPaidEvents:0,
+    NumberOfEventsCreated:0,
+    NumOfCancelledEvents:0
   });
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const System = () => {
 
   const getStats = async () => {
     const list1 = await axios
-      .get(`${config.backendURL}/event/systemReport`)
+      .get(`${config.backendURL}/user/organizerreport/${localStorage.getItem("userid")}`)
       .then((response) => {
         console.log(response.data);
         setStats(response.data);
@@ -34,21 +36,22 @@ const System = () => {
 
   return (
     <>
-      <NavBar />
-
+    <NavBar/>
       <div className="main-div">
-      <center><h1>System Report Statistics</h1></center>
+        <center>
+          <h1>Organizer Report Statistics</h1>
+        </center>
         <div className="data-div">
-          
           <div className="row">
 
-            <div class="card bg-light m-5 col-md-6" style={{ width: "18rem" }}>
+
+          <div class="card bg-light m-5 col-md-6" style={{ width: "18rem" }}>
               <div class="card-header">Number of created events</div>
               <div class="card-body">
                 <h1>
                   <CountUp
                     start={0}
-                    end={stats.createdEvents}
+                    end={stats.NumberOfEventsCreated}
                     duration={1}
                     decimals={0}
                   ></CountUp>
@@ -63,7 +66,7 @@ const System = () => {
                 <h1>
                   <CountUp
                     start={0}
-                    end={stats.paidEvents}
+                    end={stats.PercentageOfPaidEvents}
                     duration={2.75}
                     decimals={2}
                   ></CountUp>
@@ -79,7 +82,7 @@ const System = () => {
                 <h1>
                   <CountUp
                     start={0}
-                    end={stats.cancelEvents}
+                    end={stats.NumOfCancelledEvents}
                     duration={1}
                     decimals={0}
                   ></CountUp>
@@ -94,7 +97,7 @@ const System = () => {
                 <h1>
                   <CountUp
                     start={0}
-                    end={stats.partRatio}
+                    end={stats.TotalParticipantsToMinimumParticipantsRatio}
                     duration={1}
                     decimals={2}
                   ></CountUp>
@@ -103,13 +106,14 @@ const System = () => {
               </div>
             </div>
 
+
             <div class="card bg-light m-5 col-md-6" style={{ width: "18rem" }}>
               <div class="card-header">Finished Events</div>
               <div class="card-body">
                 <h1>
                   <CountUp
                     start={0}
-                    end={stats.finishedEvents}
+                    end={stats.NumberOfFinishedEvents}
                     duration={1}
                     decimals={0}
                   ></CountUp>
@@ -124,7 +128,7 @@ const System = () => {
                 <h1>
                   <CountUp
                     start={0}
-                    end={stats.averagePart}
+                    end={stats.AverageParticipantsInFinishedEvents}
                     duration={1}
                     decimals={0}
                   ></CountUp>
@@ -133,13 +137,44 @@ const System = () => {
               </div>
             </div>
 
+            
+            <div class="card bg-light m-5 col-md-6" style={{ width: "18rem" }}>
+              <div class="card-header">Number of paid events finished</div>
+              <div class="card-body">
+                <h1>
+                  <CountUp
+                    start={0}
+                    end={stats.NumberOfFinishedPaidEvents}
+                    duration={1}
+                    decimals={0}
+                  ></CountUp>
+                </h1>
+                <h5 class="card-title">events</h5>
+              </div>
+            </div>
+
+            <div class="card bg-light m-5 col-md-6" style={{ width: "18rem" }}>
+              <div class="card-header">Total Revenue from finished events</div>
+              <div class="card-body">
+                <h1>
+                 $ <CountUp
+                    start={0}
+                    end={stats.TotalRevenueFinishedPaidEvents}
+                    duration={1}
+                    decimals={1}
+                  ></CountUp>
+                </h1>
+                <h5 class="card-title">events</h5>
+              </div>
+            </div>
+
+
           </div>
         </div>
       </div>
-
-      <Footer />
+      <Footer/>
     </>
   );
 };
 
-export default System;
+export default Organizer;

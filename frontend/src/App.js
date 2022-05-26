@@ -22,6 +22,7 @@ import PartListsDets from "./components/EventDetails/PartListsDets";
 import System from "./components/Reports/System";
 import Reports from "./components/Reports/Reports";
 import Participant from "./components/Reports/Participant";
+import Organizer from "./components/Reports/Organizer";
 
 export const ThemeContext = React.createContext();
 
@@ -52,8 +53,9 @@ function App() {
         <Route path="/partEvent" element={<PartEventDets />} />
         <Route path="/partListdets" element={<PartListsDets />} />
         <Route path="/reports" element={<Reports />} />
-        <Route path="/reports/system" element={<System />} />
+        <Route path="/system" element={<System />} />
         <Route path="/reports/participant" element={<Participant />} />
+        <Route path="/reports/organizer" element={<Organizer />} />
 
       </Routes>
     </ThemeContext.Provider>

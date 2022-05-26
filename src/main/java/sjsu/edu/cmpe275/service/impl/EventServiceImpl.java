@@ -136,6 +136,8 @@ public class EventServiceImpl implements EventService{
 		System.out.println("in register for event "+ reqBody);
 		try {
 			Participants participants = new Participants();
+			VirtualTime vTime = VirtualTime.getInstance();
+			participants.setSignUpTime(vTime.getSystemTime());
 			Integer integer = (Integer) reqBody.get("userid");
 //			Long userid = new Long(integer);
 			Long userid = Long.valueOf(integer);
@@ -235,12 +237,14 @@ public class EventServiceImpl implements EventService{
 		System.out.println("in manage request "+reqBody);
 		try {
 			Long userid = Long.parseLong((String) reqBody.get("userid"));
+			VirtualTime vTime = VirtualTime.getInstance();
+			
 			Participants participant = participantRepo.findByUserId(userid);
 			if(participant == null) {
 				ErrorResponse errorResponse = new ErrorResponse("404", "User not found");
 				return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 			}
-			Participants newParticipant = new Participants(participant.getUserId(), participant.getEventID(), (String) reqBody.get("status"), (LocalDateTime) reqBody.get("signUpTime"), (LocalDateTime) reqBody.get("statusUpdateTime"));
+			Participants newParticipant = new Participants(participant.getUserId(), participant.getEventID(), (String) reqBody.get("status"), participant.getSignUpTime(), vTime.getSystemTime());
 			participantRepo.save(newParticipant);
 			User user = userRepo.findByUserId(participant.getUserId());
 			Event event = eventRepo.findByEventID(participant.getEventID());
