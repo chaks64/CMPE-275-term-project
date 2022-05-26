@@ -11,7 +11,25 @@ Group members:
 URL of the application: 
 http://13.56.238.39:3000/
 
+## Architecture diagram
 
+![WhatsApp Image 2022-05-15 at 3 03 27 PM](https://user-images.githubusercontent.com/20749933/170433142-bdc98680-7e0b-469f-b159-07802c32f653.jpeg)
+
+
+## Tech Stack
+Frontend: React.js Backend: Java with Spring Boot Database: MySql
+
+## Features
+1. Users as event participants and event organizers.
+2. Email verification for users.
+3. Google authentication login.
+4. Creating and cancelling an event.
+5. Searching an event with multiple filters.
+6. Register for an event, get approval and pay fees.
+7. Event discussion forum.
+8. Separate forum for event participants.
+9. Organizer and participants can review each other.
+10. Analysis available in the form of User report and Organizer report
 
 Instructions to run the application: 
 
