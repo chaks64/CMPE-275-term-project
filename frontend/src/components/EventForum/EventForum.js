@@ -15,13 +15,11 @@ import { storage_bucket } from "../../firebase/firebaseConfig";
 const EventForum = (props) => {
   // console.log(`props value is:`, props);
   const {event}=props;
-  console.log(`eventforum event: `,event)
   const [userMsg, setUserMsg] = useState();
   var [render, setRender] = useState(0);
   const [messages, setMessages] = useState("");
   const [allow, setAllow] = useState(false);
   const userid = localStorage.getItem("userid");
-  const [selectedFile, setSelectedFile] = useState();
   const [image, setimage] = useState("");
   var organizer=false;
   if(event.user?.userId==userid){
@@ -49,7 +47,7 @@ organizer=true;
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [render]);
 
   const verify = () => {
     let event = props.event;
@@ -71,7 +69,6 @@ organizer=true;
   const handleChange = (e) => {
     console.log(e);
     setUserMsg(e.target.value);
-    console.log(`printing after setting`,userMsg)
   };
 
   const handleImage = (e) => {
@@ -107,7 +104,7 @@ organizer=true;
     var msg = userMsg;
     console.log(`final message`,userMsg)
     var img=image;
-    // console.log(message, forumType, userid, eventid, timestamp);
+    // console.log(msg, forumType, userid, eventid, timestamp);
     var api_data = { msg,img, forumType, userid, eventid };
     console.log(`createmsg data`,api_data);
     axios
@@ -156,7 +153,7 @@ organizer=true;
         </div>
         <div className="inputBox-child-2">
           <Button
-            // disabled={allow}
+            disabled={allow}
             variant="contained"
             style={{
               backgroundColor: "#7C0200",

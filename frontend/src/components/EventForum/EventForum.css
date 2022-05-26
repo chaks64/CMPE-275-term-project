@@ -13,6 +13,9 @@
     /* margin: 0 auto; */
 /* } */ 
 
+.parent{
+    margin-bottom: 195px;
+}
 .parent .inputBox .send-button{
     /* margin-left: 10px; */
     background-color: "#7C0200";

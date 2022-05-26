@@ -370,6 +370,7 @@ public class EventServiceImpl implements EventService{
 		}
 	}
 
+	
 	@Override
 	public ResponseEntity<?> getEventsForSystemReport() {
 		System.out.println("Here in getEventsForSystemReport service impl");
@@ -464,4 +465,30 @@ public class EventServiceImpl implements EventService{
 		}
 	}
 
+	@Override
+	public ResponseEntity<?> updateEventStatus(Long eventid) {
+		System.out.println("Updating event status for eventid: "+eventid);
+        try {
+            Event event = eventRepo.findOneByEventID(eventid);
+            if(event==null) {
+                ErrorResponse error = new ErrorResponse("204", "No event");
+                return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
+            }
+            else {
+                event.setStatus("closed");
+				// event=eventRepo.updateStatus(event.getStatus(),eventid);
+				eventRepo.save(event);
+				System.out.println(event.getStatus());
+            }
+            return new ResponseEntity<>(event, HttpStatus.OK);      
+    }catch(Exception e){
+        e.printStackTrace();
+        ErrorResponse errorResponse = new ErrorResponse("500", "Server Error");
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	}
+
+	
+
 }
+
