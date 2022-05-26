@@ -142,49 +142,70 @@ public class UserLevelReportServiceImpl implements UserLevelReportService {
         	List<Event> events = eventRepo.listEventsForGivenUserAndTimeFrame(userid, end_date1, start_date1);
 //        	List<Event> paidEvents = eventRepo.listPaidEventsForGivenUserAndTimeFrame(userid, end_date1, start_date1);
         	
-        	
-//        	for(Event e : events){
-//                System.out.println(e.toString());
-//            }
-        	
         	if(events==null || events.size()==0){
                 ErrorResponse error = new ErrorResponse("204", "No events");
                 return new ResponseEntity<>(error, HttpStatus.NO_CONTENT);
             } 
-//        	else {
+
+        	
+        		//1.1
             	numOfEventsCreated = events.size();
             	
             	for(int i=0; i<events.size(); i++){
             		
+            		//1.2
             		if(events.get(i).getFees()>0) {
             			totalNumberOfPaidEvents++;
             		}
             		
-            		if(events.get(i).getStatus().equalsIgnoreCase("cancel")) {
-            			numOfCancelledEvents++;
-            			totalNumberOfCancelledEventsParticipants += participantRepo.findByEventID(events.get(i).getEventID()).size();
-            			totalNumberOfCancelledEventsMinimumParticipants += events.get(i).getMinParticpants();
-            			
-            		}
+            		
+            		
+//            		if(events.get(i).getStatus().equalsIgnoreCase("cancel")) {
+//            			numOfCancelledEvents++;
+//            			totalNumberOfCancelledEventsParticipants += participantRepo.findByEventID(events.get(i).getEventID()).size();
+//            			totalNumberOfCancelledEventsMinimumParticipants += events.get(i).getMinParticpants();
+//            			
+//            		}
             		
             		//if the event has ended before the current time/start_date
-            		if(events.get(i).getEndtDate().isBefore(start_date)) {
-            			if(events.get(i).getFees()>0) {
-            				numOfFinishedPaidEvents++;
-            				totalRevenue += events.get(i).getFees();
-            			}
-            			List<Participants> temp = participantRepo.findByEventID(events.get(i).getEventID());
-            			var temp1 = temp.stream().filter((e) -> e.getStatus().equalsIgnoreCase("approved")).toArray();
-            			totalParticipants += temp1.length;
-            			numOfFinishedEvents++;
-            		}
+//            		if(events.get(i).getEndtDate().isBefore(start_date)) {
+//            			if(events.get(i).getFees()>0) {
+//            				numOfFinishedPaidEvents++;
+//            				totalRevenue += events.get(i).getFees();
+//            			}
+//            			List<Participants> temp = participantRepo.findByEventID(events.get(i).getEventID());
+//            			var temp1 = temp.stream().filter((e) -> e.getStatus().equalsIgnoreCase("approved")).toArray();
+//            			totalParticipants += temp1.length;
+//            			numOfFinishedEvents++;
+//            		}
+            	}
+            	
+            	//2.1 and 2.2
+            	events = eventRepo.listCancelledEventsForGivenUserAndTimeFrame(userid, end_date1, start_date1);
+            	for(int i=0; i<events.size(); i++){
+            		numOfCancelledEvents++;
+        			totalNumberOfCancelledEventsParticipants += participantRepo.findByEventID(events.get(i).getEventID()).size();
+        			totalNumberOfCancelledEventsMinimumParticipants += events.get(i).getMinParticpants();
+            	}
+            	
+            	//3.1 and 3.2
+            	events = eventRepo.listFinishedEventsForGivenUserAndTimeFrame(userid, end_date1, start_date1);
+            	for(int i=0; i<events.size(); i++){
+            		//4.1 and 4.2
+            		if(events.get(i).getFees()>0) {
+        				numOfFinishedPaidEvents++;
+        				totalRevenue += events.get(i).getFees();
+        			}
+            		List<Participants> temp = participantRepo.findByEventID(events.get(i).getEventID());
+        			var temp1 = temp.stream().filter((e) -> e.getStatus().equalsIgnoreCase("approved")).toArray();
+        			totalParticipants += temp1.length;
+        			numOfFinishedEvents++;
             	}
             	
             	if(totalNumberOfPaidEvents>0 && numOfEventsCreated>0) paidEventsPercent = (double)totalNumberOfPaidEvents * 100 / numOfEventsCreated;
             	if(totalNumberOfCancelledEventsParticipants>0 && totalNumberOfCancelledEventsMinimumParticipants>0) cancelledEventsFinalReport = (double)(totalNumberOfCancelledEventsParticipants) / totalNumberOfCancelledEventsMinimumParticipants;
             	if(numOfFinishedEvents>0 && totalParticipants>0) averageParticipants = (double) (numOfFinishedEvents) / totalParticipants;
             	
-//            }
         	
             	// requirement 1
             	response.put("NumberOfEventsCreated",numOfEventsCreated);

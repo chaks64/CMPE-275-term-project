@@ -55,6 +55,16 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 	@Query(value = "select * from event where user_id = :userid and creation_time between :end_date1 and :start_date1", nativeQuery = true)
 	public List<Event> listEventsForGivenUserAndTimeFrame(long userid, String end_date1, String start_date1);
 	
+	
+	@Query(value = "select * from event where user_id = :userid and status like '%cancel%' and deadline between :end_date1 and :start_date1", nativeQuery = true)
+	public List<Event> listCancelledEventsForGivenUserAndTimeFrame(long userid, String end_date1, String start_date1);
+	
+	
+	@Query(value = "select * from event where user_id = :userid and endt_date between :end_date1 and :start_date1", nativeQuery = true)
+	public List<Event> listFinishedEventsForGivenUserAndTimeFrame(long userid, String end_date1, String start_date1);
+	
+	
+	
 //	@Query(value = "select * from event where user_id = :userid and creation_time between :end_date1 and :start_date1", nativeQuery = true)
 //	public List<Event> listPaidEventsForGivenUserAndTimeFrame(long userid, String end_date1, String start_date1);
 
