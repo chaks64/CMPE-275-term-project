@@ -39,8 +39,8 @@ const MsgCard = (props) => {
                 />
             </div>)}
             <div className='buttons'>
-            <Button size="small" startIcon={<ReplyIcon  sx={{ color: red[900] }} ></ReplyIcon> } onClick={handleReply}>
-            </Button>
+            {/* <Button size="small" startIcon={<ReplyIcon  sx={{ color: red[900] }} ></ReplyIcon> } onClick={handleReply}>
+            </Button> */}
            { flag && (<div>
                     <input id='reply'></input>
                     <Button size="small" startIcon={<SendIcon  sx={{ color: red[900] }} ></SendIcon> } onClick={handleSend}>

@@ -92,4 +92,10 @@ public class EventController {
 		return eventService.getEventsForSystemReport();
 	}
 
+	@GetMapping(value = "/updatetoclose/{eventid}")
+	public ResponseEntity<?> updateEventStatus(@PathVariable Long eventid){
+		System.out.println("updating eventStatus to closed");
+		return eventService.updateEventStatus(eventid);
+	}
+
 }
