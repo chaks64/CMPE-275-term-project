@@ -183,7 +183,7 @@ public class EventServiceImpl implements EventService{
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
 				mailMessage.setTo(user.getEmail());
 				mailMessage.setSubject("Signed-up for event!");
-				mailMessage.setFrom("shahchintan64@gmail.com");
+				mailMessage.setFrom("abc@gmail.com");
 				mailMessage.setText("You have signed-up for "+event.getTitle());
 				emailSenderService.sendEmail(mailMessage);
 				return new ResponseEntity<>(newParticipants, HttpStatus.OK);
@@ -251,7 +251,7 @@ public class EventServiceImpl implements EventService{
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(user.getEmail());
 			mailMessage.setSubject("Signup status Update!");
-			mailMessage.setFrom("shahchintan64@gmail.com");
+			mailMessage.setFrom("abc@gmail.com");
 			mailMessage.setText("Your request for "+event.getTitle()+" has been "+(String) reqBody.get("status"));
 			emailSenderService.sendEmail(mailMessage);
 			
