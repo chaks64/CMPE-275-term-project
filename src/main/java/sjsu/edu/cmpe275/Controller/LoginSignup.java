@@ -83,7 +83,7 @@ public class LoginSignup {
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(user.getEmail());
 			mailMessage.setSubject("Verification Successfull!");
-			mailMessage.setFrom("shahchintan64@gmail.com");
+			mailMessage.setFrom("abc@gmail.com");
 			mailMessage.setText("Thank you "+user.getFullName()+" for verification");
 			emailSenderService.sendEmail(mailMessage);
 			
