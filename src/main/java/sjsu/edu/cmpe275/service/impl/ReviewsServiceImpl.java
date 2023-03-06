@@ -63,7 +63,7 @@ public class ReviewsServiceImpl implements ReviewsService{
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setTo(user.getEmail());
 			mailMessage.setSubject("You have been reviewed!");
-			mailMessage.setFrom("shahchintan64@gmail.com");
+			mailMessage.setFrom("abc@gmail.com");
 			mailMessage.setText("You have received a review "+reviews.getReview());
 			emailSenderService.sendEmail(mailMessage);
 			
