@@ -88,7 +88,7 @@ public class LoginSignupServiceImpl implements LoginSignupService{
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
 				mailMessage.setTo(createdUser.getEmail());
 				mailMessage.setSubject("Complete Verification!");
-				mailMessage.setFrom("shahchintan64@gmail.com");
+				mailMessage.setFrom("abc@gmail.com");
 				mailMessage.setText("To verify your account, please click here : "
 						+ "http://"+IP_ADDRESS+":8080/user/confirm-account?token="
 						+ token.getConfirmationToken());
