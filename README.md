@@ -1,10 +1,5 @@
 # CMPE-275-term-project
 
-## Architecture diagram
-
-![WhatsApp Image 2022-05-15 at 3 03 27 PM](https://user-images.githubusercontent.com/20749933/170433142-bdc98680-7e0b-469f-b159-07802c32f653.jpeg)
-
-
 ## Tech Stack
 Frontend: React.js Backend: Java with Spring Boot Database: MySql
 
