@@ -1,16 +1,5 @@
 # CMPE-275-term-project
 
-Group members:
-
-1. Chintan Biren Shah (SJSU ID - 014926873) 
-2. Sai Mahendra Kapdekar (SJSU ID - 015937727)
-3. Shweta Chavan (SJSU ID - 015215694) 
-4. Somil Manishkumar Jain (SJSU ID - 015898194)
-
-
-URL of the application: 
-http://13.56.238.39:3000/
-
 ## Architecture diagram
 
 ![WhatsApp Image 2022-05-15 at 3 03 27 PM](https://user-images.githubusercontent.com/20749933/170433142-bdc98680-7e0b-469f-b159-07802c32f653.jpeg)
